@@ -21,7 +21,7 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold gradient-text">
+          <Link to="/" className="text-2xl font-roboto font-black gradient-text drop-shadow-[0_0_15px_rgba(64,186,144,0.5)] hover:drop-shadow-[0_0_25px_rgba(64,186,144,0.7)] transition-all duration-300 tracking-wide">
             DevLuxe
           </Link>
 
