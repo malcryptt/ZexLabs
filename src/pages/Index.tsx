@@ -41,8 +41,8 @@ const Index = () => {
       <section className="pt-32 pb-20 px-4">
         <div className="container mx-auto text-center animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Building modern websites<br />
-            <span className="gradient-text">that mean business</span>
+            Building Modern Websites<br />
+            <span className="gradient-text">That Mean Business</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             We design, develop, and deploy luxury-level sites for brands that want more than average.
