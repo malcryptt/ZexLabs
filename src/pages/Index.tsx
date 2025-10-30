@@ -47,31 +47,12 @@ const Index = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             We design, develop, and deploy luxury-level sites for brands that want more than average.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Link to="/contact">
               <Button size="lg" className="bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
                 Get a Free Quote
               </Button>
             </Link>
-            <Link to="/portfolio">
-              <Button size="lg" variant="outline" className="glass glass-hover">
-                View Our Work
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Showcase Strip */}
-      <section className="py-20 px-4 glass">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Recent Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="glass glass-hover rounded-lg p-6 aspect-video flex items-center justify-center">
-                <p className="text-muted-foreground">Project Showcase {i}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
