@@ -95,7 +95,7 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <Link to="/contact">
+                <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
                   <Button
                     className={`w-full ${
                       pkg.featured
@@ -105,7 +105,7 @@ const Pricing = () => {
                   >
                     Let's Build It
                   </Button>
-                </Link>
+                </a>
               </div>
             ))}
           </div>
