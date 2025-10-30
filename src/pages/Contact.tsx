@@ -185,11 +185,11 @@ const Contact = () => {
                   @devluxe.agency
                 </a>
                 <a
-                  href="mailto:hello@devluxe.agency"
+                  href="mailto:aiflowsolutions100@gmail.com"
                   className="flex items-center gap-2 text-accent hover:underline"
                 >
                   <Mail size={20} />
-                  hello@devluxe.agency
+                  aiflowsolutions100@gmail.com
                 </a>
               </div>
             </div>
