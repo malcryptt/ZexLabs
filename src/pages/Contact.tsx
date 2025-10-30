@@ -36,12 +36,17 @@ const Contact = () => {
     try {
       contactSchema.parse(formData);
 
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Create WhatsApp message with form data
+      const message = `Hello! I'm interested in your services.\n\nName: ${formData.name}\nEmail: ${formData.email}\nProject Type: ${formData.projectType}\nBudget: ${formData.budget}\n\nMessage:\n${formData.message}`;
+      
+      const whatsappUrl = `https://wa.me/2349131744823?text=${encodeURIComponent(message)}`;
+      
+      // Open WhatsApp in new tab
+      window.open(whatsappUrl, '_blank');
 
       toast({
-        title: "Message sent!",
-        description: "We'll get back to you within 24 hours.",
+        title: "Redirecting to WhatsApp",
+        description: "Your message has been prepared.",
       });
 
       setFormData({
