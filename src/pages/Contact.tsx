@@ -39,7 +39,7 @@ const Contact = () => {
       // Create WhatsApp message with form data
       const message = `Hello! I'm interested in your services.\n\nName: ${formData.name}\nEmail: ${formData.email}\nProject Type: ${formData.projectType}\nBudget: ${formData.budget}\n\nMessage:\n${formData.message}`;
       
-      const whatsappUrl = `https://wa.me/2349131744823?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/2349164703407?text=${encodeURIComponent(message)}`;
       
       // Open WhatsApp in new tab
       window.open(whatsappUrl, '_blank');

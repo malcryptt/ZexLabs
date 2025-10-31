@@ -95,7 +95,7 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
                   <Button
                     className={`w-full ${
                       pkg.featured
