@@ -45,7 +45,7 @@ const Pricing = () => {
         "Third-party Integrations",
         "Advanced Analytics",
         "Website Security",
-        "6 Months Free Maintenance",
+        "6 Months Support",
         "Priority Support",
       ],
     },
