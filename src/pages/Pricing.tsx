@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const Pricing = () => {
   const [selectedDomain, setSelectedDomain] = useState("");
+  const [domainYears, setDomainYears] = useState("1");
 
   const domainPricing = [
     { extension: ".com", price: "₦30,000" },
@@ -336,6 +337,11 @@ const Pricing = () => {
                   <div className="text-center mb-8">
                     <h3 className="text-3xl font-bold mb-2">Domain</h3>
                     <p className="text-muted-foreground">Choose your domain extension</p>
+                    <div className="mt-4 p-3 glass rounded-lg">
+                      <p className="text-sm text-muted-foreground italic">
+                        * Domain services are only available when building a website with us
+                      </p>
+                    </div>
                   </div>
 
                   <div className="space-y-6">
@@ -355,11 +361,32 @@ const Pricing = () => {
                       </SelectContent>
                     </Select>
 
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-muted-foreground">
+                        Subscription Duration
+                      </label>
+                      <Select value={domainYears} onValueChange={setDomainYears}>
+                        <SelectTrigger className="w-full h-14 text-lg">
+                          <SelectValue placeholder="Select years" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background">
+                          <SelectItem value="1">1 Year</SelectItem>
+                          <SelectItem value="2">2 Years</SelectItem>
+                          <SelectItem value="3">3 Years</SelectItem>
+                          <SelectItem value="4">4 Years</SelectItem>
+                          <SelectItem value="5">5 Years</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     {selectedDomain && (
                       <div className="text-center p-6 glass rounded-lg animate-fade-in">
                         <p className="text-sm text-muted-foreground mb-2">Selected Domain</p>
                         <p className="text-2xl font-bold gradient-text">
                           {domainPricing.find(d => d.extension === selectedDomain)?.price}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          for {domainYears} {parseInt(domainYears) === 1 ? 'year' : 'years'}
                         </p>
                       </div>
                     )}
