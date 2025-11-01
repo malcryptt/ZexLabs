@@ -13,12 +13,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Upload, X, ExternalLink, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 interface PortfolioItem {
   id: string;
   title: string;
   description: string | null;
-  image_url: string;
+  image_urls: string[];
   project_url: string | null;
   technologies: string[] | null;
   category: string;
@@ -32,7 +33,7 @@ export default function Portfolio() {
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const { toast } = useToast();
 
@@ -73,19 +74,23 @@ export default function Portfolio() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploadedFile(e.target.files[0]);
+    if (e.target.files) {
+      setUploadedFiles(Array.from(e.target.files));
     }
   };
 
-  const handleDelete = async (id: string, imageUrl: string) => {
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleDelete = async (id: string, imageUrls: string[]) => {
     if (!confirm('Are you sure you want to delete this portfolio item?')) return;
 
     try {
-      // Delete image from storage
-      const imagePath = imageUrl.split('/').pop();
-      if (imagePath) {
-        await supabase.storage.from('portfolio-images').remove([imagePath]);
+      // Delete all images from storage
+      const imagePaths = imageUrls.map(url => url.split('/').pop()).filter(Boolean) as string[];
+      if (imagePaths.length > 0) {
+        await supabase.storage.from('portfolio-images').remove(imagePaths);
       }
 
       // Delete from database
@@ -120,29 +125,35 @@ export default function Portfolio() {
       return;
     }
 
-    if (!uploadedFile) {
+    if (uploadedFiles.length === 0) {
       toast({
         title: 'Validation Error',
-        description: 'Please upload an image',
+        description: 'Please upload at least one image',
         variant: 'destructive'
       });
       return;
     }
 
     try {
-      // Upload image
-      const fileExt = uploadedFile.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      // Upload all images
+      const uploadPromises = uploadedFiles.map(async (file) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from('portfolio-images')
-        .upload(fileName, uploadedFile);
+        const { error: uploadError } = await supabase.storage
+          .from('portfolio-images')
+          .upload(fileName, file);
 
-      if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('portfolio-images')
-        .getPublicUrl(fileName);
+        const { data: { publicUrl } } = supabase.storage
+          .from('portfolio-images')
+          .getPublicUrl(fileName);
+
+        return publicUrl;
+      });
+
+      const imageUrls = await Promise.all(uploadPromises);
 
       // Insert into database
       const technologies = formData.technologies
@@ -152,7 +163,7 @@ export default function Portfolio() {
       const { error } = await supabase.from('portfolio').insert({
         title: formData.title,
         description: formData.description || null,
-        image_url: publicUrl,
+        image_urls: imageUrls,
         project_url: formData.project_url || null,
         technologies,
         category: formData.category,
@@ -175,7 +186,7 @@ export default function Portfolio() {
         category: 'website',
         featured: false,
       });
-      setUploadedFile(null);
+      setUploadedFiles([]);
       setIsDialogOpen(false);
       fetchPortfolio();
     } catch (error: any) {
@@ -297,7 +308,7 @@ export default function Portfolio() {
                     </div>
 
                     <div>
-                      <Label htmlFor="file_upload">Upload Image *</Label>
+                      <Label htmlFor="file_upload">Upload Images * (Multiple allowed)</Label>
                       <div className="mt-2">
                         <input
                           id="file_upload"
@@ -305,6 +316,7 @@ export default function Portfolio() {
                           onChange={handleFileChange}
                           className="hidden"
                           accept="image/*"
+                          multiple
                           required
                         />
                         <label
@@ -313,19 +325,23 @@ export default function Portfolio() {
                         >
                           <Upload className="h-5 w-5" />
                           <span className="text-sm">
-                            {uploadedFile ? uploadedFile.name : 'Click to upload project image'}
+                            {uploadedFiles.length > 0 ? `${uploadedFiles.length} file(s) selected` : 'Click to upload project images'}
                           </span>
                         </label>
-                        {uploadedFile && (
-                          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                            <span>Selected: {uploadedFile.name}</span>
-                            <button
-                              type="button"
-                              onClick={() => setUploadedFile(null)}
-                              className="text-destructive hover:text-destructive/80"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
+                        {uploadedFiles.length > 0 && (
+                          <div className="mt-2 space-y-1">
+                            {uploadedFiles.map((file, idx) => (
+                              <div key={idx} className="flex items-center justify-between gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded">
+                                <span className="truncate">{file.name}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => removeFile(idx)}
+                                  className="text-destructive hover:text-destructive/80 flex-shrink-0"
+                                >
+                                  <X className="h-4 w-4" />
+                                </button>
+                              </div>
+                            ))}
                           </div>
                         )}
                       </div>
@@ -362,13 +378,31 @@ export default function Portfolio() {
               {filteredPortfolio.map((item) => (
                 <Card key={item.id} className="glass glass-hover overflow-hidden group">
                   <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
+                    {item.image_urls.length === 1 ? (
+                      <img
+                        src={item.image_urls[0]}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                    ) : (
+                      <Carousel className="w-full h-full">
+                        <CarouselContent>
+                          {item.image_urls.map((url, idx) => (
+                            <CarouselItem key={idx}>
+                              <img
+                                src={url}
+                                alt={`${item.title} - Image ${idx + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2" />
+                        <CarouselNext className="right-2" />
+                      </Carousel>
+                    )}
                     {item.featured && (
-                      <Badge className="absolute top-4 right-4 bg-accent">Featured</Badge>
+                      <Badge className="absolute top-4 right-4 bg-accent z-10">Featured</Badge>
                     )}
                   </div>
                   <CardContent className="p-6">
@@ -410,7 +444,7 @@ export default function Portfolio() {
                         <Button
                           variant="destructive"
                           size="sm"
-                          onClick={() => handleDelete(item.id, item.image_url)}
+                          onClick={() => handleDelete(item.id, item.image_urls)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

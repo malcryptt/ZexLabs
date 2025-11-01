@@ -21,7 +21,7 @@ export type Database = {
           description: string | null
           featured: boolean | null
           id: string
-          image_url: string
+          image_urls: string[]
           project_url: string | null
           technologies: string[] | null
           title: string
@@ -33,7 +33,7 @@ export type Database = {
           description?: string | null
           featured?: boolean | null
           id?: string
-          image_url: string
+          image_urls?: string[]
           project_url?: string | null
           technologies?: string[] | null
           title: string
@@ -45,7 +45,7 @@ export type Database = {
           description?: string | null
           featured?: boolean | null
           id?: string
-          image_url?: string
+          image_urls?: string[]
           project_url?: string | null
           technologies?: string[] | null
           title?: string
