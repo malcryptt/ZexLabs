@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Code, Smartphone, Settings, MessageSquare, TrendingUp } from "lucide-react";
+import { Code, Smartphone, Settings, MessageSquare, TrendingUp, ShieldCheck, Globe } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -30,6 +30,16 @@ const Index = () => {
       icon: <TrendingUp className="w-8 h-8" />,
       title: "SEO & Analytics",
       description: "Data-driven strategies for growth and visibility",
+    },
+    {
+      icon: <ShieldCheck className="w-8 h-8" />,
+      title: "Cyber Security",
+      description: "Comprehensive protection for your digital assets",
+    },
+    {
+      icon: <Globe className="w-8 h-8" />,
+      title: "Domain Sales",
+      description: "Secure your perfect domain name for your brand",
     },
   ];
 
