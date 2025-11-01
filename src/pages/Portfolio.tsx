@@ -11,9 +11,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Upload, X, ExternalLink, Trash2, Pencil } from 'lucide-react';
+import { Plus, Upload, X, ExternalLink, Trash2, Pencil, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface PortfolioItem {
   id: string;
@@ -35,6 +36,9 @@ export default function Portfolio() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedTechnology, setSelectedTechnology] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'featured' | 'name'>('featured');
   const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const { toast } = useToast();
@@ -270,9 +274,50 @@ export default function Portfolio() {
     }
   };
 
-  const filteredPortfolio = selectedCategory === 'all'
-    ? portfolio
-    : portfolio.filter(item => item.category === selectedCategory);
+  // Get unique technologies from all portfolio items
+  const allTechnologies = Array.from(
+    new Set(
+      portfolio
+        .flatMap(item => item.technologies || [])
+        .filter(Boolean)
+    )
+  ).sort();
+
+  // Filter and sort portfolio
+  const filteredPortfolio = portfolio
+    .filter(item => {
+      // Category filter
+      const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+      
+      // Technology filter
+      const matchesTechnology = selectedTechnology === 'all' || 
+        (item.technologies && item.technologies.includes(selectedTechnology));
+      
+      // Search filter
+      const matchesSearch = searchQuery === '' || 
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.technologies?.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+      return matchesCategory && matchesTechnology && matchesSearch;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case 'oldest':
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        case 'featured':
+          if (a.featured === b.featured) {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          }
+          return a.featured ? -1 : 1;
+        case 'name':
+          return a.title.localeCompare(b.title);
+        default:
+          return 0;
+      }
+    });
 
   if (loading) {
     return (
@@ -462,8 +507,38 @@ export default function Portfolio() {
             </div>
           )}
 
+          {/* Search and Sort Controls */}
+          <div className="mb-8 space-y-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Search Bar */}
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search projects by title, description, or technology..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+
+              {/* Sort Dropdown */}
+              <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                <SelectTrigger className="w-full md:w-[200px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured First</SelectItem>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="name">Name (A-Z)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
           {/* Category Filter */}
-          <div className="flex justify-center gap-2 mb-12 flex-wrap">
+          <div className="flex justify-center gap-2 mb-4 flex-wrap">
             {categories.map((cat) => (
               <Button
                 key={cat}
@@ -475,6 +550,32 @@ export default function Portfolio() {
               </Button>
             ))}
           </div>
+
+          {/* Technology Filter */}
+          {allTechnologies.length > 0 && (
+            <div className="mb-8">
+              <p className="text-sm text-muted-foreground text-center mb-3">Filter by Technology:</p>
+              <div className="flex justify-center gap-2 flex-wrap">
+                <Button
+                  variant={selectedTechnology === 'all' ? 'default' : 'outline'}
+                  onClick={() => setSelectedTechnology('all')}
+                  size="sm"
+                >
+                  All Technologies
+                </Button>
+                {allTechnologies.map((tech) => (
+                  <Button
+                    key={tech}
+                    variant={selectedTechnology === tech ? 'default' : 'outline'}
+                    onClick={() => setSelectedTechnology(tech)}
+                    size="sm"
+                  >
+                    {tech}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Portfolio Grid */}
           {filteredPortfolio.length === 0 ? (
