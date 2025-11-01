@@ -377,6 +377,11 @@ const Pricing = () => {
                   <div className="text-center mb-8">
                     <h3 className="text-3xl font-bold mb-2">Website Security</h3>
                     <p className="text-muted-foreground">Protect your website and users</p>
+                    <div className="mt-4 p-3 glass rounded-lg">
+                      <p className="text-sm text-muted-foreground italic">
+                        * Security packages are only available when building your website with us
+                      </p>
+                    </div>
                   </div>
 
                   <div className="space-y-4">
