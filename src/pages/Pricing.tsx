@@ -7,6 +7,20 @@ import { Link } from "react-router-dom";
 const Pricing = () => {
   const packages = [
     {
+      name: "Simple Apps",
+      price: "₦100,000",
+      description: "Basic apps with limited features and simple design",
+      features: [
+        "One Main Function",
+        "Calculator Apps",
+        "Flashlight Apps",
+        "Note-taking Apps",
+        "Quote or Recipe Apps",
+        "Basic UI Design",
+        "1 Month Support",
+      ],
+    },
+    {
       name: "Starter",
       price: "₦150,000",
       description: "Perfect for small businesses and startups",
@@ -66,7 +80,7 @@ const Pricing = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {packages.map((pkg, index) => (
               <div
                 key={index}
