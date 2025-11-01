@@ -32,6 +32,9 @@ export default function Portfolio() {
   const { user } = useAuth();
   const { isAdmin } = useUserRole(user?.id);
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxItem, setLightboxItem] = useState<PortfolioItem | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -120,6 +123,12 @@ export default function Portfolio() {
       category: 'website',
       featured: false,
     });
+  };
+
+  const openLightbox = (item: PortfolioItem, imageIndex: number = 0) => {
+    setLightboxItem(item);
+    setLightboxIndex(imageIndex);
+    setLightboxOpen(true);
   };
 
   const handleDelete = async (id: string, imageUrls: string[]) => {
@@ -584,22 +593,24 @@ export default function Portfolio() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPortfolio.map((item) => (
                 <Card key={item.id} className="glass glass-hover overflow-hidden group">
-                  <div className="relative aspect-video overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden cursor-pointer" onClick={() => openLightbox(item, 0)}>
                     {item.image_urls.length === 1 ? (
                       <img
                         src={item.image_urls[0]}
                         alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        loading="lazy"
                       />
                     ) : (
-                      <Carousel className="w-full h-full">
+                      <Carousel className="w-full h-full" onClick={(e) => e.stopPropagation()}>
                         <CarouselContent>
                           {item.image_urls.map((url, idx) => (
-                            <CarouselItem key={idx}>
+                            <CarouselItem key={idx} onClick={() => openLightbox(item, idx)}>
                               <img
                                 src={url}
                                 alt={`${item.title} - Image ${idx + 1}`}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                               />
                             </CarouselItem>
                           ))}
@@ -673,6 +684,49 @@ export default function Portfolio() {
           )}
         </div>
       </main>
+
+      {/* Lightbox Modal */}
+      {lightboxItem && (
+        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+          <DialogContent className="max-w-6xl max-h-[95vh] p-0">
+            <div className="relative w-full h-full">
+              {lightboxItem.image_urls.length === 1 ? (
+                <div className="flex items-center justify-center p-4 bg-black/90">
+                  <img
+                    src={lightboxItem.image_urls[0]}
+                    alt={lightboxItem.title}
+                    className="max-w-full max-h-[85vh] object-contain"
+                  />
+                </div>
+              ) : (
+                <Carousel className="w-full" opts={{ startIndex: lightboxIndex }}>
+                  <CarouselContent>
+                    {lightboxItem.image_urls.map((url, idx) => (
+                      <CarouselItem key={idx}>
+                        <div className="flex items-center justify-center p-4 bg-black/90">
+                          <img
+                            src={url}
+                            alt={`${lightboxItem.title} - Image ${idx + 1}`}
+                            className="max-w-full max-h-[85vh] object-contain"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-4" />
+                  <CarouselNext className="right-4" />
+                </Carousel>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                <h3 className="text-xl font-semibold text-white mb-2">{lightboxItem.title}</h3>
+                {lightboxItem.description && (
+                  <p className="text-white/80 text-sm">{lightboxItem.description}</p>
+                )}
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <Footer />
     </div>
