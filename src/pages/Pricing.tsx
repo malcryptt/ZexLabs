@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Smartphone, Globe, ShoppingCart, Paintbrush, Wrench, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -302,12 +302,30 @@ const Pricing = () => {
 
           <Tabs defaultValue="mobile" className="w-full">
             <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 sm:grid-cols-6 mb-8 sm:mb-12 gap-1">
-              <TabsTrigger value="mobile" className="text-xs sm:text-sm">Mobile Apps</TabsTrigger>
-              <TabsTrigger value="website" className="text-xs sm:text-sm">Websites</TabsTrigger>
-              <TabsTrigger value="ecommerce" className="text-xs sm:text-sm">E-commerce</TabsTrigger>
-              <TabsTrigger value="redesign" className="text-xs sm:text-sm">Redesign</TabsTrigger>
-              <TabsTrigger value="maintenance" className="text-xs sm:text-sm">Maintenance</TabsTrigger>
-              <TabsTrigger value="others" className="text-xs sm:text-sm">Others</TabsTrigger>
+              <TabsTrigger value="mobile" className="flex items-center justify-center gap-2">
+                <Smartphone className="h-4 w-4" />
+                <span className="hidden sm:inline">Mobile Apps</span>
+              </TabsTrigger>
+              <TabsTrigger value="website" className="flex items-center justify-center gap-2">
+                <Globe className="h-4 w-4" />
+                <span className="hidden sm:inline">Websites</span>
+              </TabsTrigger>
+              <TabsTrigger value="ecommerce" className="flex items-center justify-center gap-2">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="hidden sm:inline">E-commerce</span>
+              </TabsTrigger>
+              <TabsTrigger value="redesign" className="flex items-center justify-center gap-2">
+                <Paintbrush className="h-4 w-4" />
+                <span className="hidden sm:inline">Redesign</span>
+              </TabsTrigger>
+              <TabsTrigger value="maintenance" className="flex items-center justify-center gap-2">
+                <Wrench className="h-4 w-4" />
+                <span className="hidden sm:inline">Maintenance</span>
+              </TabsTrigger>
+              <TabsTrigger value="others" className="flex items-center justify-center gap-2">
+                <MoreHorizontal className="h-4 w-4" />
+                <span className="hidden sm:inline">Others</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="mobile" className="animate-fade-in">
