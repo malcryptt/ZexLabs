@@ -21,6 +21,7 @@ interface PackageItem {
   selected: boolean;
   priceOption: 'preset' | 'custom';
   customDescription?: string;
+  years?: number;
 }
 
 interface PackagePresets {
@@ -178,6 +179,12 @@ export default function Dashboard() {
     setPackages(newPackages);
   };
 
+  const handleYearsChange = (index: number, years: number) => {
+    const newPackages = [...packages];
+    newPackages[index].years = years;
+    setPackages(newPackages);
+  };
+
   const calculateTotalAmount = () => {
     return packages
       .filter(pkg => pkg.selected)
@@ -200,10 +207,19 @@ export default function Dashboard() {
       const selectedPackages = packages
         .filter(pkg => pkg.selected)
         .map(pkg => {
+          let packageString = '';
           if (pkg.priceOption === 'custom' && pkg.customDescription) {
-            return `${pkg.name} - ${pkg.customDescription} (₦${pkg.price.toLocaleString()})`;
+            packageString = `${pkg.name} - ${pkg.customDescription}`;
+          } else {
+            packageString = pkg.name;
           }
-          return `${pkg.name} (₦${pkg.price.toLocaleString()})`;
+          
+          // Add years for Domain and Cyber Security packages
+          if ((pkg.name === 'Domain' || pkg.name === 'Cyber Security') && pkg.years) {
+            packageString += ` (${pkg.years} year${pkg.years > 1 ? 's' : ''})`;
+          }
+          
+          return `${packageString} (₦${pkg.price.toLocaleString()})`;
         });
 
       if (selectedPackages.length === 0) {
@@ -437,6 +453,26 @@ export default function Dashboard() {
                                         />
                                       </div>
                                     </div>
+                                  </div>
+                                )}
+
+                                {/* Years Selection for Domain and Cyber Security */}
+                                {(pkg.name === 'Domain' || pkg.name === 'Cyber Security') && (
+                                  <div>
+                                    <Label className="text-xs text-muted-foreground">Subscription Duration (Years)</Label>
+                                    <select
+                                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mt-1"
+                                      value={pkg.years || ''}
+                                      onChange={(e) => handleYearsChange(index, parseInt(e.target.value))}
+                                      required
+                                    >
+                                      <option value="">Select years...</option>
+                                      <option value="1">1 Year</option>
+                                      <option value="2">2 Years</option>
+                                      <option value="3">3 Years</option>
+                                      <option value="4">4 Years</option>
+                                      <option value="5">5 Years</option>
+                                    </select>
                                   </div>
                                 )}
 
