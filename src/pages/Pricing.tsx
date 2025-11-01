@@ -1,11 +1,34 @@
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Pricing = () => {
+  const [selectedDomain, setSelectedDomain] = useState("");
+
+  const domainPricing = [
+    { extension: ".com", price: "₦30,000" },
+    { extension: ".net", price: "₦25,000" },
+    { extension: ".org", price: "₦25,000" },
+    { extension: ".info", price: "₦25,000" },
+    { extension: ".biz", price: "₦22,000" },
+    { extension: ".online/.site/.store", price: "₦30,000" },
+    { extension: ".ng", price: "₦25,000" },
+    { extension: ".com.ng", price: "₦20,000" },
+    { extension: ".org.ng", price: "₦20,000" },
+    { extension: ".edu.ng", price: "₦20,000" },
+    { extension: "Premium Domains", price: "up to ₦100,000" },
+    { extension: ".tech", price: "₦70,000" },
+    { extension: ".app", price: "₦40,000" },
+    { extension: ".ai", price: "₦250,000" },
+    { extension: ".me", price: "₦40,000" },
+    { extension: ".xyz", price: "₦25,000" },
+  ];
+
   const pricingCategories = {
     mobile: [
       {
@@ -277,12 +300,13 @@ const Pricing = () => {
           </div>
 
           <Tabs defaultValue="mobile" className="w-full">
-            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-5 mb-12">
+            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-6 mb-12">
               <TabsTrigger value="mobile">Mobile Apps</TabsTrigger>
               <TabsTrigger value="website">Websites</TabsTrigger>
               <TabsTrigger value="ecommerce">E-commerce</TabsTrigger>
               <TabsTrigger value="redesign">Redesign</TabsTrigger>
               <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+              <TabsTrigger value="others">Others</TabsTrigger>
             </TabsList>
 
             <TabsContent value="mobile" className="animate-fade-in">
@@ -303,6 +327,50 @@ const Pricing = () => {
 
             <TabsContent value="maintenance" className="animate-fade-in">
               {renderPackages(pricingCategories.maintenance, "Let's Fix It")}
+            </TabsContent>
+
+            <TabsContent value="others" className="animate-fade-in">
+              <div className="max-w-2xl mx-auto">
+                <div className="glass glass-hover rounded-lg p-8">
+                  <div className="text-center mb-8">
+                    <h3 className="text-3xl font-bold mb-2">Domain</h3>
+                    <p className="text-muted-foreground">Choose your domain extension</p>
+                  </div>
+
+                  <div className="space-y-6">
+                    <Select value={selectedDomain} onValueChange={setSelectedDomain}>
+                      <SelectTrigger className="w-full h-14 text-lg">
+                        <SelectValue placeholder="Select domain extension" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background">
+                        {domainPricing.map((domain, index) => (
+                          <SelectItem key={index} value={domain.extension}>
+                            <div className="flex justify-between items-center w-full gap-4">
+                              <span className="font-medium">{domain.extension}</span>
+                              <span className="text-accent font-bold">{domain.price}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {selectedDomain && (
+                      <div className="text-center p-6 glass rounded-lg animate-fade-in">
+                        <p className="text-sm text-muted-foreground mb-2">Selected Domain</p>
+                        <p className="text-2xl font-bold gradient-text">
+                          {domainPricing.find(d => d.extension === selectedDomain)?.price}
+                        </p>
+                      </div>
+                    )}
+
+                    <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
+                      <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
+                        Get Domain
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
 
