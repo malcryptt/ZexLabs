@@ -20,6 +20,7 @@ interface PackageItem {
   price: number;
   selected: boolean;
   priceOption: 'preset' | 'custom';
+  customDescription?: string;
 }
 
 interface PackagePresets {
@@ -171,6 +172,12 @@ export default function Dashboard() {
     setPackages(newPackages);
   };
 
+  const handleCustomDescriptionChange = (index: number, description: string) => {
+    const newPackages = [...packages];
+    newPackages[index].customDescription = description;
+    setPackages(newPackages);
+  };
+
   const calculateTotalAmount = () => {
     return packages
       .filter(pkg => pkg.selected)
@@ -192,7 +199,12 @@ export default function Dashboard() {
     try {
       const selectedPackages = packages
         .filter(pkg => pkg.selected)
-        .map(pkg => `${pkg.name} (₦${pkg.price.toLocaleString()})`);
+        .map(pkg => {
+          if (pkg.priceOption === 'custom' && pkg.customDescription) {
+            return `${pkg.name} - ${pkg.customDescription} (₦${pkg.price.toLocaleString()})`;
+          }
+          return `${pkg.name} (₦${pkg.price.toLocaleString()})`;
+        });
 
       if (selectedPackages.length === 0) {
         toast({
@@ -399,18 +411,31 @@ export default function Dashboard() {
 
                                 {/* Custom Price Input */}
                                 {pkg.priceOption === 'custom' && (
-                                  <div>
-                                    <Label className="text-xs text-muted-foreground">Enter Negotiated Price</Label>
-                                    <div className="flex items-center gap-2 mt-1">
-                                      <span className="text-sm font-medium">₦</span>
+                                  <div className="space-y-3">
+                                    <div>
+                                      <Label className="text-xs text-muted-foreground">Package Description</Label>
                                       <Input
-                                        type="number"
-                                        placeholder="Enter custom price"
-                                        className="flex-1"
-                                        value={pkg.price || ''}
-                                        onChange={(e) => handlePackagePriceChange(index, e.target.value)}
+                                        type="text"
+                                        placeholder="e.g., Custom E-commerce with Payment Gateway"
+                                        className="mt-1"
+                                        value={pkg.customDescription || ''}
+                                        onChange={(e) => handleCustomDescriptionChange(index, e.target.value)}
                                         required
                                       />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs text-muted-foreground">Negotiated Price</Label>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-sm font-medium">₦</span>
+                                        <Input
+                                          type="number"
+                                          placeholder="Enter custom price"
+                                          className="flex-1"
+                                          value={pkg.price || ''}
+                                          onChange={(e) => handlePackagePriceChange(index, e.target.value)}
+                                          required
+                                        />
+                                      </div>
                                     </div>
                                   </div>
                                 )}
