@@ -174,7 +174,7 @@ const Pricing = () => {
     maintenance: [
       {
         name: "Basic Plan",
-        price: "₦30,000/month",
+        price: "₦11,000/month",
         description: "Essential maintenance and updates",
         features: [
           "Security Updates",
@@ -186,24 +186,36 @@ const Pricing = () => {
         ],
       },
       {
-        name: "Premium Plan",
-        price: "₦60,000/month",
-        description: "Comprehensive maintenance and support",
+        name: "Regular Plan",
+        price: "₦55,000 bi-annually",
+        description: "Regular maintenance and support",
         features: [
           "Everything in Basic",
-          "Weekly Backups",
+          "Bi-annual Reviews",
           "Priority Support",
           "Feature Updates",
           "Advanced Analytics",
+          "Performance Optimization",
+        ],
+      },
+      {
+        name: "Premium Plan",
+        price: "₦125,000/yearly",
+        description: "Comprehensive yearly maintenance and support",
+        features: [
+          "Everything in Regular",
+          "Annual Strategy Review",
           "24/7 Monitoring",
           "Dedicated Manager",
+          "Custom Integrations",
+          "Priority Development",
         ],
         featured: true,
       },
     ],
   };
 
-  const renderPackages = (packages: any[]) => (
+  const renderPackages = (packages: any[], buttonText: string = "Let's Build It") => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
       {packages.map((pkg, index) => (
         <div
@@ -241,7 +253,7 @@ const Pricing = () => {
                   : "glass glass-hover"
               }`}
             >
-              Let's Build It
+              {buttonText}
             </Button>
           </a>
         </div>
@@ -290,7 +302,7 @@ const Pricing = () => {
             </TabsContent>
 
             <TabsContent value="maintenance" className="animate-fade-in">
-              {renderPackages(pricingCategories.maintenance)}
+              {renderPackages(pricingCategories.maintenance, "Let's Fix It")}
             </TabsContent>
           </Tabs>
 
