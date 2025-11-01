@@ -269,7 +269,7 @@ const Pricing = () => {
             ))}
           </ul>
 
-          <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
+          <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
             <Button
               className={`w-full ${
                 pkg.featured
@@ -409,7 +409,7 @@ const Pricing = () => {
                       </div>
                     )}
 
-                    <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
                       <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
                         Get Domain
                       </Button>
@@ -455,7 +455,7 @@ const Pricing = () => {
                       <span className="text-accent font-bold">₦35,000</span>
                     </div>
 
-                    <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
                       <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow mt-6">
                         Get Security Package
                       </Button>

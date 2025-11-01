@@ -39,7 +39,7 @@ const Contact = () => {
       // Create WhatsApp message with form data
       const message = `Hello! I'm interested in your services.\n\nName: ${formData.name}\nEmail: ${formData.email}\nProject Type: ${formData.projectType}\nBudget: ${formData.budget}\n\nMessage:\n${formData.message}`;
       
-      const whatsappUrl = `https://wa.me/2349131744823?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/2349164703407?text=${encodeURIComponent(message)}`;
       
       // Open WhatsApp in new tab
       window.open(whatsappUrl, '_blank');
@@ -97,10 +97,10 @@ const Contact = () => {
                 Speak with our team directly
               </p>
               <a
-                href="tel:+2349131744823"
+                href="tel:+2349164703407"
                 className="text-accent hover:underline font-medium"
               >
-                +234 913 174 4823
+                +234 916 470 3407
               </a>
             </div>
 
@@ -113,7 +113,7 @@ const Contact = () => {
                 Quick responses via WhatsApp
               </p>
               <a
-                href="https://wa.me/2349131744823"
+                href="https://wa.me/2349164703407"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-accent hover:underline font-medium"
@@ -240,11 +240,11 @@ const Contact = () => {
                   @devluxe.agency
                 </a>
                 <a
-                  href="mailto:aiflowsolutions100@gmail.com"
+                  href="mailto:mal4crypt404@gmail.com"
                   className="flex items-center gap-2 text-accent hover:underline"
                 >
                   <Mail size={20} />
-                  aiflowsolutions100@gmail.com
+                  mal4crypt404@gmail.com
                 </a>
               </div>
             </div>
