@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { DollarSign, Award, Headphones, Zap, Target } from "lucide-react";
 
 const About = () => {
   return (
@@ -49,6 +50,62 @@ const About = () => {
                 forefront of web technology while maintaining a human-centered approach to design.
               </p>
             </div>
+
+            <div className="glass glass-hover rounded-lg p-8 animate-fade-in">
+              <h2 className="text-3xl font-bold mb-8 text-center gradient-text">Why Choose Us</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
+                    <DollarSign className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Flexible Prices</h3>
+                  <p className="text-muted-foreground">
+                    Customizable packages that fit your budget without compromising quality
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
+                    <Award className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Professional Level Results</h3>
+                  <p className="text-muted-foreground">
+                    High-quality deliverables that meet industry standards and exceed expectations
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
+                    <Headphones className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Top-Notch Customer Service</h3>
+                  <p className="text-muted-foreground">
+                    Dedicated support team ready to assist you every step of the way
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
+                    <Zap className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Fast Response</h3>
+                  <p className="text-muted-foreground">
+                    Quick turnaround times and prompt communication to keep your project moving
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
+                    <Target className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Purpose-Driven Services</h3>
+                  <p className="text-muted-foreground">
+                    Solutions tailored to your specific goals and designed to drive real results
+                  </p>
+                </div>
+              </div>
+            </div>
+
 
             <div className="text-center mt-12">
               <p className="text-2xl font-semibold mb-4">Ready to start your project?</p>
