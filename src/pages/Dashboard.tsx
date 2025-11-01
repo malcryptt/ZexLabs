@@ -11,8 +11,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Plus } from 'lucide-react';
+import { Plus, Upload, X } from 'lucide-react';
+
+interface PackageItem {
+  name: string;
+  price: number;
+  selected: boolean;
+}
 
 interface Transaction {
   id: string;
@@ -35,19 +42,25 @@ export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const [packages, setPackages] = useState<PackageItem[]>([
+    { name: 'Mobile Development', price: 0, selected: false },
+    { name: 'E-commerce', price: 0, selected: false },
+    { name: 'Web Development', price: 0, selected: false },
+    { name: 'Redesign', price: 0, selected: false },
+    { name: 'Maintenance', price: 0, selected: false },
+  ]);
 
   const [formData, setFormData] = useState({
     sender_name: '',
     sender_email: '',
     phone_number: '',
-    amount: '',
-    packages_bought: '',
     payment_reference: '',
     payment_status: 'pending',
     payment_method: '',
-    receipt_url: ''
   });
 
   useEffect(() => {
@@ -76,6 +89,30 @@ export default function Dashboard() {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setUploadedFile(e.target.files[0]);
+    }
+  };
+
+  const handlePackageToggle = (index: number) => {
+    const newPackages = [...packages];
+    newPackages[index].selected = !newPackages[index].selected;
+    setPackages(newPackages);
+  };
+
+  const handlePackagePriceChange = (index: number, price: string) => {
+    const newPackages = [...packages];
+    newPackages[index].price = parseFloat(price) || 0;
+    setPackages(newPackages);
+  };
+
+  const calculateTotalAmount = () => {
+    return packages
+      .filter(pkg => pkg.selected)
+      .reduce((sum, pkg) => sum + pkg.price, 0);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -89,21 +126,52 @@ export default function Dashboard() {
     }
 
     try {
-      const packagesArray = formData.packages_bought
-        .split(',')
-        .map(pkg => pkg.trim())
-        .filter(Boolean);
+      const selectedPackages = packages
+        .filter(pkg => pkg.selected)
+        .map(pkg => `${pkg.name} (₦${pkg.price.toLocaleString()})`);
+
+      if (selectedPackages.length === 0) {
+        toast({
+          title: 'Validation Error',
+          description: 'Please select at least one package',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      let receiptUrl = null;
+
+      // Upload file if provided
+      if (uploadedFile) {
+        const fileExt = uploadedFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `${user?.id}/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('transaction-files')
+          .upload(filePath, uploadedFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('transaction-files')
+          .getPublicUrl(filePath);
+
+        receiptUrl = publicUrl;
+      }
+
+      const totalAmount = calculateTotalAmount();
 
       const { error } = await supabase.from('transactions').insert({
         sender_name: formData.sender_name,
         sender_email: formData.sender_email,
         phone_number: formData.phone_number || null,
-        amount: parseFloat(formData.amount),
-        packages_bought: packagesArray.length > 0 ? packagesArray : null,
+        amount: totalAmount,
+        packages_bought: selectedPackages,
         payment_reference: formData.payment_reference,
         payment_status: formData.payment_status,
         payment_method: formData.payment_method || null,
-        receipt_url: formData.receipt_url || null
+        receipt_url: receiptUrl
       });
 
       if (error) throw error;
@@ -113,17 +181,17 @@ export default function Dashboard() {
         description: 'Transaction added successfully'
       });
 
+      // Reset form
       setFormData({
         sender_name: '',
         sender_email: '',
         phone_number: '',
-        amount: '',
-        packages_bought: '',
         payment_reference: '',
         payment_status: 'pending',
         payment_method: '',
-        receipt_url: ''
       });
+      setPackages(packages.map(pkg => ({ ...pkg, selected: false, price: 0 })));
+      setUploadedFile(null);
 
       setIsDialogOpen(false);
       fetchTransactions();
@@ -193,24 +261,91 @@ export default function Dashboard() {
                           onChange={(e) => setFormData({ ...formData, sender_email: e.target.value })}
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="phone_number">Phone Number</Label>
+                      <div className="col-span-2">
+                        <Label htmlFor="phone_number">Phone Number *</Label>
                         <Input
                           id="phone_number"
+                          required
                           value={formData.phone_number}
                           onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="amount">Amount *</Label>
-                        <Input
-                          id="amount"
-                          type="number"
-                          required
-                          value={formData.amount}
-                          onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                        />
+                    </div>
+
+                    {/* Package Selection */}
+                    <div className="space-y-3">
+                      <Label className="text-base font-semibold">Package Selected *</Label>
+                      <div className="space-y-3 p-4 glass rounded-lg">
+                        {packages.map((pkg, index) => (
+                          <div key={pkg.name} className="flex items-center gap-4">
+                            <Checkbox
+                              id={`pkg-${index}`}
+                              checked={pkg.selected}
+                              onCheckedChange={() => handlePackageToggle(index)}
+                            />
+                            <Label htmlFor={`pkg-${index}`} className="flex-1 cursor-pointer">
+                              {pkg.name}
+                            </Label>
+                            {pkg.selected && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm text-muted-foreground">₦</span>
+                                <Input
+                                  type="number"
+                                  placeholder="Price"
+                                  className="w-32"
+                                  value={pkg.price || ''}
+                                  onChange={(e) => handlePackagePriceChange(index, e.target.value)}
+                                  required
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                        <div className="pt-3 border-t border-border mt-3">
+                          <div className="flex justify-between items-center text-lg font-semibold">
+                            <span>Total Amount:</span>
+                            <span className="text-accent">₦{calculateTotalAmount().toLocaleString()}</span>
+                          </div>
+                        </div>
                       </div>
+                    </div>
+
+                    {/* File Upload */}
+                    <div>
+                      <Label htmlFor="file_upload">Upload Receipt/Document</Label>
+                      <div className="mt-2">
+                        <input
+                          id="file_upload"
+                          type="file"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          accept="image/*,.pdf,.doc,.docx"
+                        />
+                        <label
+                          htmlFor="file_upload"
+                          className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors glass"
+                        >
+                          <Upload className="h-5 w-5" />
+                          <span className="text-sm">
+                            {uploadedFile ? uploadedFile.name : 'Click to upload or drag and drop'}
+                          </span>
+                        </label>
+                        {uploadedFile && (
+                          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                            <span>Selected: {uploadedFile.name}</span>
+                            <button
+                              type="button"
+                              onClick={() => setUploadedFile(null)}
+                              className="text-destructive hover:text-destructive/80"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="payment_reference">Payment Reference *</Label>
                         <Input
@@ -233,34 +368,19 @@ export default function Dashboard() {
                           <option value="failed">Failed</option>
                         </select>
                       </div>
-                      <div>
+                      <div className="col-span-2">
                         <Label htmlFor="payment_method">Payment Method</Label>
                         <Input
                           id="payment_method"
+                          placeholder="e.g., Bank Transfer, Cash, Card"
                           value={formData.payment_method}
                           onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="receipt_url">Receipt URL</Label>
-                        <Input
-                          id="receipt_url"
-                          value={formData.receipt_url}
-                          onChange={(e) => setFormData({ ...formData, receipt_url: e.target.value })}
-                        />
-                      </div>
                     </div>
-                    <div>
-                      <Label htmlFor="packages_bought">Packages Bought (comma-separated)</Label>
-                      <Input
-                        id="packages_bought"
-                        placeholder="e.g., Basic Website, E-commerce, SEO"
-                        value={formData.packages_bought}
-                        onChange={(e) => setFormData({ ...formData, packages_bought: e.target.value })}
-                      />
-                    </div>
+                    
                     <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary-glow">
-                      Add Transaction
+                      Save Transaction
                     </Button>
                   </form>
                 </DialogContent>
