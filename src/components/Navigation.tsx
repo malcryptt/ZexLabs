@@ -1,11 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navigation = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    setIsMenuOpen(false);
+  };
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -37,11 +44,26 @@ const Navigation = () => {
                 {link.label}
               </Link>
             ))}
-            <Link to="/auth">
-              <Button variant="default" size="sm" className="bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
-                Sign In
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <Link to="/dashboard">
+                  <Button variant="outline" size="sm">
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link to="/auth">
+                <Button variant="default" size="sm" className="bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -68,11 +90,26 @@ const Navigation = () => {
                 {link.label}
               </Link>
             ))}
-            <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-              <Button variant="default" size="sm" className="w-full bg-gradient-to-r from-primary to-primary-glow">
-                Sign In
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" size="sm" className="w-full">
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button variant="outline" size="sm" className="w-full" onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="default" size="sm" className="w-full bg-gradient-to-r from-primary to-primary-glow">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         )}
       </div>
