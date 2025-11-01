@@ -109,20 +109,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Block */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center glass glass-hover rounded-lg p-12">
-          <h2 className="text-4xl font-bold mb-6">
-            Turn your ideas into a <span className="gradient-text">digital experience</span>
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">Let's start your project today</p>
-          <Link to="/contact">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
-              Book Free Consultation
-            </Button>
-          </Link>
-        </div>
-      </section>
 
       <Footer />
     </div>
