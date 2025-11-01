@@ -298,7 +298,7 @@ const Pricing = () => {
             </TabsContent>
 
             <TabsContent value="redesign" className="animate-fade-in">
-              {renderPackages(pricingCategories.redesign)}
+              {renderPackages(pricingCategories.redesign, "Let's Fix It")}
             </TabsContent>
 
             <TabsContent value="maintenance" className="animate-fade-in">
