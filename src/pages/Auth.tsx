@@ -8,15 +8,23 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
-const authSchema = z.object({
+const emailAuthSchema = z.object({
   email: z.string().trim().email("Invalid email address").max(255),
   password: z.string().min(6, "Password must be at least 6 characters"),
   fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100).optional(),
 });
 
+const phoneAuthSchema = z.object({
+  phone: z.string().trim().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format (use E.164 format, e.g., +1234567890)"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100).optional(),
+});
+
 const Auth = () => {
+  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,11 +43,18 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const validation = authSchema.safeParse({ 
-        email, 
-        password,
-        fullName: isSignUp ? fullName : undefined
-      });
+      // Validate based on auth method
+      const validation = authMethod === 'email' 
+        ? emailAuthSchema.safeParse({ 
+            email, 
+            password,
+            fullName: isSignUp ? fullName : undefined
+          })
+        : phoneAuthSchema.safeParse({ 
+            phone, 
+            password,
+            fullName: isSignUp ? fullName : undefined
+          });
       
       if (!validation.success) {
         toast({
@@ -54,55 +69,120 @@ const Auth = () => {
       if (isSignUp) {
         const redirectUrl = `${window.location.origin}/dashboard`;
         
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: redirectUrl,
-            data: {
-              full_name: fullName
+        if (authMethod === 'email') {
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: redirectUrl,
+              data: {
+                full_name: fullName
+              }
             }
-          }
-        });
+          });
 
-        if (error) {
-          if (error.message.includes('already registered')) {
-            toast({
-              title: "Account exists",
-              description: "This email is already registered. Please sign in instead.",
-              variant: "destructive",
-            });
-            setIsSignUp(false);
-          } else {
-            throw error;
+          if (error) {
+            if (error.message.includes('already registered')) {
+              toast({
+                title: "Account exists",
+                description: "This email is already registered. Please sign in instead.",
+                variant: "destructive",
+              });
+              setIsSignUp(false);
+            } else {
+              throw error;
+            }
+            setLoading(false);
+            return;
           }
-          setLoading(false);
-          return;
+        } else {
+          // Phone signup
+          const { error } = await supabase.auth.signUp({
+            phone,
+            password,
+            options: {
+              data: {
+                full_name: fullName
+              }
+            }
+          });
+
+          if (error) {
+            if (error.message.includes('already registered')) {
+              toast({
+                title: "Account exists",
+                description: "This phone number is already registered. Please sign in instead.",
+                variant: "destructive",
+              });
+              setIsSignUp(false);
+            } else if (error.message.includes('SMS provider')) {
+              toast({
+                title: "Phone Authentication Not Configured",
+                description: "Phone authentication requires SMS provider setup. Please use email authentication or contact support.",
+                variant: "destructive",
+              });
+            } else {
+              throw error;
+            }
+            setLoading(false);
+            return;
+          }
         }
 
         toast({
           title: "Account created!",
-          description: "You can now sign in with your credentials.",
+          description: authMethod === 'email' 
+            ? "You can now sign in with your credentials." 
+            : "Verification code sent. You can now sign in with your credentials.",
         });
         setIsSignUp(false);
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        // Sign in
+        if (authMethod === 'email') {
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
-        if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast({
-              title: "Invalid credentials",
-              description: "The email or password you entered is incorrect.",
-              variant: "destructive",
-            });
-          } else {
-            throw error;
+          if (error) {
+            if (error.message.includes('Invalid login credentials')) {
+              toast({
+                title: "Invalid credentials",
+                description: "The email or password you entered is incorrect.",
+                variant: "destructive",
+              });
+            } else {
+              throw error;
+            }
+            setLoading(false);
+            return;
           }
-          setLoading(false);
-          return;
+        } else {
+          // Phone sign in
+          const { error } = await supabase.auth.signInWithPassword({
+            phone,
+            password,
+          });
+
+          if (error) {
+            if (error.message.includes('Invalid login credentials')) {
+              toast({
+                title: "Invalid credentials",
+                description: "The phone number or password you entered is incorrect.",
+                variant: "destructive",
+              });
+            } else if (error.message.includes('SMS provider')) {
+              toast({
+                title: "Phone Authentication Not Configured",
+                description: "Phone authentication requires SMS provider setup. Please use email authentication or contact support.",
+                variant: "destructive",
+              });
+            } else {
+              throw error;
+            }
+            setLoading(false);
+            return;
+          }
         }
 
         toast({
@@ -141,6 +221,32 @@ const Auth = () => {
         </div>
 
         <form onSubmit={handleAuth} className="space-y-4">
+          {/* Auth Method Toggle */}
+          <div className="flex gap-2 p-1 glass rounded-lg">
+            <button
+              type="button"
+              onClick={() => setAuthMethod('email')}
+              className={`flex-1 py-2 px-4 rounded-md transition-all ${
+                authMethod === 'email' 
+                  ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Email
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthMethod('phone')}
+              className={`flex-1 py-2 px-4 rounded-md transition-all ${
+                authMethod === 'phone' 
+                  ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Phone
+            </button>
+          </div>
+
           {isSignUp && (
             <div>
               <Label htmlFor="fullName">Full Name</Label>
@@ -156,18 +262,36 @@ const Auth = () => {
             </div>
           )}
           
-          <div>
-            <Label htmlFor="email">Email address</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              className="mt-1 glass"
-            />
-          </div>
+          {authMethod === 'email' ? (
+            <div>
+              <Label htmlFor="email">Email address</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                className="mt-1 glass"
+              />
+            </div>
+          ) : (
+            <div>
+              <Label htmlFor="phone">Phone number</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+1234567890"
+                required
+                className="mt-1 glass"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Use E.164 format (e.g., +1234567890)
+              </p>
+            </div>
+          )}
 
           <div>
             <Label htmlFor="password">Password</Label>
