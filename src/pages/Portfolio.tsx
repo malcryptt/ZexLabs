@@ -279,7 +279,7 @@ export default function Portfolio() {
                       <Label htmlFor="project_url">Project URL</Label>
                       <Input
                         id="project_url"
-                        type="url"
+                        type="text"
                         placeholder="https://example.com"
                         value={formData.project_url}
                         onChange={(e) => setFormData({ ...formData, project_url: e.target.value })}
