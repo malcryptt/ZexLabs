@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Upload, X, ExternalLink, Trash2 } from 'lucide-react';
+import { Plus, Upload, X, ExternalLink, Trash2, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
@@ -35,6 +35,8 @@ export default function Portfolio() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -83,6 +85,39 @@ export default function Portfolio() {
     setUploadedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
+  const removeExistingImage = (url: string) => {
+    setExistingImages(prev => prev.filter(img => img !== url));
+  };
+
+  const handleEdit = (item: PortfolioItem) => {
+    setEditingItem(item);
+    setExistingImages(item.image_urls);
+    setFormData({
+      title: item.title,
+      description: item.description || '',
+      project_url: item.project_url || '',
+      technologies: item.technologies?.join(', ') || '',
+      category: item.category,
+      featured: item.featured,
+    });
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setEditingItem(null);
+    setExistingImages([]);
+    setUploadedFiles([]);
+    setFormData({
+      title: '',
+      description: '',
+      project_url: '',
+      technologies: '',
+      category: 'website',
+      featured: false,
+    });
+  };
+
   const handleDelete = async (id: string, imageUrls: string[]) => {
     if (!confirm('Are you sure you want to delete this portfolio item?')) return;
 
@@ -119,13 +154,14 @@ export default function Portfolio() {
     if (!isAdmin) {
       toast({
         title: 'Unauthorized',
-        description: 'Only admins can add portfolio items',
+        description: 'Only admins can manage portfolio items',
         variant: 'destructive'
       });
       return;
     }
 
-    if (uploadedFiles.length === 0) {
+    // For new items, require at least one image
+    if (!editingItem && uploadedFiles.length === 0) {
       toast({
         title: 'Validation Error',
         description: 'Please upload at least one image',
@@ -134,60 +170,96 @@ export default function Portfolio() {
       return;
     }
 
-    try {
-      // Upload all images
-      const uploadPromises = uploadedFiles.map(async (file) => {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('portfolio-images')
-          .upload(fileName, file);
-
-        if (uploadError) throw uploadError;
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('portfolio-images')
-          .getPublicUrl(fileName);
-
-        return publicUrl;
+    // For editing, require at least one image (existing or new)
+    if (editingItem && existingImages.length === 0 && uploadedFiles.length === 0) {
+      toast({
+        title: 'Validation Error',
+        description: 'Please keep or upload at least one image',
+        variant: 'destructive'
       });
+      return;
+    }
 
-      const imageUrls = await Promise.all(uploadPromises);
+    try {
+      let finalImageUrls = [...existingImages];
 
-      // Insert into database
+      // Upload new images if any
+      if (uploadedFiles.length > 0) {
+        const uploadPromises = uploadedFiles.map(async (file) => {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from('portfolio-images')
+            .upload(fileName, file);
+
+          if (uploadError) throw uploadError;
+
+          const { data: { publicUrl } } = supabase.storage
+            .from('portfolio-images')
+            .getPublicUrl(fileName);
+
+          return publicUrl;
+        });
+
+        const newImageUrls = await Promise.all(uploadPromises);
+        finalImageUrls = [...finalImageUrls, ...newImageUrls];
+      }
+
       const technologies = formData.technologies
         ? formData.technologies.split(',').map(t => t.trim())
         : null;
 
-      const { error } = await supabase.from('portfolio').insert({
-        title: formData.title,
-        description: formData.description || null,
-        image_urls: imageUrls,
-        project_url: formData.project_url || null,
-        technologies,
-        category: formData.category,
-        featured: formData.featured
-      });
+      if (editingItem) {
+        // Delete removed images from storage
+        const removedImages = editingItem.image_urls.filter(url => !existingImages.includes(url));
+        if (removedImages.length > 0) {
+          const imagePaths = removedImages.map(url => url.split('/').pop()).filter(Boolean) as string[];
+          await supabase.storage.from('portfolio-images').remove(imagePaths);
+        }
 
-      if (error) throw error;
+        // Update existing item
+        const { error } = await supabase
+          .from('portfolio')
+          .update({
+            title: formData.title,
+            description: formData.description || null,
+            image_urls: finalImageUrls,
+            project_url: formData.project_url || null,
+            technologies,
+            category: formData.category,
+            featured: formData.featured,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', editingItem.id);
 
-      toast({
-        title: 'Success',
-        description: 'Portfolio item added successfully'
-      });
+        if (error) throw error;
 
-      // Reset form
-      setFormData({
-        title: '',
-        description: '',
-        project_url: '',
-        technologies: '',
-        category: 'website',
-        featured: false,
-      });
-      setUploadedFiles([]);
-      setIsDialogOpen(false);
+        toast({
+          title: 'Success',
+          description: 'Portfolio item updated successfully'
+        });
+      } else {
+        // Insert new item
+        const { error } = await supabase.from('portfolio').insert({
+          title: formData.title,
+          description: formData.description || null,
+          image_urls: finalImageUrls,
+          project_url: formData.project_url || null,
+          technologies,
+          category: formData.category,
+          featured: formData.featured
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: 'Success',
+          description: 'Portfolio item added successfully'
+        });
+      }
+
+      handleCloseDialog();
       fetchPortfolio();
     } catch (error: any) {
       toast({
@@ -227,7 +299,10 @@ export default function Portfolio() {
 
           {isAdmin && (
             <div className="flex justify-end mb-8">
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <Dialog open={isDialogOpen} onOpenChange={(open) => {
+                if (!open) handleCloseDialog();
+                else setIsDialogOpen(true);
+              }}>
                 <DialogTrigger asChild>
                   <Button className="bg-gradient-to-r from-primary to-primary-glow">
                     <Plus className="mr-2 h-4 w-4" />
@@ -236,7 +311,7 @@ export default function Portfolio() {
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>Add New Portfolio Item</DialogTitle>
+                    <DialogTitle>{editingItem ? 'Edit Portfolio Item' : 'Add New Portfolio Item'}</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -308,8 +383,35 @@ export default function Portfolio() {
                     </div>
 
                     <div>
-                      <Label htmlFor="file_upload">Upload Images * (Multiple allowed)</Label>
+                      <Label htmlFor="file_upload">
+                        {editingItem ? 'Project Images' : 'Upload Images * (Multiple allowed)'}
+                      </Label>
                       <div className="mt-2">
+                        {/* Show existing images if editing */}
+                        {editingItem && existingImages.length > 0 && (
+                          <div className="mb-3 space-y-2">
+                            <p className="text-sm text-muted-foreground">Existing Images:</p>
+                            <div className="grid grid-cols-2 gap-2">
+                              {existingImages.map((url, idx) => (
+                                <div key={idx} className="relative group">
+                                  <img 
+                                    src={url} 
+                                    alt={`Existing ${idx + 1}`} 
+                                    className="w-full h-24 object-cover rounded border"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => removeExistingImage(url)}
+                                    className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
                         <input
                           id="file_upload"
                           type="file"
@@ -317,7 +419,7 @@ export default function Portfolio() {
                           className="hidden"
                           accept="image/*"
                           multiple
-                          required
+                          required={!editingItem && uploadedFiles.length === 0}
                         />
                         <label
                           htmlFor="file_upload"
@@ -325,7 +427,11 @@ export default function Portfolio() {
                         >
                           <Upload className="h-5 w-5" />
                           <span className="text-sm">
-                            {uploadedFiles.length > 0 ? `${uploadedFiles.length} file(s) selected` : 'Click to upload project images'}
+                            {uploadedFiles.length > 0 
+                              ? `${uploadedFiles.length} new file(s) selected` 
+                              : editingItem 
+                                ? 'Click to upload additional images'
+                                : 'Click to upload project images'}
                           </span>
                         </label>
                         {uploadedFiles.length > 0 && (
@@ -348,7 +454,7 @@ export default function Portfolio() {
                     </div>
 
                     <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary-glow">
-                      Add to Portfolio
+                      {editingItem ? 'Update Portfolio Item' : 'Add to Portfolio'}
                     </Button>
                   </form>
                 </DialogContent>
@@ -441,13 +547,22 @@ export default function Portfolio() {
                         </a>
                       )}
                       {isAdmin && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleDelete(item.id, item.image_urls)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEdit(item)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDelete(item.id, item.image_urls)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </>
                       )}
                     </div>
                   </CardContent>
