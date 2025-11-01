@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Instagram, Mail } from "lucide-react";
+import { Instagram, Mail, Phone, MessageCircle, Clock } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { z } from "zod";
@@ -84,6 +84,56 @@ const Contact = () => {
             <p className="text-xl text-muted-foreground">
               Ready to bring your vision to life? Get in touch with us today
             </p>
+          </div>
+
+          {/* Customer Support Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div className="glass glass-hover rounded-lg p-6 text-center">
+              <div className="flex justify-center mb-4">
+                <Phone className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Phone Support</h3>
+              <p className="text-muted-foreground mb-3">
+                Speak with our team directly
+              </p>
+              <a
+                href="tel:+2349131744823"
+                className="text-accent hover:underline font-medium"
+              >
+                +234 913 174 4823
+              </a>
+            </div>
+
+            <div className="glass glass-hover rounded-lg p-6 text-center">
+              <div className="flex justify-center mb-4">
+                <MessageCircle className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">WhatsApp Chat</h3>
+              <p className="text-muted-foreground mb-3">
+                Quick responses via WhatsApp
+              </p>
+              <a
+                href="https://wa.me/2349131744823"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline font-medium"
+              >
+                Start Chat
+              </a>
+            </div>
+
+            <div className="glass glass-hover rounded-lg p-6 text-center">
+              <div className="flex justify-center mb-4">
+                <Clock className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Support Hours</h3>
+              <p className="text-muted-foreground mb-3">
+                We're here to help you
+              </p>
+              <p className="text-accent font-medium">
+                Mon-Fri: 9AM - 6PM WAT
+              </p>
+            </div>
           </div>
 
           <div className="glass glass-hover rounded-lg p-8">
