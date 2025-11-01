@@ -10,7 +10,7 @@ const Pricing = () => {
     mobile: [
       {
         name: "Simple Apps",
-        price: "₦100,000",
+        price: "₦250,000",
         description: "Basic apps with limited features and simple design",
         features: [
           "One Main Function",
@@ -23,7 +23,7 @@ const Pricing = () => {
       },
       {
         name: "Standard Apps",
-        price: "₦300,000",
+        price: "₦450,000",
         description: "Feature-rich apps with better design",
         features: [
           "Multiple Features",
@@ -37,7 +37,7 @@ const Pricing = () => {
       },
       {
         name: "Complex Apps",
-        price: "₦600,000+",
+        price: "₦750,000+",
         description: "Advanced apps with complex functionality",
         features: [
           "Advanced Features",
