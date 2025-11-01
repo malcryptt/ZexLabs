@@ -301,30 +301,30 @@ const Pricing = () => {
           </div>
 
           <Tabs defaultValue="mobile" className="w-full">
-            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 sm:grid-cols-6 mb-8 sm:mb-12 gap-1">
-              <TabsTrigger value="mobile" className="flex items-center justify-center gap-2">
-                <Smartphone className="h-4 w-4" />
-                <span className="hidden sm:inline">Mobile Apps</span>
+            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-6 mb-8 sm:mb-12 gap-0.5 sm:gap-1 h-auto p-1">
+              <TabsTrigger value="mobile" className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
+                <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="hidden sm:inline text-xs sm:text-sm">Mobile Apps</span>
               </TabsTrigger>
-              <TabsTrigger value="website" className="flex items-center justify-center gap-2">
-                <Globe className="h-4 w-4" />
-                <span className="hidden sm:inline">Websites</span>
+              <TabsTrigger value="website" className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
+                <Globe className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="hidden sm:inline text-xs sm:text-sm">Websites</span>
               </TabsTrigger>
-              <TabsTrigger value="ecommerce" className="flex items-center justify-center gap-2">
-                <ShoppingCart className="h-4 w-4" />
-                <span className="hidden sm:inline">E-commerce</span>
+              <TabsTrigger value="ecommerce" className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
+                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="hidden sm:inline text-xs sm:text-sm">E-commerce</span>
               </TabsTrigger>
-              <TabsTrigger value="redesign" className="flex items-center justify-center gap-2">
-                <Paintbrush className="h-4 w-4" />
-                <span className="hidden sm:inline">Redesign</span>
+              <TabsTrigger value="redesign" className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
+                <Paintbrush className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="hidden sm:inline text-xs sm:text-sm">Redesign</span>
               </TabsTrigger>
-              <TabsTrigger value="maintenance" className="flex items-center justify-center gap-2">
-                <Wrench className="h-4 w-4" />
-                <span className="hidden sm:inline">Maintenance</span>
+              <TabsTrigger value="maintenance" className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
+                <Wrench className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="hidden sm:inline text-xs sm:text-sm">Maintenance</span>
               </TabsTrigger>
-              <TabsTrigger value="others" className="flex items-center justify-center gap-2">
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="hidden sm:inline">Others</span>
+              <TabsTrigger value="others" className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
+                <MoreHorizontal className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="hidden sm:inline text-xs sm:text-sm">Others</span>
               </TabsTrigger>
             </TabsList>
 
