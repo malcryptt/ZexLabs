@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import PortfolioCard from '@/components/PortfolioCard';
+import SortablePortfolioCard from '@/components/SortablePortfolioCard';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,10 +16,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Upload, X, ExternalLink, Trash2, Pencil, Search } from 'lucide-react';
+import { Plus, Upload, X, ExternalLink, Trash2, Pencil, Search, GripVertical } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface PortfolioItem {
   id: string;
@@ -26,6 +32,7 @@ interface PortfolioItem {
   category: string;
   featured: boolean;
   created_at: string;
+  display_order: number | null;
 }
 
 export default function Portfolio() {
@@ -41,10 +48,19 @@ export default function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTechnology, setSelectedTechnology] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'featured' | 'name'>('featured');
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'featured' | 'name' | 'custom'>('custom');
   const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
   const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [isReordering, setIsReordering] = useState(false);
   const { toast } = useToast();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const [formData, setFormData] = useState({
     title: '',
@@ -66,7 +82,7 @@ export default function Portfolio() {
       const { data, error } = await supabase
         .from('portfolio')
         .select('*')
-        .order('featured', { ascending: false })
+        .order('display_order', { ascending: true, nullsFirst: false })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -79,6 +95,45 @@ export default function Portfolio() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = filteredPortfolio.findIndex((item) => item.id === active.id);
+      const newIndex = filteredPortfolio.findIndex((item) => item.id === over.id);
+
+      const newOrder = arrayMove(filteredPortfolio, oldIndex, newIndex);
+      
+      // Update display_order for all items
+      try {
+        const updates = newOrder.map((item, index) => ({
+          id: item.id,
+          display_order: index
+        }));
+
+        for (const update of updates) {
+          await supabase
+            .from('portfolio')
+            .update({ display_order: update.display_order })
+            .eq('id', update.id);
+        }
+
+        toast({
+          title: 'Success',
+          description: 'Portfolio order updated'
+        });
+
+        fetchPortfolio();
+      } catch (error: any) {
+        toast({
+          title: 'Error',
+          description: error.message,
+          variant: 'destructive'
+        });
+      }
     }
   };
 
@@ -158,6 +213,63 @@ export default function Portfolio() {
         description: error.message,
         variant: 'destructive'
       });
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedItems.size === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedItems.size} item(s)?`)) return;
+
+    try {
+      const itemsToDelete = portfolio.filter(item => selectedItems.has(item.id));
+      
+      // Delete all images from storage
+      for (const item of itemsToDelete) {
+        const imagePaths = item.image_urls.map(url => url.split('/').pop()).filter(Boolean) as string[];
+        if (imagePaths.length > 0) {
+          await supabase.storage.from('portfolio-images').remove(imagePaths);
+        }
+      }
+
+      // Delete from database
+      const { error } = await supabase
+        .from('portfolio')
+        .delete()
+        .in('id', Array.from(selectedItems));
+
+      if (error) throw error;
+
+      toast({
+        title: 'Success',
+        description: `${selectedItems.size} item(s) deleted successfully`
+      });
+
+      setSelectedItems(new Set());
+      fetchPortfolio();
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const toggleItemSelection = (id: string) => {
+    const newSelected = new Set(selectedItems);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedItems.size === filteredPortfolio.length) {
+      setSelectedItems(new Set());
+    } else {
+      setSelectedItems(new Set(filteredPortfolio.map(item => item.id)));
     }
   };
 
@@ -312,6 +424,11 @@ export default function Portfolio() {
     })
     .sort((a, b) => {
       switch (sortBy) {
+        case 'custom':
+          // Use display_order, fallback to created_at if null
+          const orderA = a.display_order ?? 999999;
+          const orderB = b.display_order ?? 999999;
+          return orderA - orderB;
         case 'newest':
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case 'oldest':
@@ -352,7 +469,31 @@ export default function Portfolio() {
           </div>
 
           {isAdmin && (
-            <div className="flex justify-end mb-8">
+            <div className="flex justify-between items-center mb-8">
+              <div className="flex gap-2">
+                <Button
+                  variant={isReordering ? 'default' : 'outline'}
+                  onClick={() => {
+                    setIsReordering(!isReordering);
+                    setSelectedItems(new Set());
+                    if (!isReordering) setSortBy('custom');
+                  }}
+                >
+                  <GripVertical className="mr-2 h-4 w-4" />
+                  {isReordering ? 'Done Reordering' : 'Reorder Projects'}
+                </Button>
+                
+                {selectedItems.size > 0 && (
+                  <Button
+                    variant="destructive"
+                    onClick={handleBulkDelete}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Selected ({selectedItems.size})
+                  </Button>
+                )}
+              </div>
+
               <Dialog open={isDialogOpen} onOpenChange={(open) => {
                 if (!open) handleCloseDialog();
                 else setIsDialogOpen(true);
@@ -532,11 +673,12 @@ export default function Portfolio() {
               </div>
 
               {/* Sort Dropdown */}
-              <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+              <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)} disabled={isReordering}>
                 <SelectTrigger className="w-full md:w-[200px]">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="custom">Custom Order</SelectItem>
                   <SelectItem value="featured">Featured First</SelectItem>
                   <SelectItem value="newest">Newest First</SelectItem>
                   <SelectItem value="oldest">Oldest First</SelectItem>
@@ -586,99 +728,50 @@ export default function Portfolio() {
             </div>
           )}
 
+          {/* Bulk Selection - Admin Only */}
+          {isAdmin && !isReordering && filteredPortfolio.length > 0 && (
+            <div className="flex items-center gap-2 mb-4">
+              <Checkbox
+                checked={selectedItems.size === filteredPortfolio.length && filteredPortfolio.length > 0}
+                onCheckedChange={toggleSelectAll}
+                id="select-all"
+              />
+              <Label htmlFor="select-all" className="text-sm cursor-pointer">
+                Select All ({filteredPortfolio.length})
+              </Label>
+            </div>
+          )}
+
           {/* Portfolio Grid */}
           {filteredPortfolio.length === 0 ? (
             <p className="text-center text-muted-foreground py-12">No projects found</p>
+          ) : isReordering ? (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={filteredPortfolio.map(item => item.id)} strategy={verticalListSortingStrategy}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredPortfolio.map((item) => (
+                    <SortablePortfolioCard key={item.id} item={item} />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPortfolio.map((item) => (
-                <Card key={item.id} className="glass glass-hover overflow-hidden group">
-                  <div className="relative aspect-video overflow-hidden cursor-pointer" onClick={() => openLightbox(item, 0)}>
-                    {item.image_urls.length === 1 ? (
-                      <img
-                        src={item.image_urls[0]}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <Carousel className="w-full h-full" onClick={(e) => e.stopPropagation()}>
-                        <CarouselContent>
-                          {item.image_urls.map((url, idx) => (
-                            <CarouselItem key={idx} onClick={() => openLightbox(item, idx)}>
-                              <img
-                                src={url}
-                                alt={`${item.title} - Image ${idx + 1}`}
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                              />
-                            </CarouselItem>
-                          ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="left-2" />
-                        <CarouselNext className="right-2" />
-                      </Carousel>
-                    )}
-                    {item.featured && (
-                      <Badge className="absolute top-4 right-4 bg-accent z-10">Featured</Badge>
-                    )}
-                  </div>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-xl font-semibold">{item.title}</h3>
-                      <Badge variant="outline" className="capitalize text-xs">
-                        {item.category}
-                      </Badge>
-                    </div>
-                    {item.description && (
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                        {item.description}
-                      </p>
-                    )}
-                    {item.technologies && item.technologies.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {item.technologies.map((tech, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-xs">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                    <div className="flex gap-2">
-                      {item.project_url && (
-                        <a
-                          href={item.project_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1"
-                        >
-                          <Button variant="outline" className="w-full" size="sm">
-                            <ExternalLink className="h-4 w-4 mr-2" />
-                            View Project
-                          </Button>
-                        </a>
-                      )}
-                      {isAdmin && (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEdit(item)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDelete(item.id, item.image_urls)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                <PortfolioCard
+                  key={item.id}
+                  item={item}
+                  isAdmin={isAdmin}
+                  isSelected={selectedItems.has(item.id)}
+                  onSelect={toggleItemSelection}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onImageClick={openLightbox}
+                />
               ))}
             </div>
           )}
