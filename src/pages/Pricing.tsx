@@ -21,7 +21,7 @@ const Pricing = () => {
     { extension: ".com.ng", price: "₦20,000" },
     { extension: ".org.ng", price: "₦20,000" },
     { extension: ".edu.ng", price: "₦20,000" },
-    { extension: "Premium Domains", price: "up to ₦100,000" },
+    { extension: "Premium Domains", price: "up to $100,000" },
     { extension: ".tech", price: "₦70,000" },
     { extension: ".app", price: "₦40,000" },
     { extension: ".ai", price: "₦250,000" },
