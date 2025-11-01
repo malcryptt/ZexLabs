@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Code, Smartphone, Settings, MessageSquare, TrendingUp, ShieldCheck, Globe } from "lucide-react";
+import { Code, Smartphone, Settings, MessageSquare, TrendingUp, ShieldCheck, Globe, Wrench } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -40,6 +40,11 @@ const Index = () => {
       icon: <Globe className="w-8 h-8" />,
       title: "Domain Sales",
       description: "Secure your perfect domain name for your brand",
+    },
+    {
+      icon: <Wrench className="w-8 h-8" />,
+      title: "Maintenance",
+      description: "Ongoing support and updates to keep your site running smoothly",
     },
   ];
 
