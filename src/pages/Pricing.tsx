@@ -330,7 +330,8 @@ const Pricing = () => {
             </TabsContent>
 
             <TabsContent value="others" className="animate-fade-in">
-              <div className="max-w-2xl mx-auto">
+              <div className="max-w-4xl mx-auto space-y-8">
+                {/* Domain Section */}
                 <div className="glass glass-hover rounded-lg p-8">
                   <div className="text-center mb-8">
                     <h3 className="text-3xl font-bold mb-2">Domain</h3>
@@ -366,6 +367,43 @@ const Pricing = () => {
                     <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
                       <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
                         Get Domain
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Website Security Section */}
+                <div className="glass glass-hover rounded-lg p-8">
+                  <div className="text-center mb-8">
+                    <h3 className="text-3xl font-bold mb-2">Website Security</h3>
+                    <p className="text-muted-foreground">Protect your website and users</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center p-4 glass rounded-lg">
+                      <span className="font-medium">Captcha</span>
+                      <span className="text-accent font-bold">₦25,000</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 glass rounded-lg">
+                      <span className="font-medium">TLS/SSL Certificate</span>
+                      <span className="text-accent font-bold">₦35,000</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 glass rounded-lg">
+                      <span className="font-medium">Password Breach Protection (HIBP Check)</span>
+                      <span className="text-accent font-bold">₦35,000</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 glass rounded-lg">
+                      <span className="font-medium">HSTS</span>
+                      <span className="text-accent font-bold">₦35,000</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 glass rounded-lg">
+                      <span className="font-medium">Secure Cookie Handling</span>
+                      <span className="text-accent font-bold">₦35,000</span>
+                    </div>
+
+                    <a href="https://wa.me/2349131744823" target="_blank" rel="noopener noreferrer">
+                      <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow mt-6">
+                        Get Security Package
                       </Button>
                     </a>
                   </div>
