@@ -21,6 +21,7 @@ import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 interface PortfolioItem {
   id: string;
@@ -49,6 +50,8 @@ export default function Portfolio() {
   const [selectedTechnology, setSelectedTechnology] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'featured' | 'name' | 'custom'>('custom');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
   const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -445,6 +448,43 @@ export default function Portfolio() {
       }
     });
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredPortfolio.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedPortfolio = filteredPortfolio.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, selectedTechnology, searchQuery, sortBy]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, -1, totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, -1, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, -1, currentPage - 1, currentPage, currentPage + 1, -1, totalPages);
+      }
+    }
+    
+    return pages;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -672,6 +712,19 @@ export default function Portfolio() {
                 />
               </div>
 
+              {/* Items Per Page */}
+              <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(Number(value))}>
+                <SelectTrigger className="w-full md:w-[150px]">
+                  <SelectValue placeholder="Per page" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="6">6 per page</SelectItem>
+                  <SelectItem value="9">9 per page</SelectItem>
+                  <SelectItem value="12">12 per page</SelectItem>
+                  <SelectItem value="24">24 per page</SelectItem>
+                </SelectContent>
+              </Select>
+
               {/* Sort Dropdown */}
               <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)} disabled={isReordering}>
                 <SelectTrigger className="w-full md:w-[200px]">
@@ -729,16 +782,29 @@ export default function Portfolio() {
           )}
 
           {/* Bulk Selection - Admin Only */}
-          {isAdmin && !isReordering && filteredPortfolio.length > 0 && (
-            <div className="flex items-center gap-2 mb-4">
-              <Checkbox
-                checked={selectedItems.size === filteredPortfolio.length && filteredPortfolio.length > 0}
-                onCheckedChange={toggleSelectAll}
-                id="select-all"
-              />
-              <Label htmlFor="select-all" className="text-sm cursor-pointer">
-                Select All ({filteredPortfolio.length})
-              </Label>
+          {isAdmin && !isReordering && paginatedPortfolio.length > 0 && (
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  checked={selectedItems.size === filteredPortfolio.length && filteredPortfolio.length > 0}
+                  onCheckedChange={toggleSelectAll}
+                  id="select-all"
+                />
+                <Label htmlFor="select-all" className="text-sm cursor-pointer">
+                  Select All ({filteredPortfolio.length})
+                </Label>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredPortfolio.length)} of {filteredPortfolio.length}
+              </p>
+            </div>
+          )}
+
+          {!isAdmin && paginatedPortfolio.length > 0 && (
+            <div className="flex justify-end mb-4">
+              <p className="text-sm text-muted-foreground">
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredPortfolio.length)} of {filteredPortfolio.length}
+              </p>
             </div>
           )}
 
@@ -751,9 +817,9 @@ export default function Portfolio() {
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
             >
-              <SortableContext items={filteredPortfolio.map(item => item.id)} strategy={verticalListSortingStrategy}>
+              <SortableContext items={paginatedPortfolio.map(item => item.id)} strategy={verticalListSortingStrategy}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredPortfolio.map((item) => (
+                  {paginatedPortfolio.map((item) => (
                     <SortablePortfolioCard key={item.id} item={item} />
                   ))}
                 </div>
@@ -761,7 +827,7 @@ export default function Portfolio() {
             </DndContext>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPortfolio.map((item) => (
+              {paginatedPortfolio.map((item) => (
                 <PortfolioCard
                   key={item.id}
                   item={item}
@@ -773,6 +839,45 @@ export default function Portfolio() {
                   onImageClick={openLightbox}
                 />
               ))}
+            </div>
+          )}
+
+          {/* Pagination Controls */}
+          {filteredPortfolio.length > itemsPerPage && (
+            <div className="mt-12">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                    />
+                  </PaginationItem>
+                  
+                  {renderPageNumbers().map((page, idx) => (
+                    <PaginationItem key={idx}>
+                      {page === -1 ? (
+                        <PaginationEllipsis />
+                      ) : (
+                        <PaginationLink
+                          onClick={() => handlePageChange(page)}
+                          isActive={currentPage === page}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      )}
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                      className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           )}
         </div>
