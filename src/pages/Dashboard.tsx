@@ -19,7 +19,50 @@ interface PackageItem {
   name: string;
   price: number;
   selected: boolean;
+  priceOption: 'preset' | 'custom';
 }
+
+interface PackagePresets {
+  [key: string]: { label: string; price: number }[];
+}
+
+const packagePresets: PackagePresets = {
+  'Mobile Development': [
+    { label: 'Basic Mobile App', price: 150000 },
+    { label: 'Standard Mobile App', price: 300000 },
+    { label: 'Advanced Mobile App', price: 500000 },
+  ],
+  'E-commerce': [
+    { label: 'Basic E-commerce', price: 200000 },
+    { label: 'Standard E-commerce', price: 400000 },
+    { label: 'Advanced E-commerce', price: 700000 },
+  ],
+  'Web Development': [
+    { label: 'Basic Website (5 pages)', price: 100000 },
+    { label: 'Standard Website (10 pages)', price: 200000 },
+    { label: 'Advanced Website (15+ pages)', price: 350000 },
+  ],
+  'Redesign': [
+    { label: 'Basic Redesign', price: 80000 },
+    { label: 'Standard Redesign', price: 150000 },
+    { label: 'Complete Redesign', price: 250000 },
+  ],
+  'Maintenance': [
+    { label: 'Monthly Maintenance', price: 25000 },
+    { label: 'Quarterly Maintenance', price: 60000 },
+    { label: 'Annual Maintenance', price: 200000 },
+  ],
+  'Domain': [
+    { label: '.com Domain', price: 15000 },
+    { label: '.ng Domain', price: 10000 },
+    { label: 'Premium Domain', price: 50000 },
+  ],
+  'Cyber Security': [
+    { label: 'Basic Security Package', price: 100000 },
+    { label: 'Standard Security Package', price: 200000 },
+    { label: 'Advanced Security Package', price: 350000 },
+  ],
+};
 
 interface Transaction {
   id: string;
@@ -47,13 +90,13 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const [packages, setPackages] = useState<PackageItem[]>([
-    { name: 'Mobile Development', price: 0, selected: false },
-    { name: 'E-commerce', price: 0, selected: false },
-    { name: 'Web Development', price: 0, selected: false },
-    { name: 'Redesign', price: 0, selected: false },
-    { name: 'Maintenance', price: 0, selected: false },
-    { name: 'Domain', price: 0, selected: false },
-    { name: 'Cyber Security', price: 0, selected: false },
+    { name: 'Mobile Development', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'E-commerce', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Web Development', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Redesign', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Maintenance', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Domain', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Cyber Security', price: 0, selected: false, priceOption: 'preset' },
   ]);
 
   const [formData, setFormData] = useState({
@@ -100,10 +143,29 @@ export default function Dashboard() {
   const handlePackageToggle = (index: number) => {
     const newPackages = [...packages];
     newPackages[index].selected = !newPackages[index].selected;
+    if (!newPackages[index].selected) {
+      newPackages[index].price = 0;
+      newPackages[index].priceOption = 'preset';
+    }
     setPackages(newPackages);
   };
 
   const handlePackagePriceChange = (index: number, price: string) => {
+    const newPackages = [...packages];
+    newPackages[index].price = parseFloat(price) || 0;
+    setPackages(newPackages);
+  };
+
+  const handlePriceOptionChange = (index: number, option: 'preset' | 'custom') => {
+    const newPackages = [...packages];
+    newPackages[index].priceOption = option;
+    if (option === 'preset') {
+      newPackages[index].price = 0;
+    }
+    setPackages(newPackages);
+  };
+
+  const handlePresetPriceSelect = (index: number, price: string) => {
     const newPackages = [...packages];
     newPackages[index].price = parseFloat(price) || 0;
     setPackages(newPackages);
@@ -192,7 +254,7 @@ export default function Dashboard() {
         payment_status: 'pending',
         payment_method: '',
       });
-      setPackages(packages.map(pkg => ({ ...pkg, selected: false, price: 0 })));
+      setPackages(packages.map(pkg => ({ ...pkg, selected: false, price: 0, priceOption: 'preset' })));
       setUploadedFile(null);
 
       setIsDialogOpen(false);
@@ -279,26 +341,86 @@ export default function Dashboard() {
                       <Label className="text-base font-semibold">Package Selected *</Label>
                       <div className="space-y-3 p-4 glass rounded-lg">
                         {packages.map((pkg, index) => (
-                          <div key={pkg.name} className="flex items-center gap-4">
-                            <Checkbox
-                              id={`pkg-${index}`}
-                              checked={pkg.selected}
-                              onCheckedChange={() => handlePackageToggle(index)}
-                            />
-                            <Label htmlFor={`pkg-${index}`} className="flex-1 cursor-pointer">
-                              {pkg.name}
-                            </Label>
+                          <div key={pkg.name} className="space-y-2">
+                            <div className="flex items-center gap-4">
+                              <Checkbox
+                                id={`pkg-${index}`}
+                                checked={pkg.selected}
+                                onCheckedChange={() => handlePackageToggle(index)}
+                              />
+                              <Label htmlFor={`pkg-${index}`} className="flex-1 cursor-pointer font-medium">
+                                {pkg.name}
+                              </Label>
+                            </div>
+                            
                             {pkg.selected && (
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm text-muted-foreground">₦</span>
-                                <Input
-                                  type="number"
-                                  placeholder="Price"
-                                  className="w-32"
-                                  value={pkg.price || ''}
-                                  onChange={(e) => handlePackagePriceChange(index, e.target.value)}
-                                  required
-                                />
+                              <div className="ml-9 space-y-3 p-3 bg-background/50 rounded-lg border border-border/50">
+                                {/* Price Option Toggle */}
+                                <div className="flex gap-2">
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant={pkg.priceOption === 'preset' ? 'default' : 'outline'}
+                                    onClick={() => handlePriceOptionChange(index, 'preset')}
+                                    className="flex-1"
+                                  >
+                                    Preset Prices
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant={pkg.priceOption === 'custom' ? 'default' : 'outline'}
+                                    onClick={() => handlePriceOptionChange(index, 'custom')}
+                                    className="flex-1"
+                                  >
+                                    Custom Price
+                                  </Button>
+                                </div>
+
+                                {/* Preset Dropdown */}
+                                {pkg.priceOption === 'preset' && (
+                                  <div>
+                                    <Label className="text-xs text-muted-foreground">Select Package Type</Label>
+                                    <select
+                                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mt-1"
+                                      value={pkg.price || ''}
+                                      onChange={(e) => handlePresetPriceSelect(index, e.target.value)}
+                                      required
+                                    >
+                                      <option value="">Select a package...</option>
+                                      {packagePresets[pkg.name]?.map((preset) => (
+                                        <option key={preset.label} value={preset.price}>
+                                          {preset.label} - ₦{preset.price.toLocaleString()}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                )}
+
+                                {/* Custom Price Input */}
+                                {pkg.priceOption === 'custom' && (
+                                  <div>
+                                    <Label className="text-xs text-muted-foreground">Enter Negotiated Price</Label>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      <span className="text-sm font-medium">₦</span>
+                                      <Input
+                                        type="number"
+                                        placeholder="Enter custom price"
+                                        className="flex-1"
+                                        value={pkg.price || ''}
+                                        onChange={(e) => handlePackagePriceChange(index, e.target.value)}
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Display Selected Price */}
+                                {pkg.price > 0 && (
+                                  <div className="text-right text-sm font-semibold text-accent">
+                                    Selected: ₦{pkg.price.toLocaleString()}
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
