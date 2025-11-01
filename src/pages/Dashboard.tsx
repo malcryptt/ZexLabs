@@ -52,6 +52,8 @@ export default function Dashboard() {
     { name: 'Web Development', price: 0, selected: false },
     { name: 'Redesign', price: 0, selected: false },
     { name: 'Maintenance', price: 0, selected: false },
+    { name: 'Domain', price: 0, selected: false },
+    { name: 'Cyber Security', price: 0, selected: false },
   ]);
 
   const [formData, setFormData] = useState({
@@ -364,6 +366,7 @@ export default function Dashboard() {
                           onChange={(e) => setFormData({ ...formData, payment_status: e.target.value })}
                         >
                           <option value="pending">Pending</option>
+                          <option value="uncomplete">Uncomplete</option>
                           <option value="completed">Completed</option>
                           <option value="failed">Failed</option>
                         </select>
@@ -429,6 +432,8 @@ export default function Dashboard() {
                                 ? 'bg-green-100 text-green-800' 
                                 : transaction.payment_status === 'failed'
                                 ? 'bg-red-100 text-red-800'
+                                : transaction.payment_status === 'uncomplete'
+                                ? 'bg-orange-100 text-orange-800'
                                 : 'bg-yellow-100 text-yellow-800'
                             }`}>
                               {transaction.payment_status}
