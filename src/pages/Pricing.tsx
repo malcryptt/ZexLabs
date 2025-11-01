@@ -240,11 +240,11 @@ const Pricing = () => {
   };
 
   const renderPackages = (packages: any[], buttonText: string = "Let's Build It") => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2">
       {packages.map((pkg, index) => (
         <div
           key={index}
-          className={`glass glass-hover rounded-lg p-8 relative ${
+          className={`glass glass-hover rounded-lg p-4 sm:p-6 lg:p-8 relative ${
             pkg.featured ? "ring-2 ring-accent" : ""
           }`}
         >
@@ -254,17 +254,17 @@ const Pricing = () => {
             </div>
           )}
           
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
-            <div className="text-4xl font-bold gradient-text mb-2">{pkg.price}</div>
-            <p className="text-sm text-muted-foreground">{pkg.description}</p>
+          <div className="text-center mb-4 sm:mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold mb-2">{pkg.name}</h3>
+            <div className="text-3xl sm:text-4xl font-bold gradient-text mb-2">{pkg.price}</div>
+            <p className="text-xs sm:text-sm text-muted-foreground">{pkg.description}</p>
           </div>
 
-          <ul className="space-y-3 mb-8">
+          <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
             {pkg.features.map((feature: string, i: number) => (
-              <li key={i} className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                <span className="text-sm">{feature}</span>
+              <li key={i} className="flex items-start gap-2 sm:gap-3">
+                <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0 mt-0.5" />
+                <span className="text-xs sm:text-sm">{feature}</span>
               </li>
             ))}
           </ul>
@@ -301,13 +301,13 @@ const Pricing = () => {
           </div>
 
           <Tabs defaultValue="mobile" className="w-full">
-            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-6 mb-12">
-              <TabsTrigger value="mobile">Mobile Apps</TabsTrigger>
-              <TabsTrigger value="website">Websites</TabsTrigger>
-              <TabsTrigger value="ecommerce">E-commerce</TabsTrigger>
-              <TabsTrigger value="redesign">Redesign</TabsTrigger>
-              <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
-              <TabsTrigger value="others">Others</TabsTrigger>
+            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 sm:grid-cols-6 mb-8 sm:mb-12 gap-1">
+              <TabsTrigger value="mobile" className="text-xs sm:text-sm">Mobile Apps</TabsTrigger>
+              <TabsTrigger value="website" className="text-xs sm:text-sm">Websites</TabsTrigger>
+              <TabsTrigger value="ecommerce" className="text-xs sm:text-sm">E-commerce</TabsTrigger>
+              <TabsTrigger value="redesign" className="text-xs sm:text-sm">Redesign</TabsTrigger>
+              <TabsTrigger value="maintenance" className="text-xs sm:text-sm">Maintenance</TabsTrigger>
+              <TabsTrigger value="others" className="text-xs sm:text-sm">Others</TabsTrigger>
             </TabsList>
 
             <TabsContent value="mobile" className="animate-fade-in">

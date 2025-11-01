@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Upload, X } from 'lucide-react';
+import { Plus, Upload, X, User, Mail, Phone, DollarSign, Package, CheckCircle, FileText, Calendar, Receipt } from 'lucide-react';
 
 interface PackageItem {
   name: string;
@@ -586,15 +586,15 @@ export default function Dashboard() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Client Name</TableHead>
-                        <TableHead>Email</TableHead>
-                        {isAdmin && <TableHead>Phone</TableHead>}
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Packages</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Reference</TableHead>
-                        <TableHead>Date</TableHead>
-                        {isAdmin && <TableHead>Receipt</TableHead>}
+                        <TableHead><User className="h-4 w-4" /></TableHead>
+                        <TableHead><Mail className="h-4 w-4" /></TableHead>
+                        {isAdmin && <TableHead><Phone className="h-4 w-4" /></TableHead>}
+                        <TableHead><DollarSign className="h-4 w-4" /></TableHead>
+                        <TableHead><Package className="h-4 w-4" /></TableHead>
+                        <TableHead><CheckCircle className="h-4 w-4" /></TableHead>
+                        <TableHead><FileText className="h-4 w-4" /></TableHead>
+                        <TableHead><Calendar className="h-4 w-4" /></TableHead>
+                        {isAdmin && <TableHead><Receipt className="h-4 w-4" /></TableHead>}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
