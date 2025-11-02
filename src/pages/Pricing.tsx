@@ -280,11 +280,11 @@ const Pricing = () => {
                 ? "bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow"
                 : "glass glass-hover"
             }`}
-            onClick={() =>
-              openWhatsApp(
-                `Inquiry: ${categoryLabel || "Package"} - ${pkg.name}\nPrice: ${pkg.price}\n\nDetails:\n${pkg.description}`
-              )
-            }
+            onClick={() => {
+              const featuresText = pkg.features.map((f: string, idx: number) => `${idx + 1}. ${f}`).join('\n');
+              const message = `Hello! I'm interested in your services.\n\n📦 SERVICE: ${categoryLabel || 'Package'}\n💼 PACKAGE: ${pkg.name}\n💰 PRICE: ${pkg.price}\n\n📋 DESCRIPTION:\n${pkg.description}\n\n✨ FEATURES:\n${featuresText}\n\nPlease provide more details and how to proceed.`;
+              openWhatsApp(message);
+            }}
           >
             {buttonText}
           </Button>
@@ -419,13 +419,13 @@ const Pricing = () => {
 
                     <Button
                       className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow"
-                      onClick={() =>
-                        openWhatsApp(
-                          selectedDomain
-                            ? `Domain Request\nExtension: ${selectedDomain}\nDuration: ${domainYears} ${parseInt(domainYears) === 1 ? 'year' : 'years'}\nPrice: ${domainPricing.find(d => d.extension === selectedDomain)?.price}`
-                            : 'Domain Request: I would like help choosing a domain.'
-                        )
-                      }
+                      onClick={() => {
+                        const selectedPrice = domainPricing.find(d => d.extension === selectedDomain)?.price;
+                        const message = selectedDomain
+                          ? `Hello! I'm interested in your services.\n\n🌐 SERVICE: Domain Registration\n📝 EXTENSION: ${selectedDomain}\n⏰ DURATION: ${domainYears} ${parseInt(domainYears) === 1 ? 'year' : 'years'}\n💰 PRICE: ${selectedPrice}\n\n* This domain is for a website I'm building with DevLuxe Agency\n\nPlease provide more details and how to proceed.`
+                          : 'Hello! I need help choosing a domain for my website project with DevLuxe Agency.';
+                        openWhatsApp(message);
+                      }}
                     >
                       Get Domain
                     </Button>
@@ -472,11 +472,10 @@ const Pricing = () => {
 
                     <Button
                       className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow mt-6"
-                      onClick={() =>
-                        openWhatsApp(
-                          'Inquiry: Website Security Package\nPlease share details and next steps.'
-                        )
-                      }
+                      onClick={() => {
+                        const message = `Hello! I'm interested in your services.\n\n🔒 SERVICE: Website Security Package\n\n📋 AVAILABLE OPTIONS:\n1. Captcha - ₦25,000\n2. TLS/SSL Certificate - ₦35,000\n3. Password Breach Protection (HIBP Check) - ₦35,000\n4. Secure Cookie Handling - ₦35,000\n5. Cloudflare Security Integration - ₦35,000\n\n* Security packages are available when building my website with DevLuxe Agency\n\nPlease provide more details and how to proceed.`;
+                        openWhatsApp(message);
+                      }}
                     >
                       Get Security Package
                     </Button>
