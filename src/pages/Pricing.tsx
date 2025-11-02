@@ -11,6 +11,11 @@ const Pricing = () => {
   const [selectedDomain, setSelectedDomain] = useState("");
   const [domainYears, setDomainYears] = useState("1");
 
+  const openWhatsApp = (text: string) => {
+    const whatsappUrl = `https://wa.me/2349164703407?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   const domainPricing = [
     { extension: ".com", price: "₦30,000" },
     { extension: ".net", price: "₦25,000" },
@@ -239,7 +244,7 @@ const Pricing = () => {
     ],
   };
 
-  const renderPackages = (packages: any[], buttonText: string = "Let's Build It") => (
+  const renderPackages = (packages: any[], buttonText: string = "Let's Build It", categoryLabel?: string) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2">
       {packages.map((pkg, index) => (
         <div
@@ -269,17 +274,20 @@ const Pricing = () => {
             ))}
           </ul>
 
-          <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
-            <Button
-              className={`w-full ${
-                pkg.featured
-                  ? "bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow"
-                  : "glass glass-hover"
-              }`}
-            >
-              {buttonText}
-            </Button>
-          </a>
+          <Button
+            className={`w-full ${
+              pkg.featured
+                ? "bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow"
+                : "glass glass-hover"
+            }`}
+            onClick={() =>
+              openWhatsApp(
+                `Inquiry: ${categoryLabel || "Package"} - ${pkg.name}\nPrice: ${pkg.price}\n\nDetails:\n${pkg.description}`
+              )
+            }
+          >
+            {buttonText}
+          </Button>
         </div>
       ))}
     </div>
@@ -329,23 +337,23 @@ const Pricing = () => {
             </TabsList>
 
             <TabsContent value="mobile" className="animate-fade-in">
-              {renderPackages(pricingCategories.mobile)}
+              {renderPackages(pricingCategories.mobile, "Let's Build It", 'Mobile App')}
             </TabsContent>
 
             <TabsContent value="website" className="animate-fade-in">
-              {renderPackages(pricingCategories.website)}
+              {renderPackages(pricingCategories.website, "Let's Build It", 'Website')}
             </TabsContent>
 
             <TabsContent value="ecommerce" className="animate-fade-in">
-              {renderPackages(pricingCategories.ecommerce)}
+              {renderPackages(pricingCategories.ecommerce, "Let's Build It", 'E-commerce')}
             </TabsContent>
 
             <TabsContent value="redesign" className="animate-fade-in">
-              {renderPackages(pricingCategories.redesign, "Let's Fix It")}
+              {renderPackages(pricingCategories.redesign, "Let's Fix It", 'Redesign')}
             </TabsContent>
 
             <TabsContent value="maintenance" className="animate-fade-in">
-              {renderPackages(pricingCategories.maintenance, "Let's Fix It")}
+              {renderPackages(pricingCategories.maintenance, "Let's Fix It", 'Maintenance')}
             </TabsContent>
 
             <TabsContent value="others" className="animate-fade-in">
@@ -409,11 +417,18 @@ const Pricing = () => {
                       </div>
                     )}
 
-                    <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
-                      <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow">
-                        Get Domain
-                      </Button>
-                    </a>
+                    <Button
+                      className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow"
+                      onClick={() =>
+                        openWhatsApp(
+                          selectedDomain
+                            ? `Domain Request\nExtension: ${selectedDomain}\nDuration: ${domainYears} ${parseInt(domainYears) === 1 ? 'year' : 'years'}\nPrice: ${domainPricing.find(d => d.extension === selectedDomain)?.price}`
+                            : 'Domain Request: I would like help choosing a domain.'
+                        )
+                      }
+                    >
+                      Get Domain
+                    </Button>
                   </div>
                 </div>
 
@@ -455,11 +470,16 @@ const Pricing = () => {
                       <span className="text-accent font-bold">₦35,000</span>
                     </div>
 
-                    <a href="https://wa.me/2349164703407" target="_blank" rel="noopener noreferrer">
-                      <Button className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow mt-6">
-                        Get Security Package
-                      </Button>
-                    </a>
+                    <Button
+                      className="w-full h-14 text-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow mt-6"
+                      onClick={() =>
+                        openWhatsApp(
+                          'Inquiry: Website Security Package\nPlease share details and next steps.'
+                        )
+                      }
+                    >
+                      Get Security Package
+                    </Button>
                   </div>
                 </div>
               </div>
