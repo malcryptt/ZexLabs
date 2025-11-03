@@ -24,6 +24,7 @@ const phoneAuthSchema = z.object({
 const Auth = () => {
   const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +40,56 @@ const Auth = () => {
       navigate('/dashboard');
     }
   }, [user, authLoading, navigate]);
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      if (!email.trim()) {
+        toast({
+          title: "Email Required",
+          description: "Please enter your email address to reset your password.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      const emailValidation = z.string().email("Invalid email address");
+      const result = emailValidation.safeParse(email);
+      
+      if (!result.success) {
+        toast({
+          title: "Invalid Email",
+          description: "Please enter a valid email address.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Reset Email Sent",
+        description: "Check your email for the password reset link.",
+      });
+      setIsForgotPassword(false);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to send reset email",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -218,38 +269,40 @@ const Auth = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold gradient-text mb-2">DevLuxe</h1>
           <p className="text-muted-foreground">
-            {isSignUp ? "Create your account" : "Sign in to continue"}
+            {isForgotPassword ? "Reset your password" : isSignUp ? "Create your account" : "Sign in to continue"}
           </p>
         </div>
 
-        <form onSubmit={handleAuth} className="space-y-4">
+        <form onSubmit={isForgotPassword ? handleForgotPassword : handleAuth} className="space-y-4">
           {/* Auth Method Toggle */}
-          <div className="flex gap-2 p-1 glass rounded-lg">
-            <button
-              type="button"
-              onClick={() => setAuthMethod('email')}
-              className={`flex-1 py-2 px-4 rounded-md transition-all ${
-                authMethod === 'email' 
-                  ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Email
-            </button>
-            <button
-              type="button"
-              onClick={() => setAuthMethod('phone')}
-              className={`flex-1 py-2 px-4 rounded-md transition-all ${
-                authMethod === 'phone' 
-                  ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Phone
-            </button>
-          </div>
+          {!isForgotPassword && (
+            <div className="flex gap-2 p-1 glass rounded-lg">
+              <button
+                type="button"
+                onClick={() => setAuthMethod('email')}
+                className={`flex-1 py-2 px-4 rounded-md transition-all ${
+                  authMethod === 'email' 
+                    ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Email
+              </button>
+              <button
+                type="button"
+                onClick={() => setAuthMethod('phone')}
+                className={`flex-1 py-2 px-4 rounded-md transition-all ${
+                  authMethod === 'phone' 
+                    ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Phone
+              </button>
+            </div>
+          )}
 
-          {isSignUp && (
+          {isSignUp && !isForgotPassword && (
             <div>
               <Label htmlFor="fullName">Full Name</Label>
               <Input
@@ -264,7 +317,7 @@ const Auth = () => {
             </div>
           )}
           
-          {authMethod === 'email' ? (
+          {(authMethod === 'email' || isForgotPassword) ? (
             <div>
               <Label htmlFor="email">Email address</Label>
               <Input
@@ -277,7 +330,7 @@ const Auth = () => {
                 className="mt-1 glass"
               />
             </div>
-          ) : (
+          ) : !isForgotPassword ? (
             <div>
               <Label htmlFor="phone">Phone number</Label>
               <Input
@@ -293,9 +346,10 @@ const Auth = () => {
                 Use E.164 format (e.g., +1234567890)
               </p>
             </div>
-          )}
+          ) : null}
 
-          <div>
+          {!isForgotPassword && (
+            <div>
             <Label htmlFor="password">Password</Label>
             <div className="relative mt-1">
               <Input
@@ -316,28 +370,44 @@ const Auth = () => {
               </button>
             </div>
           </div>
+          )}
 
           <Button
             type="submit"
             disabled={loading}
             className="w-full bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow"
           >
-            {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
+            {loading ? "Loading..." : isForgotPassword ? "Send Reset Link" : isSignUp ? "Sign Up" : "Sign In"}
           </Button>
         </form>
 
         <div className="mt-6 text-center space-y-2">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm text-accent hover:underline"
-          >
-            {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
-          </button>
-          {!isSignUp && (
-            <p className="text-sm text-muted-foreground hover:text-accent cursor-pointer">
+          {!isForgotPassword && (
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-accent hover:underline"
+            >
+              {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+            </button>
+          )}
+          {!isSignUp && !isForgotPassword && (
+            <button
+              type="button"
+              onClick={() => setIsForgotPassword(true)}
+              className="block w-full text-sm text-muted-foreground hover:text-accent cursor-pointer"
+            >
               Forgot Password?
-            </p>
+            </button>
+          )}
+          {isForgotPassword && (
+            <button
+              type="button"
+              onClick={() => setIsForgotPassword(false)}
+              className="text-sm text-accent hover:underline"
+            >
+              Back to Sign In
+            </button>
           )}
         </div>
       </div>
