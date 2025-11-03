@@ -1,8 +1,52 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { DollarSign, Award, Headphones, Zap, Target } from "lucide-react";
+import { DollarSign, Award, Headphones, Zap, Target, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
 
 const About = () => {
+  const aboutScrollRef = useRef<HTMLDivElement>(null);
+  const whyChooseScrollRef = useRef<HTMLDivElement>(null);
+  const [aboutScroll, setAboutScroll] = useState({ canScrollLeft: false, canScrollRight: true });
+  const [whyChooseScroll, setWhyChooseScroll] = useState({ canScrollLeft: false, canScrollRight: true });
+
+  const checkScroll = (element: HTMLDivElement | null, setScroll: (value: any) => void) => {
+    if (!element) return;
+    const canScrollLeft = element.scrollLeft > 0;
+    const canScrollRight = element.scrollLeft < element.scrollWidth - element.clientWidth - 10;
+    setScroll({ canScrollLeft, canScrollRight });
+  };
+
+  useEffect(() => {
+    const aboutEl = aboutScrollRef.current;
+    const whyChooseEl = whyChooseScrollRef.current;
+
+    const handleAboutScroll = () => checkScroll(aboutEl, setAboutScroll);
+    const handleWhyChooseScroll = () => checkScroll(whyChooseEl, setWhyChooseScroll);
+
+    if (aboutEl) {
+      aboutEl.addEventListener('scroll', handleAboutScroll);
+      checkScroll(aboutEl, setAboutScroll);
+    }
+    if (whyChooseEl) {
+      whyChooseEl.addEventListener('scroll', handleWhyChooseScroll);
+      checkScroll(whyChooseEl, setWhyChooseScroll);
+    }
+
+    return () => {
+      aboutEl?.removeEventListener('scroll', handleAboutScroll);
+      whyChooseEl?.removeEventListener('scroll', handleWhyChooseScroll);
+    };
+  }, []);
+
+  const scroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
+    if (!ref.current) return;
+    const scrollAmount = 400;
+    ref.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -19,8 +63,27 @@ const About = () => {
           </div>
 
           <div className="space-y-8">
-            <div className="overflow-x-auto pb-4 no-scrollbar">
-              <div className="flex gap-8 min-w-max px-4">
+            <div className="relative">
+              {aboutScroll.canScrollLeft && (
+                <button
+                  onClick={() => scroll(aboutScrollRef, 'left')}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
+              {aboutScroll.canScrollRight && (
+                <button
+                  onClick={() => scroll(aboutScrollRef, 'right')}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
+              <div ref={aboutScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
+                <div className="flex gap-8 min-w-max px-4">
                 <div className="glass glass-hover rounded-lg p-8 animate-fade-in w-96 flex-shrink-0">
                   <h2 className="text-2xl font-bold mb-4 gradient-text">Our Philosophy</h2>
                   <p className="text-lg text-muted-foreground leading-relaxed">
@@ -52,13 +115,33 @@ const About = () => {
                     forefront of web technology while maintaining a human-centered approach to design.
                   </p>
                 </div>
+                </div>
               </div>
             </div>
 
             <div className="glass glass-hover rounded-lg p-8 animate-fade-in">
               <h2 className="text-3xl font-bold mb-8 text-center gradient-text">Why Choose Us</h2>
-              <div className="overflow-x-auto pb-4 no-scrollbar">
-                <div className="flex gap-6 min-w-max px-4">
+              <div className="relative">
+                {whyChooseScroll.canScrollLeft && (
+                  <button
+                    onClick={() => scroll(whyChooseScrollRef, 'left')}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                    aria-label="Scroll left"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                )}
+                {whyChooseScroll.canScrollRight && (
+                  <button
+                    onClick={() => scroll(whyChooseScrollRef, 'right')}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                    aria-label="Scroll right"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                )}
+                <div ref={whyChooseScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
+                  <div className="flex gap-6 min-w-max px-4">
                   <div className="flex flex-col items-center text-center p-4 w-72 flex-shrink-0">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
                       <DollarSign className="w-8 h-8 text-white" />
@@ -120,9 +203,10 @@ const About = () => {
               >
                 Let's Talk
               </a>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
       </main>
 
       <Footer />

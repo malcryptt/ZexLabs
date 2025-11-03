@@ -1,10 +1,54 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Code, Smartphone, Settings, MessageSquare, TrendingUp, ShieldCheck, Globe, Wrench } from "lucide-react";
+import { Code, Smartphone, Settings, MessageSquare, TrendingUp, ShieldCheck, Globe, Wrench, ChevronLeft, ChevronRight } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { useRef, useState, useEffect } from "react";
 
 const Index = () => {
+  const whyChooseScrollRef = useRef<HTMLDivElement>(null);
+  const servicesScrollRef = useRef<HTMLDivElement>(null);
+  const [whyChooseScroll, setWhyChooseScroll] = useState({ canScrollLeft: false, canScrollRight: true });
+  const [servicesScroll, setServicesScroll] = useState({ canScrollLeft: false, canScrollRight: true });
+
+  const checkScroll = (element: HTMLDivElement | null, setScroll: (value: any) => void) => {
+    if (!element) return;
+    const canScrollLeft = element.scrollLeft > 0;
+    const canScrollRight = element.scrollLeft < element.scrollWidth - element.clientWidth - 10;
+    setScroll({ canScrollLeft, canScrollRight });
+  };
+
+  useEffect(() => {
+    const whyChooseEl = whyChooseScrollRef.current;
+    const servicesEl = servicesScrollRef.current;
+
+    const handleWhyChooseScroll = () => checkScroll(whyChooseEl, setWhyChooseScroll);
+    const handleServicesScroll = () => checkScroll(servicesEl, setServicesScroll);
+
+    if (whyChooseEl) {
+      whyChooseEl.addEventListener('scroll', handleWhyChooseScroll);
+      checkScroll(whyChooseEl, setWhyChooseScroll);
+    }
+    if (servicesEl) {
+      servicesEl.addEventListener('scroll', handleServicesScroll);
+      checkScroll(servicesEl, setServicesScroll);
+    }
+
+    return () => {
+      whyChooseEl?.removeEventListener('scroll', handleWhyChooseScroll);
+      servicesEl?.removeEventListener('scroll', handleServicesScroll);
+    };
+  }, []);
+
+  const scroll = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
+    if (!ref.current) return;
+    const scrollAmount = 400;
+    ref.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
   const services = [
     {
       icon: <Code className="w-8 h-8" />,
@@ -76,8 +120,27 @@ const Index = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">Why Choose DevLuxe</h2>
-          <div className="overflow-x-auto pb-4 no-scrollbar">
-            <div className="flex gap-8 min-w-max px-4">
+          <div className="relative">
+            {whyChooseScroll.canScrollLeft && (
+              <button
+                onClick={() => scroll(whyChooseScrollRef, 'left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+            {whyChooseScroll.canScrollRight && (
+              <button
+                onClick={() => scroll(whyChooseScrollRef, 'right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            )}
+            <div ref={whyChooseScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
+              <div className="flex gap-8 min-w-max px-4">
               <div className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
                 <h3 className="text-xl font-semibold mb-3 gradient-text">Fast-loading, SEO-ready sites</h3>
                 <p className="text-muted-foreground">Optimized for speed and search engines from day one</p>
@@ -90,6 +153,7 @@ const Index = () => {
                 <h3 className="text-xl font-semibold mb-3 gradient-text">Tailored for your business goals</h3>
                 <p className="text-muted-foreground">Custom solutions that align with your vision</p>
               </div>
+              </div>
             </div>
           </div>
         </div>
@@ -99,8 +163,27 @@ const Index = () => {
       <section className="py-20 px-4 glass">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12">Our Services</h2>
-          <div className="overflow-x-auto pb-4 no-scrollbar">
-            <div className="flex gap-6 min-w-max px-4">
+          <div className="relative">
+            {servicesScroll.canScrollLeft && (
+              <button
+                onClick={() => scroll(servicesScrollRef, 'left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+            {servicesScroll.canScrollRight && (
+              <button
+                onClick={() => scroll(servicesScrollRef, 'right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            )}
+            <div ref={servicesScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
+              <div className="flex gap-6 min-w-max px-4">
               {services.map((service, index) => (
                 <div key={index} className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
                   <div className="text-accent mb-4">{service.icon}</div>
@@ -108,6 +191,7 @@ const Index = () => {
                   <p className="text-muted-foreground">{service.description}</p>
                 </div>
               ))}
+              </div>
             </div>
           </div>
         </div>

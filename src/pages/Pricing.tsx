@@ -1,15 +1,58 @@
-import { Check, Smartphone, Globe, ShoppingCart, Paintbrush, Wrench, MoreHorizontal } from "lucide-react";
+import { Check, Smartphone, Globe, ShoppingCart, Paintbrush, Wrench, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Pricing = () => {
   const [selectedDomain, setSelectedDomain] = useState("");
   const [domainYears, setDomainYears] = useState("1");
+  const [scrollStates, setScrollStates] = useState<{ [key: string]: { canScrollLeft: boolean, canScrollRight: boolean } }>({});
+  const scrollRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  const checkScroll = (key: string) => {
+    const element = scrollRefs.current[key];
+    if (!element) return;
+    const canScrollLeft = element.scrollLeft > 0;
+    const canScrollRight = element.scrollLeft < element.scrollWidth - element.clientWidth - 10;
+    setScrollStates(prev => ({ ...prev, [key]: { canScrollLeft, canScrollRight } }));
+  };
+
+  useEffect(() => {
+    const handleScroll = (key: string) => () => checkScroll(key);
+    const listeners: { [key: string]: () => void } = {};
+
+    Object.keys(scrollRefs.current).forEach(key => {
+      const element = scrollRefs.current[key];
+      if (element) {
+        listeners[key] = handleScroll(key);
+        element.addEventListener('scroll', listeners[key]);
+        checkScroll(key);
+      }
+    });
+
+    return () => {
+      Object.keys(listeners).forEach(key => {
+        const element = scrollRefs.current[key];
+        if (element) {
+          element.removeEventListener('scroll', listeners[key]);
+        }
+      });
+    };
+  }, []);
+
+  const scroll = (key: string, direction: 'left' | 'right') => {
+    const element = scrollRefs.current[key];
+    if (!element) return;
+    const scrollAmount = 400;
+    element.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
 
   const openWhatsApp = (text: string) => {
     const whatsappUrl = `https://wa.me/2349164703407?text=${encodeURIComponent(text)}`;
@@ -244,9 +287,31 @@ const Pricing = () => {
     ],
   };
 
-  const renderPackages = (packages: any[], buttonText: string = "Let's Build It", categoryLabel?: string) => (
-    <div className="overflow-x-auto pb-4 no-scrollbar">
-      <div className="flex gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2 min-w-max">
+  const renderPackages = (packages: any[], buttonText: string = "Let's Build It", categoryLabel?: string, scrollKey?: string) => (
+    <div className="relative">
+      {scrollKey && scrollStates[scrollKey]?.canScrollLeft && (
+        <button
+          onClick={() => scroll(scrollKey, 'left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+          aria-label="Scroll left"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      )}
+      {scrollKey && scrollStates[scrollKey]?.canScrollRight && (
+        <button
+          onClick={() => scroll(scrollKey, 'right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+          aria-label="Scroll right"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      )}
+      <div 
+        ref={el => { if (scrollKey) scrollRefs.current[scrollKey] = el; }}
+        className="overflow-x-auto pb-4 no-scrollbar"
+      >
+        <div className="flex gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2 min-w-max">
         {packages.map((pkg, index) => (
           <div
             key={index}
@@ -292,6 +357,7 @@ const Pricing = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 
@@ -339,23 +405,23 @@ const Pricing = () => {
             </TabsList>
 
             <TabsContent value="mobile" className="animate-fade-in">
-              {renderPackages(pricingCategories.mobile, "Let's Build It", 'Mobile App')}
+              {renderPackages(pricingCategories.mobile, "Let's Build It", 'Mobile App', 'mobile')}
             </TabsContent>
 
             <TabsContent value="website" className="animate-fade-in">
-              {renderPackages(pricingCategories.website, "Let's Build It", 'Website')}
+              {renderPackages(pricingCategories.website, "Let's Build It", 'Website', 'website')}
             </TabsContent>
 
             <TabsContent value="ecommerce" className="animate-fade-in">
-              {renderPackages(pricingCategories.ecommerce, "Let's Build It", 'E-commerce')}
+              {renderPackages(pricingCategories.ecommerce, "Let's Build It", 'E-commerce', 'ecommerce')}
             </TabsContent>
 
             <TabsContent value="redesign" className="animate-fade-in">
-              {renderPackages(pricingCategories.redesign, "Let's Fix It", 'Redesign')}
+              {renderPackages(pricingCategories.redesign, "Let's Fix It", 'Redesign', 'redesign')}
             </TabsContent>
 
             <TabsContent value="maintenance" className="animate-fade-in">
-              {renderPackages(pricingCategories.maintenance, "Let's Fix It", 'Maintenance')}
+              {renderPackages(pricingCategories.maintenance, "Let's Fix It", 'Maintenance', 'maintenance')}
             </TabsContent>
 
             <TabsContent value="others" className="animate-fade-in">
