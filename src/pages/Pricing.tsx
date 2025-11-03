@@ -245,7 +245,7 @@ const Pricing = () => {
   };
 
   const renderPackages = (packages: any[], buttonText: string = "Let's Build It", categoryLabel?: string) => (
-    <div className="overflow-x-auto pb-4">
+    <div className="overflow-x-auto pb-4 no-scrollbar">
       <div className="flex gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2 min-w-max">
         {packages.map((pkg, index) => (
           <div

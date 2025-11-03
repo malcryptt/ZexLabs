@@ -76,7 +76,7 @@ const Index = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">Why Choose DevLuxe</h2>
-          <div className="overflow-x-auto pb-4">
+          <div className="overflow-x-auto pb-4 no-scrollbar">
             <div className="flex gap-8 min-w-max px-4">
               <div className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
                 <h3 className="text-xl font-semibold mb-3 gradient-text">Fast-loading, SEO-ready sites</h3>
@@ -99,7 +99,7 @@ const Index = () => {
       <section className="py-20 px-4 glass">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12">Our Services</h2>
-          <div className="overflow-x-auto pb-4">
+          <div className="overflow-x-auto pb-4 no-scrollbar">
             <div className="flex gap-6 min-w-max px-4">
               {services.map((service, index) => (
                 <div key={index} className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">

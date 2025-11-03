@@ -19,7 +19,7 @@ const About = () => {
           </div>
 
           <div className="space-y-8">
-            <div className="overflow-x-auto pb-4">
+            <div className="overflow-x-auto pb-4 no-scrollbar">
               <div className="flex gap-8 min-w-max px-4">
                 <div className="glass glass-hover rounded-lg p-8 animate-fade-in w-96 flex-shrink-0">
                   <h2 className="text-2xl font-bold mb-4 gradient-text">Our Philosophy</h2>
@@ -57,7 +57,7 @@ const About = () => {
 
             <div className="glass glass-hover rounded-lg p-8 animate-fade-in">
               <h2 className="text-3xl font-bold mb-8 text-center gradient-text">Why Choose Us</h2>
-              <div className="overflow-x-auto pb-4">
+              <div className="overflow-x-auto pb-4 no-scrollbar">
                 <div className="flex gap-6 min-w-max px-4">
                   <div className="flex flex-col items-center text-center p-4 w-72 flex-shrink-0">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center mb-4">
