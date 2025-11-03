@@ -245,14 +245,15 @@ const Pricing = () => {
   };
 
   const renderPackages = (packages: any[], buttonText: string = "Let's Build It", categoryLabel?: string) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2">
-      {packages.map((pkg, index) => (
-        <div
-          key={index}
-          className={`glass glass-hover rounded-lg p-4 sm:p-6 lg:p-8 relative ${
-            pkg.featured ? "ring-2 ring-accent" : ""
-          }`}
-        >
+    <div className="overflow-x-auto pb-4">
+      <div className="flex gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-2 min-w-max">
+        {packages.map((pkg, index) => (
+          <div
+            key={index}
+            className={`glass glass-hover rounded-lg p-4 sm:p-6 lg:p-8 relative w-80 flex-shrink-0 ${
+              pkg.featured ? "ring-2 ring-accent" : ""
+            }`}
+          >
           {pkg.featured && (
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-accent px-4 py-1 rounded-full text-sm font-semibold">
               Most Popular
@@ -288,8 +289,9 @@ const Pricing = () => {
           >
             {buttonText}
           </Button>
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 
