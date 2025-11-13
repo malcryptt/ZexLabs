@@ -99,7 +99,7 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${heroBg})` }}>
-        <div className="absolute inset-0 bg-background/60"></div>
+        <div className="absolute inset-0 bg-background/80"></div>
         <div className="container mx-auto text-center animate-fade-in relative z-10">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             Building Modern Websites<br />
