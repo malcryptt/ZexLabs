@@ -4,6 +4,7 @@ import { Code, Smartphone, Settings, MessageSquare, TrendingUp, ShieldCheck, Glo
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useRef, useState, useEffect } from "react";
+import heroBg from "@/assets/hero-bg.jpeg";
 
 const Index = () => {
   const whyChooseScrollRef = useRef<HTMLDivElement>(null);
@@ -97,8 +98,9 @@ const Index = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="container mx-auto text-center animate-fade-in">
+      <section className="pt-32 pb-20 px-4 relative bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${heroBg})` }}>
+        <div className="absolute inset-0 bg-background/60"></div>
+        <div className="container mx-auto text-center animate-fade-in relative z-10">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             Building Modern Websites<br />
             <span className="gradient-text">That Mean Business</span>
