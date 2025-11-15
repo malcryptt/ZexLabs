@@ -59,14 +59,16 @@ const About = () => {
           </div>
         </div>
         
-        <div className="container mx-auto max-w-4xl relative z-10">
-          <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              About <span className="gradient-text">DevLuxe</span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Building the future, one website at a time
-            </p>
+        <div className="relative z-10">
+          <div className="container mx-auto max-w-4xl">
+            <div className="text-center mb-16 animate-fade-in">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+                About <span className="gradient-text">DevLuxe</span>
+              </h1>
+              <p className="text-xl text-muted-foreground">
+                Building the future, one website at a time
+              </p>
+            </div>
           </div>
 
           <div className="space-y-8">
@@ -202,18 +204,21 @@ const About = () => {
               </div>
             </div>
 
-            <div className="text-center mt-12">
-              <p className="text-2xl font-semibold mb-4">Ready to start your project?</p>
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow transition-all"
-              >
-                Let's Talk
-              </a>
-                  </div>
-                </div>
+            </div>
+
+            <div className="container mx-auto max-w-4xl">
+              <div className="text-center mt-12">
+                <p className="text-2xl font-semibold mb-4">Ready to start your project?</p>
+                <a
+                  href="/contact"
+                  className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow transition-all"
+                >
+                  Let's Talk
+                </a>
               </div>
             </div>
+          </div>
+        </div>
       </main>
 
       <Footer />
