@@ -315,7 +315,7 @@ const Pricing = () => {
         {packages.map((pkg, index) => (
           <div
             key={index}
-            className={`glass glass-hover rounded-lg p-4 sm:p-6 lg:p-8 relative w-80 flex-shrink-0 ${
+            className={`glass glass-hover rounded-lg p-4 sm:p-6 lg:p-8 relative w-[450px] flex-shrink-0 ${
               pkg.featured ? "ring-2 ring-accent" : ""
             }`}
           >
