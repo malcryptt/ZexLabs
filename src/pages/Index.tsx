@@ -133,8 +133,15 @@ const Index = () => {
       </section>
 
       {/* Why Choose DevLuxe */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
+      <section className="py-20 px-4 relative overflow-hidden">
+        {/* Subtle vertical watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <div className="text-[15vw] font-bold opacity-[0.015] bg-gradient-to-t from-primary/50 to-accent/50 bg-clip-text text-transparent rotate-90 whitespace-nowrap">
+            LUXURY
+          </div>
+        </div>
+        
+        <div className="container mx-auto text-center relative z-10">
           <h2 className="text-4xl font-bold mb-12">Why Choose DevLuxe</h2>
           <div className="relative">
             {whyChooseScroll.canScrollLeft && (
@@ -176,8 +183,21 @@ const Index = () => {
       </section>
 
       {/* Services */}
-      <section className="py-20 px-4 glass">
-        <div className="container mx-auto">
+      <section className="py-20 px-4 glass relative overflow-hidden">
+        {/* Subtle diagonal watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <div className="text-[12vw] font-bold opacity-[0.02] bg-gradient-to-br from-accent/40 via-primary/40 to-primary-glow/40 bg-clip-text text-transparent rotate-[-25deg] whitespace-nowrap tracking-wider">
+            TECH • INNOVATION
+          </div>
+        </div>
+        
+        {/* Hexagon pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{
+          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '30px 30px'
+        }}></div>
+        
+        <div className="container mx-auto relative z-10">
           <h2 className="text-4xl font-bold text-center mb-12">Our Services</h2>
           <div className="relative">
             {servicesScroll.canScrollLeft && (
