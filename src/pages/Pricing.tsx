@@ -371,13 +371,13 @@ const Pricing = () => {
         </div>
         
         {/* Subtle line pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
           backgroundImage: `repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px)`,
         }}></div>
         
         <Navigation />
 
-      <main className="pt-32 pb-20 px-4">
+      <main className="pt-32 pb-20 px-4 relative z-10">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
