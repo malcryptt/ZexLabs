@@ -164,15 +164,15 @@ const Index = () => {
             )}
             <div ref={whyChooseScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
               <div className="flex gap-8 min-w-max px-4">
-              <div className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
+              <div className="glass glass-hover rounded-lg p-8 w-[450px] flex-shrink-0">
                 <h3 className="text-xl font-semibold mb-3 gradient-text">Fast-loading, SEO-ready sites</h3>
                 <p className="text-muted-foreground">Optimized for speed and search engines from day one</p>
               </div>
-              <div className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
+              <div className="glass glass-hover rounded-lg p-8 w-[450px] flex-shrink-0">
                 <h3 className="text-xl font-semibold mb-3 gradient-text">Smart design & clean code</h3>
                 <p className="text-muted-foreground">Beautiful interfaces built on solid foundations</p>
               </div>
-              <div className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
+              <div className="glass glass-hover rounded-lg p-8 w-[450px] flex-shrink-0">
                 <h3 className="text-xl font-semibold mb-3 gradient-text">Tailored for your business goals</h3>
                 <p className="text-muted-foreground">Custom solutions that align with your vision</p>
               </div>
@@ -221,7 +221,7 @@ const Index = () => {
             <div ref={servicesScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
               <div className="flex gap-6 min-w-max px-4">
               {services.map((service, index) => (
-                <div key={index} className="glass glass-hover rounded-lg p-8 w-80 flex-shrink-0">
+                <div key={index} className="glass glass-hover rounded-lg p-8 w-[450px] flex-shrink-0">
                   <div className="text-accent mb-4">{service.icon}</div>
                   <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                   <p className="text-muted-foreground">{service.description}</p>
