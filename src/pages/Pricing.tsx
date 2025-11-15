@@ -362,8 +362,20 @@ const Pricing = () => {
   );
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Pricing watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <div className="text-[14vw] font-bold opacity-[0.07] bg-gradient-to-br from-primary-glow via-primary to-accent bg-clip-text text-transparent rotate-[-20deg] whitespace-nowrap tracking-wide">
+            PRICING
+          </div>
+        </div>
+        
+        {/* Subtle line pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px)`,
+        }}></div>
+        
+        <Navigation />
 
       <main className="pt-32 pb-20 px-4">
         <div className="container mx-auto">
