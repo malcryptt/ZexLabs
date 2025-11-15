@@ -141,42 +141,40 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="container mx-auto text-center relative z-10">
-          <h2 className="text-4xl font-bold mb-12">Why Choose DevLuxe</h2>
-          <div className="relative">
-            {whyChooseScroll.canScrollLeft && (
-              <button
-                onClick={() => scroll(whyChooseScrollRef, 'left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-            )}
-            {whyChooseScroll.canScrollRight && (
-              <button
-                onClick={() => scroll(whyChooseScrollRef, 'right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            )}
-            <div ref={whyChooseScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
-              <div className="flex gap-8 min-w-max px-4">
-              <div className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
-                <h3 className="text-xl font-semibold mb-3 gradient-text">Fast-loading, SEO-ready sites</h3>
-                <p className="text-muted-foreground">Optimized for speed and search engines from day one</p>
-              </div>
-              <div className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
-                <h3 className="text-xl font-semibold mb-3 gradient-text">Smart design & clean code</h3>
-                <p className="text-muted-foreground">Beautiful interfaces built on solid foundations</p>
-              </div>
-              <div className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
-                <h3 className="text-xl font-semibold mb-3 gradient-text">Tailored for your business goals</h3>
-                <p className="text-muted-foreground">Custom solutions that align with your vision</p>
-              </div>
-              </div>
+        <h2 className="text-4xl font-bold text-center mb-12 relative z-10">Why Choose DevLuxe</h2>
+        <div className="relative">
+          {whyChooseScroll.canScrollLeft && (
+            <button
+              onClick={() => scroll(whyChooseScrollRef, 'left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+          )}
+          {whyChooseScroll.canScrollRight && (
+            <button
+              onClick={() => scroll(whyChooseScrollRef, 'right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          )}
+          <div ref={whyChooseScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
+            <div className="flex gap-8 min-w-max px-4">
+            <div className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
+              <h3 className="text-xl font-semibold mb-3 gradient-text">Fast-loading, SEO-ready sites</h3>
+              <p className="text-muted-foreground">Optimized for speed and search engines from day one</p>
+            </div>
+            <div className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
+              <h3 className="text-xl font-semibold mb-3 gradient-text">Smart design & clean code</h3>
+              <p className="text-muted-foreground">Beautiful interfaces built on solid foundations</p>
+            </div>
+            <div className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
+              <h3 className="text-xl font-semibold mb-3 gradient-text">Tailored for your business goals</h3>
+              <p className="text-muted-foreground">Custom solutions that align with your vision</p>
+            </div>
             </div>
           </div>
         </div>
@@ -192,42 +190,40 @@ const Index = () => {
         </div>
         
         {/* Hexagon pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.06]" style={{
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{
           backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)`,
           backgroundSize: '30px 30px'
         }}></div>
         
-        <div className="container mx-auto relative z-10">
-          <h2 className="text-4xl font-bold text-center mb-12">Our Services</h2>
-          <div className="relative">
-            {servicesScroll.canScrollLeft && (
-              <button
-                onClick={() => scroll(servicesScrollRef, 'left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-            )}
-            {servicesScroll.canScrollRight && (
-              <button
-                onClick={() => scroll(servicesScrollRef, 'right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            )}
-            <div ref={servicesScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
-              <div className="flex gap-6 min-w-max px-4">
-              {services.map((service, index) => (
-                <div key={index} className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
-                  <div className="text-accent mb-4">{service.icon}</div>
-                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground">{service.description}</p>
-                </div>
-              ))}
+        <h2 className="text-4xl font-bold text-center mb-12 relative z-10">Our Services</h2>
+        <div className="relative">
+          {servicesScroll.canScrollLeft && (
+            <button
+              onClick={() => scroll(servicesScrollRef, 'left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+          )}
+          {servicesScroll.canScrollRight && (
+            <button
+              onClick={() => scroll(servicesScrollRef, 'right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 glass glass-hover rounded-full p-2 shadow-lg"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          )}
+          <div ref={servicesScrollRef} className="overflow-x-auto pb-4 no-scrollbar">
+            <div className="flex gap-6 min-w-max px-4">
+            {services.map((service, index) => (
+              <div key={index} className="glass glass-hover rounded-lg p-8 w-72 md:w-96 lg:w-[450px] flex-shrink-0">
+                <div className="text-accent mb-4">{service.icon}</div>
+                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                <p className="text-muted-foreground">{service.description}</p>
               </div>
+            ))}
             </div>
           </div>
         </div>
