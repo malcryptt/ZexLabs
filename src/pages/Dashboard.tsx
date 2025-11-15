@@ -305,7 +305,20 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Admin Dashboard watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <div className="text-[13vw] font-bold opacity-[0.04] bg-gradient-to-br from-primary via-primary-glow to-accent bg-clip-text text-transparent rotate-[-12deg] whitespace-nowrap tracking-widest">
+          ADMIN DASHBOARD
+        </div>
+      </div>
+      
+      {/* Tech circuit pattern */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)`,
+        backgroundSize: '60px 60px'
+      }}></div>
+      
       <Navigation />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">

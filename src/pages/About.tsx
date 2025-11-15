@@ -51,8 +51,15 @@ const About = () => {
     <div className="min-h-screen">
       <Navigation />
 
-      <main className="pt-32 pb-20 px-4">
-        <div className="container mx-auto max-w-4xl">
+      <main className="pt-32 pb-20 px-4 relative overflow-hidden">
+        {/* Elegant About watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <div className="text-[18vw] font-bold opacity-[0.06] bg-gradient-to-r from-primary via-accent to-primary-glow bg-clip-text text-transparent rotate-[-10deg] whitespace-nowrap">
+            ABOUT US
+          </div>
+        </div>
+        
+        <div className="container mx-auto max-w-4xl relative z-10">
           <div className="text-center mb-16 animate-fade-in">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               About <span className="gradient-text">DevLuxe</span>

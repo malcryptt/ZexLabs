@@ -494,8 +494,21 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Portfolio watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <div className="text-[16vw] font-bold opacity-[0.05] bg-gradient-to-tl from-accent via-primary to-primary-glow bg-clip-text text-transparent rotate-[20deg] whitespace-nowrap">
+            PORTFOLIO
+          </div>
+        </div>
+        
+        {/* Tech dots pattern */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.15) 2px, transparent 2px)`,
+          backgroundSize: '40px 40px'
+        }}></div>
+        
+        <Navigation />
 
       <main className="pt-32 pb-20 px-4">
         <div className="container mx-auto">

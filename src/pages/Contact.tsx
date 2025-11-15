@@ -72,7 +72,14 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Contact watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <div className="text-[17vw] font-bold opacity-[0.06] bg-gradient-to-tr from-accent via-primary-glow to-primary bg-clip-text text-transparent rotate-[15deg] whitespace-nowrap">
+          CONTACT
+        </div>
+      </div>
+      
       <Navigation />
 
       <main className="pt-32 pb-20 px-4">

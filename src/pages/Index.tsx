@@ -103,13 +103,13 @@ const Index = () => {
         
         {/* Luxurious Tech Watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <div className="text-[20vw] font-bold opacity-[0.08] bg-gradient-to-br from-primary via-accent to-primary-glow bg-clip-text text-transparent rotate-[-15deg] whitespace-nowrap">
+          <div className="text-[20vw] font-bold opacity-[0.12] bg-gradient-to-br from-primary via-accent to-primary-glow bg-clip-text text-transparent rotate-[-15deg] whitespace-nowrap">
             DEVLUXE
           </div>
         </div>
         
         {/* Subtle tech grid pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.05]" style={{
+        <div className="absolute inset-0 opacity-[0.08]" style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
           backgroundSize: '50px 50px'
         }}></div>
@@ -136,7 +136,7 @@ const Index = () => {
       <section className="py-20 px-4 relative overflow-hidden">
         {/* Subtle vertical watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <div className="text-[15vw] font-bold opacity-[0.05] bg-gradient-to-t from-primary/50 to-accent/50 bg-clip-text text-transparent rotate-90 whitespace-nowrap">
+          <div className="text-[15vw] font-bold opacity-[0.08] bg-gradient-to-t from-primary/50 to-accent/50 bg-clip-text text-transparent rotate-90 whitespace-nowrap">
             LUXURY
           </div>
         </div>
@@ -186,13 +186,13 @@ const Index = () => {
       <section className="py-20 px-4 glass relative overflow-hidden">
         {/* Subtle diagonal watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <div className="text-[12vw] font-bold opacity-[0.06] bg-gradient-to-br from-accent/40 via-primary/40 to-primary-glow/40 bg-clip-text text-transparent rotate-[-25deg] whitespace-nowrap tracking-wider">
+          <div className="text-[12vw] font-bold opacity-[0.09] bg-gradient-to-br from-accent/40 via-primary/40 to-primary-glow/40 bg-clip-text text-transparent rotate-[-25deg] whitespace-nowrap tracking-wider">
             TECH • INNOVATION
           </div>
         </div>
         
         {/* Hexagon pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{
+        <div className="absolute inset-0 opacity-[0.06]" style={{
           backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)`,
           backgroundSize: '30px 30px'
         }}></div>
