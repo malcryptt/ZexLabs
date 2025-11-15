@@ -98,8 +98,22 @@ const Index = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 relative bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${heroBg})` }}>
+      <section className="pt-32 pb-20 px-4 relative bg-cover bg-center bg-no-repeat overflow-hidden" style={{ backgroundImage: `url(${heroBg})` }}>
         <div className="absolute inset-0 bg-background/80"></div>
+        
+        {/* Luxurious Tech Watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <div className="text-[20vw] font-bold opacity-[0.03] bg-gradient-to-br from-primary via-accent to-primary-glow bg-clip-text text-transparent rotate-[-15deg] whitespace-nowrap">
+            DEVLUXE
+          </div>
+        </div>
+        
+        {/* Subtle tech grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }}></div>
+
         <div className="container mx-auto text-center animate-fade-in relative z-10">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             Building Modern Websites<br />
