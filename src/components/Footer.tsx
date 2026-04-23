@@ -7,9 +7,12 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <Link to="/" className="text-2xl font-roboto font-black tracking-tighter mb-4 block">
-              <span className="text-foreground">ZEX</span>
-              <span className="text-primary italic">LABS</span>
+            <Link to="/" className="flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity">
+              <img src="/logo.png" alt="ZEXLABS" className="h-8 w-auto" />
+              <div className="flex flex-col -space-y-1">
+                <span className="text-lg font-black tracking-tighter text-foreground leading-none">ZEX</span>
+                <span className="text-sm font-bold tracking-tighter text-primary italic leading-none">LABS</span>
+              </div>
             </Link>
             <p className="text-sm text-muted-foreground mb-6 font-medium">
               We Build. We Secure. We Automate.

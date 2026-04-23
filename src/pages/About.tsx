@@ -1,6 +1,7 @@
 import React from 'react';
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Card } from "@/components/ui/card";
 import { Shield, Target, Cpu, Zap, Code2, Globe } from "lucide-react";
 
 export default function About() {
@@ -92,21 +93,23 @@ export default function About() {
               </div>
             </div>
 
-            <div className="relative aspect-square bg-border/20 border border-border/20 overflow-hidden flex items-center justify-center p-12 group">
-              <div className="absolute inset-0 opacity-[0.05] group-hover:opacity-[0.08] transition-opacity" style={{
-                backgroundImage: 'radial-gradient(circle, #25d366 1px, transparent 1px)',
-                backgroundSize: '24px 24px'
-              }}></div>
-              <div className="relative z-10 text-center space-y-4">
-                <div className="flex justify-center gap-4">
-                  <Code2 className="w-12 h-12 text-primary/30" />
-                  <Shield className="w-12 h-12 text-primary" />
-                  <Globe className="w-12 h-12 text-primary/30" />
+            <div className="relative overflow-hidden flex items-center justify-center p-12 group">
+              <Card className="rounded-none border-neutral-200 bg-white shadow-xl overflow-hidden flex items-center justify-center p-20 w-full aspect-square relative transition-all duration-700 hover:shadow-2xl">
+                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity" style={{
+                  backgroundImage: 'radial-gradient(circle, #e3242b 1px, transparent 1px)',
+                  backgroundSize: '24px 24px'
+                }}></div>
+                <div className="relative z-10 text-center space-y-4">
+                  <div className="flex justify-center gap-4">
+                    <Code2 className="w-12 h-12 text-primary/30" />
+                    <Shield className="w-12 h-12 text-primary" />
+                    <Globe className="w-12 h-12 text-primary/30" />
+                  </div>
+                  <div className="text-[15vw] font-black leading-none tracking-tighter text-primary/10 select-none">
+                    ZEX
+                  </div>
                 </div>
-                <div className="text-[15vw] font-black leading-none tracking-tighter text-primary/10 select-none">
-                  ZEX
-                </div>
-              </div>
+              </Card>
             </div>
           </div>
         </div>

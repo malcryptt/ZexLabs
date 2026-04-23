@@ -224,9 +224,9 @@ export default function Portfolio() {
               <Card key={index} className="bg-background rounded-none border-none group relative overflow-hidden flex flex-col h-full hover:bg-card/40 transition-colors">
                 <CardContent className="p-10 flex flex-col h-full">
                   <div className="flex items-center justify-between mb-8">
-                    <Badge variant="outline" className="rounded-none border-primary/30 text-primary text-[8px] font-black uppercase tracking-widest py-1 px-3 bg-primary/5">
-                      {project.subCategory}
-                    </Badge>
+                    <span className="px-3 py-1 bg-primary text-primary-foreground text-[8px] font-black uppercase tracking-widest leading-none">
+                      {project.category}
+                    </span>
                   </div>
 
                   <h3 className="text-3xl font-black tracking-tighter mb-4 lowercase group-hover:text-primary transition-colors">
@@ -244,8 +244,7 @@ export default function Portfolio() {
                   <p className="text-sm text-muted-foreground font-medium leading-relaxed mb-10 flex-grow">
                     {project.description}
                   </p>
-
-                  <div className="pt-8 border-t border-border/30 mt-auto flex items-center justify-between">
+                  <div className="pt-8 border-t border-border/30 mt-auto flex items-center justify-between font-bold">
                     <a
                       href={project.url}
                       target="_blank"
@@ -276,10 +275,10 @@ export default function Portfolio() {
               github.com/mal4crypt
             </a>
           </div>
-        </div>
-      </main>
+        </div >
+      </main >
 
       <Footer />
-    </div>
+    </div >
   );
 }

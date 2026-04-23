@@ -36,14 +36,14 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 px-4 overflow-hidden border-b border-border/30">
         {/* Subtle Tech Grid Background */}
-        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
-          backgroundImage: `linear-gradient(to right, #ffffff10 1px, transparent 1px), linear-gradient(to bottom, #ffffff10 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
+        <div className="absolute inset-0 z-0 opacity-5 pointer-events-none" style={{
+          backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)`,
+          backgroundSize: '80px 80px'
         }}></div>
 
         {/* Large Decorative Watermark */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 pointer-events-none select-none z-0 opacity-[0.03]">
-          <span className="text-[30vw] font-black leading-none tracking-tighter uppercase whitespace-nowrap">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 pointer-events-none select-none z-0 opacity-[0.02]">
+          <span className="text-[25vw] font-black leading-none tracking-tighter uppercase whitespace-nowrap text-[#000]">
             SECURE. BUILD.
           </span>
         </div>
@@ -56,6 +56,10 @@ const Index = () => {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
               Identity: ZEXLABS Engineering Group
+            </div>
+
+            <div className="flex justify-center mb-8">
+              <img src="/logo.png" alt="ZEXLABS" className="h-24 md:h-32 animate-fade-in" />
             </div>
 
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-foreground lowercase">

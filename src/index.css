@@ -8,92 +8,60 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 222 47% 4%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 5%;
 
-    --card: 222 47% 6%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
 
-    --popover: 222 47% 6%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
 
-    --primary: 142 70% 45%;
-    --primary-foreground: 144 80% 5%;
-    --primary-glow: 142 70% 60%;
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 0 72% 65%;
 
-    --secondary: 222 47% 10%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 5%;
 
-    --muted: 222 30% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 186 100% 40%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 72% 51%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 12%;
-    --input: 222 30% 12%;
-    --ring: 142 70% 45%;
+    --border: 0 0% 92%;
+    --input: 0 0% 92%;
+    --ring: 0 72% 51%;
 
-    --radius: 0rem; /* Squarer, more technical look */
+    --radius: 0rem;
 
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary-glow)));
-    --shadow-glow: 0 0 30px -5px hsl(var(--primary) / 0.4);
-    --shadow-elegant: 0 10px 40px -10px hsl(0 0% 0% / 0.5);
-    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--primary-glow)), hsl(var(--primary)));
+    --shadow-glow: 0 0 40px -10px hsl(var(--primary) / 0.3);
+    --shadow-elegant: 0 20px 50px -20px hsl(0 0% 0% / 0.1);
+    --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 
-    --sidebar-background: 222 47% 4%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 142 70% 45%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 222 30% 12%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 12%;
-    --sidebar-ring: 142 70% 45%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 0 72% 51%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 5%;
+    --sidebar-border: 0 0% 92%;
+    --sidebar-ring: 0 72% 51%;
   }
 
   .dark {
-    /* Same as root as we are forcing a dark theme aesthetic */
-    --background: 222 47% 4%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 6%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 6%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 142 70% 45%;
-    --primary-foreground: 144 80% 5%;
-    --primary-glow: 142 70% 60%;
-
-    --secondary: 222 47% 10%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 222 30% 15%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 186 100% 40%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 222 30% 12%;
-    --input: 222 30% 12%;
-    --ring: 142 70% 45%;
-    
-    --sidebar-background: 222 47% 4%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 142 70% 45%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 222 30% 12%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 12%;
-    --sidebar-ring: 142 70% 45%;
+    /* We are pivotting to a Light-First "Luxurious" theme, but can keep dark support if needed. 
+       For now, let's keep it the same to force the light theme experience across the app. */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 5%;
+    --primary: 0 72% 51%;
+    --border: 0 0% 92%;
   }
 }
 
@@ -101,33 +69,34 @@ All colors MUST be HSL.
   .glass {
     @apply bg-card/40 backdrop-blur-xl border border-border/50;
   }
-  
+
   .glass-hover {
     @apply transition-all duration-300 hover:bg-card/60 hover:shadow-lg;
   }
-  
+
   .gradient-text {
     @apply bg-gradient-to-r from-accent to-primary-glow bg-clip-text text-transparent;
   }
-  
+
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
   }
-  
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
