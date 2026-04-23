@@ -1,42 +1,55 @@
-# DevLuxe — Modern Website Development Agency
+# ZEXLABS — We Build. We Secure. We Automate.
 
-**Live URL**: https://devluxe-nine.vercel.app/
+**ZEXLABS** is a high-performance, security-centric technology agency specializing in mission-critical web engineering, autonomous automation, and adversarial simulation.
 
-DevLuxe is a modern website development agency platform built to showcase our services, portfolio, and expertise. The site is crafted to reflect the same premium standard we deliver to every client — clean, fast, and visually compelling.
-
----
-
-## About the Project
-
-This is the official web presence of **DevLuxe Agency**. It serves as a hub for potential clients to explore our work, understand our services, and get in touch with our team.
-
-**Core Features:**
-- 🎨 Premium agency design and branding
-- 💼 Services and portfolio showcase
-- 📱 Fully responsive across all devices
-- ⚡ Optimized for speed and performance
-- 📬 Client inquiry and contact integration
+Born at the intersection of development and security, we harden digital infrastructure against the evolving threat landscape while delivering elite-level user experiences.
 
 ---
 
-## Technologies Used
+## 🛠 Our Pillars
 
-- **Vite** — Lightning-fast build tool
-- **TypeScript** — Strongly typed JavaScript
-- **React** — Component-based UI library
-- **shadcn-ui** — Accessible and customizable UI components
-- **Tailwind CSS** — Utility-first CSS framework
-
----
-
-## Deployment
-
-DevLuxe is deployed on **Vercel** for fast, global content delivery and zero-downtime releases.
+- **Web & App Engineering:** High-performance, attacker-resistant platforms.
+- **Custom Scripts & Automation:** Complex workflow optimization and legacy bridging.
+- **AI Assistants & Integration:** State-of-the-art LLM reasoning and autonomous agents.
+- **Cybersecurity & Penetration Testing:** Deep reconnaissance and surface hardening.
 
 ---
 
-## About DevLuxe Agency
+## 🧪 Technical Stack
 
-**DevLuxe Agency** is a premium digital agency specializing in high-performance web applications, fintech solutions, real estate platforms, and modern UI/UX design.
+- **Framework:** [React v18](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components:** [Radix UI](https://www.radix-ui.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **State Management:** [React Query](https://tanstack.com/query/latest)
+- **Deployment:** [Vercel](https://vercel.com/)
 
-> Built with passion. Delivered with precision. — *DevLuxe Agency*
+---
+
+## 🚀 Key Projects
+
+Explore our high-fidelity technical projects:
+- **Vektor:** AI-powered Solana smart contract auditor.
+- **Taproot:** Autonomous AI penetration testing agent.
+- **Obelisk:** C++ vectorized query engine internals.
+- **ODPay:** Advanced fintech utility billing platform.
+
+---
+
+## 🔐 Security Philosophy
+
+We are engineers who think like attackers. Security is not a feature we add at the end — it is the foundation of every line of code we ship.
+
+> "In a world where everything is connected, nothing is safe. We bridge that gap." — *The ZEXLABS Methodology*
+
+---
+
+## 📬 Contact
+
+- **WhatsApp/Call:** +234 916 470 3407
+- **Location:** Lagos, Nigeria | Remote (serving NG · UK · US)
+- **GitHub:** [mal4crypt](https://github.com/mal4crypt)
+
+---
+© 2026 ZEXLABS. All rights reserved.
