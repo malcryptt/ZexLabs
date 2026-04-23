@@ -95,10 +95,7 @@ export default function About() {
 
             <div className="relative overflow-hidden flex items-center justify-center p-12 group">
               <Card className="rounded-none border-neutral-200 bg-white shadow-xl overflow-hidden flex items-center justify-center p-20 w-full aspect-square relative transition-all duration-700 hover:shadow-2xl">
-                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity" style={{
-                  backgroundImage: 'radial-gradient(circle, #e3242b 1px, transparent 1px)',
-                  backgroundSize: '24px 24px'
-                }}></div>
+                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity"></div>
                 <div className="relative z-10 text-center space-y-4">
                   <div className="flex justify-center gap-4">
                     <Code2 className="w-12 h-12 text-primary/30" />

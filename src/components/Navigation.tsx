@@ -22,11 +22,12 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="hover:opacity-80 transition-opacity flex items-center gap-3">
-            <img src="/logo.png" alt="ZEXLABS" className="h-10 md:h-12 w-auto" />
-            <div className="flex flex-col -space-y-1">
-              <span className="text-xl font-black tracking-tighter text-foreground leading-none">ZEX</span>
-              <span className="text-lg font-bold tracking-tighter text-primary italic leading-none">LABS</span>
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="ZEXLABS" className="h-8 md:h-10 mix-blend-multiply" />
+              <span className="text-xl md:text-2xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors">
+                ZEX<span className="text-primary italic">LABS</span>
+              </span>
             </div>
           </Link>
 
