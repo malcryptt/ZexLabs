@@ -16,8 +16,8 @@ export default function About() {
             <div className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">
               Our Philosophy
             </div>
-            <h1 className="text-5xl md:text-8xl font-black tracking-tighter lowercase leading-[0.9]">
-              Engineers who <span className="text-primary italic">think</span> like attackers.
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9]">
+              Engineers Who <span className="text-primary italic">Think</span> Like Attackers.
             </h1>
             <p className="text-xl text-muted-foreground font-medium max-w-3xl leading-relaxed">
               ZEXLABS is a technology agency born at the intersection of development and security.
@@ -29,7 +29,7 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border/20 border border-border/20 mb-32">
             <div className="p-16 bg-background space-y-6 group">
               <Shield className="w-10 h-10 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="text-3xl font-black tracking-tighter lowercase">Security-First Baseline</h3>
+              <h3 className="text-3xl font-black tracking-tighter">Security-First Baseline</h3>
               <p className="text-muted-foreground font-medium leading-relaxed">
                 Security isn't a feature we add at the end — it's the foundation of every line of code we ship.
                 From memory-safe languages to adversarial threat modeling, we build systems that are robust by design.
@@ -37,7 +37,7 @@ export default function About() {
             </div>
             <div className="p-16 bg-background space-y-6 group">
               <Zap className="w-10 h-10 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="text-3xl font-black tracking-tighter lowercase">Performance Without Compromise</h3>
+              <h3 className="text-3xl font-black tracking-tighter">Performance Without Compromise</h3>
               <p className="text-muted-foreground font-medium leading-relaxed">
                 We optimize for the extreme. Our systems are built to handle high-concurrency loads with sub-millisecond
                 latency, utilizing vectorized execution and high-performance distributed architectures.
@@ -45,7 +45,7 @@ export default function About() {
             </div>
             <div className="p-16 bg-background space-y-6 group">
               <Cpu className="w-10 h-10 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="text-3xl font-black tracking-tighter lowercase">Autonomous Automation</h3>
+              <h3 className="text-3xl font-black tracking-tighter">Autonomous Automation</h3>
               <p className="text-muted-foreground font-medium leading-relaxed">
                 We believe in systems that can reason. Leveraging state-of-the-art LLMs and custom AI agents,
                 we automate complex workflows from security scanning to code generation.
@@ -53,7 +53,7 @@ export default function About() {
             </div>
             <div className="p-16 bg-background space-y-6 group">
               <Target className="w-10 h-10 text-primary group-hover:scale-110 transition-transform" />
-              <h3 className="text-3xl font-black tracking-tighter lowercase">Adversarial Simulation</h3>
+              <h3 className="text-3xl font-black tracking-tighter">Adversarial Simulation</h3>
               <p className="text-muted-foreground font-medium leading-relaxed">
                 To build better defenses, we must understand the attack. We simulate real-world adversarial
                 engagements to identify blind spots before malicious actors do.
@@ -64,7 +64,7 @@ export default function About() {
           {/* Team / Story Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-8">
-              <h2 className="text-4xl md:text-5xl font-black tracking-tighter lowercase">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tighter">
                 Beyond the <span className="text-primary italic">Interface</span>
               </h2>
               <div className="space-y-6 text-lg text-muted-foreground font-medium font-mono text-sm uppercase tracking-wider">

@@ -62,10 +62,10 @@ const Index = () => {
               <img src="/logo.png" alt="ZEXLABS" className="h-24 md:h-32 animate-fade-in" />
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-foreground lowercase">
-              We build. <br />
-              <span className="text-primary italic">We secure.</span> <br />
-              We automate.
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-foreground">
+              We Build. <br />
+              <span className="text-primary italic">We Secure.</span> <br />
+              We Automate.
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
@@ -108,7 +108,7 @@ const Index = () => {
               <div className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">
                 Capabilities
               </div>
-              <h2 className="text-4xl md:text-5xl font-black tracking-tighter lowercase">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tighter">
                 Our <span className="text-primary italic">Services</span>
               </h2>
             </div>
@@ -120,7 +120,7 @@ const Index = () => {
                 <div className="mb-6 p-4 border border-border/50 inline-block bg-card/50 group-hover:bg-primary/5 group-hover:border-primary/30 transition-all">
                   {service.icon}
                 </div>
-                <h3 className="text-2xl font-black tracking-tight mb-4 lowercase">
+                <h3 className="text-2xl font-black tracking-tight mb-4">
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed font-medium mb-8">

@@ -39,8 +39,8 @@ export default function Contact() {
             <div className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">
               Get in Touch
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter lowercase">
-              Start the <span className="text-primary italic">conversation</span>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter">
+              Start the <span className="text-primary italic">Conversation</span>
             </h1>
             <p className="text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
               Whether you're looking for a full system audit or a custom-built

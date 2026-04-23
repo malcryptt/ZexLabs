@@ -154,7 +154,7 @@ export default function Pricing() {
             <div className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">
               Investment
             </div>
-            <h1 className="text-5xl md:text-8xl font-black tracking-tighter lowercase leading-[0.9]">
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9]">
               Elite <span className="text-primary italic">Investment</span>
             </h1>
             <p className="text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
@@ -203,7 +203,7 @@ export default function Pricing() {
                       <div className="p-4 bg-primary/5 text-primary mb-2">
                         {tier.icon}
                       </div>
-                      <h3 className="text-3xl font-black tracking-tighter lowercase">{tier.name}</h3>
+                      <h3 className="text-3xl font-black tracking-tighter">{tier.name}</h3>
                       <div className="text-3xl font-black text-primary">{tier.price}</div>
                       <p className="text-muted-foreground font-medium">{tier.description}</p>
                       {tier.note && <p className="text-[10px] font-bold uppercase tracking-widest text-primary/60 italic">{tier.note}</p>}
@@ -223,7 +223,7 @@ export default function Pricing() {
           {/* Luxury Note */}
           <div className="mt-32 p-16 bg-primary/5 border border-primary/10 text-center max-w-4xl mx-auto space-y-8">
             <MessageSquare className="w-10 h-10 text-primary mx-auto" />
-            <h2 className="text-4xl font-black tracking-tighter lowercase italic">Need a bespoke solution?</h2>
+            <h2 className="text-4xl font-black tracking-tighter italic">Need a Bespoke Solution?</h2>
             <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto">
               For large-scale enterprise infrastructure, mission-critical systems, or
               high-confidentiality government contracts, we offer custom retainer-based
@@ -254,7 +254,7 @@ function PricingCard({ tier, onCta, key }: { tier: any, onCta: () => void, key?:
           </div>
         )}
 
-        <h3 className="text-2xl font-black tracking-tighter mb-2 lowercase">{tier.name}</h3>
+        <h3 className="text-2xl font-black tracking-tighter mb-2">{tier.name}</h3>
         <div className="text-4xl font-black text-primary tracking-tighter mb-6">{tier.price}</div>
         <p className="text-sm text-muted-foreground font-medium mb-10 leading-relaxed">{tier.description}</p>
 

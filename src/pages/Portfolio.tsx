@@ -190,8 +190,8 @@ export default function Portfolio() {
             <div className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">
               Portfolio
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter lowercase">
-              What we've <span className="text-primary italic">built</span>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter">
+              What We've <span className="text-primary italic">Built</span>
             </h1>
             <p className="text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
               From high-performance query engines and distributed systems to
@@ -229,7 +229,7 @@ export default function Portfolio() {
                     </span>
                   </div>
 
-                  <h3 className="text-3xl font-black tracking-tighter mb-4 lowercase group-hover:text-primary transition-colors">
+                  <h3 className="text-3xl font-black tracking-tighter mb-4 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
 
