@@ -83,7 +83,7 @@ export default function About() {
               </div>
               <div className="pt-8">
                 <blockquote className="border-l-4 border-primary pl-8 py-4 bg-primary/5">
-                  <p className="text-2xl font-black tracking-tighter italic text-foreground lowercase">
+                  <p className="text-2xl font-black tracking-tighter italic text-foreground">
                     "In a world where everything is connected, nothing is safe. We bridge that gap."
                   </p>
                   <footer className="mt-4 text-xs font-black uppercase tracking-widest text-primary">
