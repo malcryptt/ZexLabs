@@ -23,7 +23,7 @@ const pricingData = {
     },
     {
       name: "Standard",
-      price: "₦250,000",
+      price: "₦550,000",
       description: "Full-stack platform development with advanced integrations.",
       features: [
         "Everything in Basic",
@@ -37,7 +37,7 @@ const pricingData = {
     },
     {
       name: "Elite",
-      price: "₦400,000+",
+      price: "₦900,000+",
       description: "High-performance enterprise-grade mobile & web applications.",
       features: [
         "Everything in Standard",
