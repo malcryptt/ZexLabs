@@ -67,18 +67,18 @@ export default function About() {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter">
                 Beyond the <span className="text-primary italic">Interface</span>
               </h2>
-              <div className="space-y-6 text-lg text-muted-foreground font-medium font-mono text-sm uppercase tracking-wider">
+              <div className="space-y-6 text-xl text-foreground font-bold tracking-tight">
                 <p>
-                  [01] We are based in Ondo and Lagos, Nigeria — global hubs of technical innovation.
+                  <span className="text-primary font-mono mr-4">[01]</span> Based in Ondo and Lagos, Nigeria — global hubs of technical innovation.
                 </p>
                 <p>
-                  [02] Our team consists of software engineers, security researchers, and AI architects.
+                  <span className="text-primary font-mono mr-4">[02]</span> Our team consists of software engineers, security researchers, and AI architects.
                 </p>
                 <p>
-                  [03] We operate with a remote-first philosophy, serving clients globally.
+                  <span className="text-primary font-mono mr-4">[03]</span> We operate with a remote-first philosophy, serving clients globally.
                 </p>
                 <p>
-                  [04] Current focus: Fintech, Estate Realty, Business and Commercial tech development.
+                  <span className="text-primary font-mono mr-4">[04]</span> Current focus: Fintech, Estate Realty, Business and Commercial tech development.
                 </p>
               </div>
               <div className="pt-8">
