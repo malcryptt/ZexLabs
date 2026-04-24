@@ -5,6 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Shield, Target, Cpu, Zap, Code2, Globe } from "lucide-react";
 
 export default function About() {
+  React.useEffect(() => {
+    document.title = "About | ZEXLABS — Our Philosophy";
+  }, []);
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />

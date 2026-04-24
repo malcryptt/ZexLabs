@@ -138,8 +138,12 @@ const pricingData = {
 };
 
 export default function Pricing() {
+  React.useEffect(() => {
+    document.title = "Pricing | ZEXLABS — Investment Tiers";
+  }, []);
+
   const openWhatsApp = (tier: string) => {
-    const message = `Hello ZEXLABS! I'm interested in the ${tier} package. Let's discuss the technical requirements.`;
+    const message = `Hello ZEXLABS Architect! I'm interested in the ${tier} package for my project. Let's discuss the technical requirements and timeline.`;
     window.open(`https://wa.me/2349164703407?text=${encodeURIComponent(message)}`, '_blank');
   };
 

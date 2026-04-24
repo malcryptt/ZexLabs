@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,9 @@ import { MessageSquare, Mail, MapPin, Send, Github, Instagram, Twitter } from "l
 import { useToast } from "@/hooks/use-toast";
 
 export default function Contact() {
+  useEffect(() => {
+    document.title = "Contact | ZEXLABS — Get In Touch";
+  }, []);
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",

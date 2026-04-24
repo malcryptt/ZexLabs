@@ -162,6 +162,9 @@ const projects = [
 ];
 
 export default function Portfolio() {
+  React.useEffect(() => {
+    document.title = "Portfolio | ZEXLABS — What We've Built";
+  }, []);
   const [activeCategory, setActiveCategory] = useState("all");
 
   const filteredProjects = activeCategory === "all"

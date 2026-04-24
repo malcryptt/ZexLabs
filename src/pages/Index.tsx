@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Layout, Terminal, Cpu, ShieldAlert, ArrowRight, CheckCircle2 } from "lucide-react";
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  useEffect(() => {
+    document.title = "ZEXLABS — Engineering Excellence & Adversarial Hardening";
+  }, []);
   const services = [
     {
       icon: <Layout className="w-10 h-10 text-primary" />,
