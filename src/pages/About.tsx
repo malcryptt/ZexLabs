@@ -69,7 +69,7 @@ export default function About() {
               </h2>
               <div className="space-y-6 text-lg text-muted-foreground font-medium font-mono text-sm uppercase tracking-wider">
                 <p>
-                  [01] We are based in Lagos, Nigeria — a global hub of technical innovation.
+                  [01] We are based in Ondo and Lagos, Nigeria — global hubs of technical innovation.
                 </p>
                 <p>
                   [02] Our team consists of software engineers, security researchers, and AI architects.
@@ -78,7 +78,7 @@ export default function About() {
                   [03] We operate with a remote-first philosophy, serving clients globally.
                 </p>
                 <p>
-                  [04] Current focus: Web3 security, autonomous agents, and high-performance fintech.
+                  [04] Current focus: Fintech, Estate Realty, Business and Commercial tech development.
                 </p>
               </div>
               <div className="pt-8">

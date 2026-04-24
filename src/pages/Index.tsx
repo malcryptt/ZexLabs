@@ -85,7 +85,7 @@ const Index = () => {
             <div className="pt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/60 border-t border-border/20 pt-10">
               <div className="flex items-center gap-2 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
                 <CheckCircle2 className="w-3 h-3 text-primary" />
-                Based in Nigeria
+                Ondo & Lagos, Nigeria
               </div>
               <div className="hidden sm:block text-border/40">•</div>
               <div className="flex items-center gap-2 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all cursor-default">

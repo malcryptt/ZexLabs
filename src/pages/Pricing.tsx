@@ -7,28 +7,71 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, Shield, Cpu, Code2, Terminal, Zap, ArrowRight, MessageSquare } from "lucide-react";
 
 const pricingData = {
-  appSecurity: [
+  appDev: [
     {
       name: "Basic",
       price: "₦150,000",
-      description: "Essential security features for mobile and web applications.",
+      description: "Custom UI/UX design and mobile-responsive MVP development.",
       features: [
-        "Basic Vulnerability Scanning",
-        "Secure Storage Implementation",
-        "OWASP Top 10 Protections",
+        "Custom UI/UX Design",
+        "Mobile Responsive Layout",
+        "Essential API Integration",
         "Technical Documentation",
+        "1 Month Support",
       ],
-      cta: "Get Started"
+      cta: "Build MVP"
     },
     {
       name: "Standard",
       price: "₦250,000",
-      description: "Advanced security with visibility optimizations.",
+      description: "Full-stack platform development with advanced integrations.",
       features: [
         "Everything in Basic",
+        "Advanced State Management",
+        "Social Authentication",
+        "Payment Gateway Integration",
+        "3 Months Priority Support",
+      ],
+      featured: true,
+      cta: "Scale Up"
+    },
+    {
+      name: "Elite",
+      price: "₦400,000+",
+      description: "High-performance enterprise-grade mobile & web applications.",
+      features: [
+        "Everything in Standard",
+        "Scalable Backend Architecture",
+        "App Store & Play Store Deployment",
+        "Continuous CI/CD Pipelines",
+        "Priority 24/7 Engineering Support",
+      ],
+      cta: "Launch Elite"
+    }
+  ],
+  websiteDev: [
+    {
+      name: "Basic",
+      price: "₦150,000",
+      description: "Clean, professional business websites with essential SEO.",
+      features: [
+        "Custom UI/UX Design",
+        "Mobile Responsive Layout",
+        "SEO Meta Optimization",
+        "Contact Form Integration",
         "Google Indexing Setup",
-        "API Security Hardening",
-        "Data Encryption at Rest",
+      ],
+      cta: "Build Basic"
+    },
+    {
+      name: "Standard",
+      price: "₦250,000",
+      description: "High-visibility business platforms with CMS capability.",
+      features: [
+        "Everything in Basic",
+        "Content Management System",
+        "Performance Tuning",
+        "Google Search Console",
         "3 Months Support",
       ],
       featured: true,
@@ -37,53 +80,12 @@ const pricingData = {
     {
       name: "Elite",
       price: "₦400,000+",
-      description: "The ultimate security and infrastructure package.",
+      description: "Premium enterprise web solutions with total optimization.",
       features: [
         "Everything in Standard",
-        "Advanced Penetration Testing",
-        "Continuous Monitoring",
-        "Free Domain for 1 Year",
-        "Priority 24/7 Support",
-      ],
-      cta: "Join Elite"
-    }
-  ],
-  websiteDev: [
-    {
-      name: "Basic",
-      price: "₦150,000",
-      description: "Clean, professional, and fast business websites.",
-      features: [
-        "Custom UI/UX Design",
-        "Mobile Responsive Layout",
-        "Essential SEO Optimization",
-        "Contact Form Integration",
-      ],
-      cta: "Build Basic"
-    },
-    {
-      name: "Standard",
-      price: "₦250,000",
-      description: "High-performance sites with search visibility.",
-      features: [
-        "Everything in Basic",
-        "Google Indexing & Console",
-        "Content Management System",
-        "Performance Tuning",
-        "Analytics Dashboard",
-      ],
-      featured: true,
-      cta: "Scale Up"
-    },
-    {
-      name: "Elite",
-      price: "₦400,000+",
-      description: "Enterprise-grade web platforms with total protection.",
-      features: [
-        "Everything in Standard",
+        "Custom Intranets / Client Portals",
         "Advanced Security Baseline",
-        "Custom Integrations",
-        "Free Domain for 1 Year",
+        "Search Visibility Engine",
         "Priority Deployment",
       ],
       cta: "Go Enterprise"
@@ -129,9 +131,9 @@ const pricingData = {
     {
       name: "Cyber Security & Pentesting",
       price: "₦150,000+",
-      description: "Professional offensive security and surface hardening.",
+      description: "Professional offensive security, hardening, and app audits.",
       icon: <Shield className="w-8 h-8 text-primary" />,
-      note: "Custom scope based on infrastructure",
+      note: "Includes Vulnerability Scanning, OWASP Audits, and Remediation Plans.",
       cta: "Contact Engineer"
     }
   ]
@@ -163,18 +165,18 @@ export default function Pricing() {
             </p>
           </div>
 
-          <Tabs defaultValue="appSecurity" className="w-full">
+          <Tabs defaultValue="appDev" className="w-full">
             <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-2 md:grid-cols-4 mb-20 p-1 bg-secondary border border-border/50">
-              <TabsTrigger value="appSecurity" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">App Security</TabsTrigger>
+              <TabsTrigger value="appDev" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">App Development</TabsTrigger>
               <TabsTrigger value="websiteDev" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Website Dev</TabsTrigger>
               <TabsTrigger value="ai" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Systems</TabsTrigger>
               <TabsTrigger value="specialized" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Specialized</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="appSecurity" className="animate-fade-in">
+            <TabsContent value="appDev" className="animate-fade-in">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {pricingData.appSecurity.map((tier, i) => (
-                  <PricingCard key={i} tier={tier} onCta={() => openWhatsApp(`App Security - ${tier.name}`)} />
+                {pricingData.appDev.map((tier, i) => (
+                  <PricingCard key={i} tier={tier} onCta={() => openWhatsApp(`App Development - ${tier.name}`)} />
                 ))}
               </div>
             </TabsContent>

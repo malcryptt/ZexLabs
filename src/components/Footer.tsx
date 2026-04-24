@@ -27,7 +27,7 @@ const Footer = () => {
               <a href="https://www.instagram.com/zexlabs/#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="mailto:mal4crypt404@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="mailto:xyron.ceo@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
                 <Mail size={20} />
               </a>
             </div>
@@ -65,7 +65,7 @@ const Footer = () => {
 
         <div className="border-t border-border/30 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-xs text-muted-foreground flex flex-wrap justify-center gap-4">
-            <span>🇳🇬 Lagos, Nigeria</span>
+            <span>🇳🇬 Ondo & Lagos, Nigeria</span>
             <span>• Remote</span>
             <span>• Serving NG · UK · US</span>
           </div>

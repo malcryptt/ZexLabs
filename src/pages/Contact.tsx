@@ -44,7 +44,7 @@ export default function Contact() {
             </h1>
             <p className="text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
               Whether you're looking for a full system audit or a custom-built
-              platform, our engineers are ready to build with you.
+              platform, our engineers are ready to build with you. We operate from Ondo and Lagos States, serving clients globally.
             </p>
           </div>
 
@@ -58,8 +58,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-2">Technical Support</h4>
-                    <p className="text-xl font-bold tracking-tight">+234 916 470 3407</p>
-                    <p className="text-sm text-muted-foreground font-medium mt-1">Chat on WhatsApp or call us directly.</p>
+                    <p className="text-xl font-bold tracking-tight">+234 913 174 4823</p>
+                    <p className="text-sm text-muted-foreground font-medium mt-1">Call us directly for urgent inquiries.</p>
                   </div>
                 </div>
 
@@ -69,8 +69,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-2">Email Inquiry</h4>
-                    <p className="text-xl font-bold tracking-tight">hello@zexlabs.com</p>
-                    <p className="text-sm text-muted-foreground font-medium mt-1">Our team typically responds within 4 hours.</p>
+                    <p className="text-xl font-bold tracking-tight">xyron.ceo@gmail.com</p>
+                    <p className="text-sm text-muted-foreground font-medium mt-1">Inquiries are sent directly to our executive team.</p>
                   </div>
                 </div>
 
@@ -80,8 +80,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-2">Operations</h4>
-                    <p className="text-xl font-bold tracking-tight">Lagos, Nigeria</p>
-                    <p className="text-sm text-muted-foreground font-medium mt-1">Serving clients globally from West Africa's tech hub.</p>
+                    <p className="text-xl font-bold tracking-tight">Ondo & Lagos, Nigeria</p>
+                    <p className="text-sm text-muted-foreground font-medium mt-1">Serving clients globally from West Africa's tech hubs.</p>
                   </div>
                 </div>
               </div>
