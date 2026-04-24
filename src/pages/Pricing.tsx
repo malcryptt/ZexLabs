@@ -10,7 +10,7 @@ const pricingData = {
   appDev: [
     {
       name: "Basic",
-      price: "₦150,000",
+      price: "₦300,000",
       description: "Custom UI/UX design and mobile-responsive MVP development.",
       features: [
         "Custom UI/UX Design",
