@@ -58,7 +58,7 @@ const Auth = () => {
 
       const emailValidation = z.string().email("Invalid email address");
       const result = emailValidation.safeParse(email);
-      
+
       if (!result.success) {
         toast({
           title: "Invalid Email",
@@ -97,18 +97,18 @@ const Auth = () => {
 
     try {
       // Validate based on auth method
-      const validation = authMethod === 'email' 
-        ? emailAuthSchema.safeParse({ 
-            email, 
-            password,
-            fullName: isSignUp ? fullName : undefined
-          })
-        : phoneAuthSchema.safeParse({ 
-            phone, 
-            password,
-            fullName: isSignUp ? fullName : undefined
-          });
-      
+      const validation = authMethod === 'email'
+        ? emailAuthSchema.safeParse({
+          email,
+          password,
+          fullName: isSignUp ? fullName : undefined
+        })
+        : phoneAuthSchema.safeParse({
+          phone,
+          password,
+          fullName: isSignUp ? fullName : undefined
+        });
+
       if (!validation.success) {
         toast({
           title: "Validation Error",
@@ -121,7 +121,7 @@ const Auth = () => {
 
       if (isSignUp) {
         const redirectUrl = `${window.location.origin}/dashboard`;
-        
+
         if (authMethod === 'email') {
           const { error } = await supabase.auth.signUp({
             email,
@@ -184,8 +184,8 @@ const Auth = () => {
 
         toast({
           title: "Account created!",
-          description: authMethod === 'email' 
-            ? "You can now sign in with your credentials." 
+          description: authMethod === 'email'
+            ? "You can now sign in with your credentials."
             : "Verification code sent. You can now sign in with your credentials.",
         });
         setIsSignUp(false);
@@ -267,7 +267,7 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center px-4 py-20">
       <div className="w-full max-w-md glass glass-hover p-8 rounded-lg animate-fade-in">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold gradient-text mb-2">DevLuxe</h1>
+          <h1 className="text-3xl font-bold gradient-text mb-2">ZEXLABS</h1>
           <p className="text-muted-foreground">
             {isForgotPassword ? "Reset your password" : isSignUp ? "Create your account" : "Sign in to continue"}
           </p>
@@ -280,22 +280,20 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setAuthMethod('email')}
-                className={`flex-1 py-2 px-4 rounded-md transition-all ${
-                  authMethod === 'email' 
-                    ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                className={`flex-1 py-2 px-4 rounded-md transition-all ${authMethod === 'email'
+                    ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
-                }`}
+                  }`}
               >
                 Email
               </button>
               <button
                 type="button"
                 onClick={() => setAuthMethod('phone')}
-                className={`flex-1 py-2 px-4 rounded-md transition-all ${
-                  authMethod === 'phone' 
-                    ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground' 
+                className={`flex-1 py-2 px-4 rounded-md transition-all ${authMethod === 'phone'
+                    ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
-                }`}
+                  }`}
               >
                 Phone
               </button>
@@ -316,7 +314,7 @@ const Auth = () => {
               />
             </div>
           )}
-          
+
           {(authMethod === 'email' || isForgotPassword) ? (
             <div>
               <Label htmlFor="email">Email address</Label>
@@ -350,26 +348,26 @@ const Auth = () => {
 
           {!isForgotPassword && (
             <div>
-            <Label htmlFor="password">Password</Label>
-            <div className="relative mt-1">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="glass pr-10"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+              <Label htmlFor="password">Password</Label>
+              <div className="relative mt-1">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="glass pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
-          </div>
           )}
 
           <Button

@@ -29,40 +29,32 @@ interface PackagePresets {
 }
 
 const packagePresets: PackagePresets = {
-  'Mobile Development': [
-    { label: 'Basic Mobile App', price: 150000 },
-    { label: 'Standard Mobile App', price: 300000 },
-    { label: 'Advanced Mobile App', price: 500000 },
+  'App Development': [
+    { label: 'Basic App Development', price: 300000 },
+    { label: 'Standard App Development', price: 550000 },
+    { label: 'Elite App Development', price: 900000 },
   ],
-  'E-commerce': [
-    { label: 'Basic E-commerce', price: 200000 },
-    { label: 'Standard E-commerce', price: 400000 },
-    { label: 'Advanced E-commerce', price: 700000 },
-  ],
-  'Web Development': [
-    { label: 'Basic Website (5 pages)', price: 100000 },
-    { label: 'Standard Website (10 pages)', price: 200000 },
-    { label: 'Advanced Website (15+ pages)', price: 350000 },
-  ],
-  'Redesign': [
-    { label: 'Basic Redesign', price: 80000 },
-    { label: 'Standard Redesign', price: 150000 },
-    { label: 'Complete Redesign', price: 250000 },
-  ],
-  'Maintenance': [
-    { label: 'Monthly Maintenance', price: 25000 },
-    { label: 'Quarterly Maintenance', price: 60000 },
-    { label: 'Annual Maintenance', price: 200000 },
-  ],
-  'Domain': [
-    { label: '.com Domain', price: 15000 },
-    { label: '.ng Domain', price: 10000 },
-    { label: 'Premium Domain', price: 50000 },
+  'Website Development': [
+    { label: 'Basic Website', price: 150000 },
+    { label: 'Standard Website', price: 250000 },
+    { label: 'Elite Website', price: 400000 },
   ],
   'Cyber Security': [
-    { label: 'Basic Security Package', price: 100000 },
-    { label: 'Standard Security Package', price: 200000 },
-    { label: 'Advanced Security Package', price: 350000 },
+    { label: 'Security Consultation', price: 100000 },
+    { label: 'Penetration Testing', price: 250000 },
+    { label: 'Full Security Audit', price: 500000 },
+  ],
+  'AI Systems': [
+    { label: 'Basic AI Tools', price: 450000 },
+    { label: 'AI Agent Deployment', price: 700000 },
+  ],
+  'Maintenance': [
+    { label: 'Monthly Support', price: 50000 },
+    { label: 'Annual Support', price: 500000 },
+  ],
+  'Domain': [
+    { label: '.com Domain (1yr)', price: 25000 },
+    { label: '.com.ng Domain (1yr)', price: 15000 },
   ],
 };
 
@@ -92,13 +84,12 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const [packages, setPackages] = useState<PackageItem[]>([
-    { name: 'Mobile Development', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'E-commerce', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'Web Development', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'Redesign', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'App Development', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Website Development', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'AI Systems', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Cyber Security', price: 0, selected: false, priceOption: 'preset' },
     { name: 'Maintenance', price: 0, selected: false, priceOption: 'preset' },
     { name: 'Domain', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'Cyber Security', price: 0, selected: false, priceOption: 'preset' },
   ]);
 
   const [formData, setFormData] = useState({
@@ -214,12 +205,12 @@ export default function Dashboard() {
           } else {
             packageString = pkg.name;
           }
-          
+
           // Add years for Domain and Cyber Security packages
           if ((pkg.name === 'Domain' || pkg.name === 'Cyber Security') && pkg.years) {
             packageString += ` (${pkg.years} year${pkg.years > 1 ? 's' : ''})`;
           }
-          
+
           return `${packageString} (₦${pkg.price.toLocaleString()})`;
         });
 
@@ -315,13 +306,13 @@ export default function Dashboard() {
           ADMIN DASHBOARD
         </div>
       </div>
-      
+
       {/* Tech circuit pattern */}
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)`,
         backgroundSize: '60px 60px'
       }}></div>
-      
+
       <Navigation />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
@@ -331,8 +322,8 @@ export default function Dashboard() {
                 {isAdmin ? 'Admin Dashboard' : 'My Transactions'}
               </h1>
               <p className="text-muted-foreground">
-                {isAdmin 
-                  ? 'Manage all client transactions' 
+                {isAdmin
+                  ? 'Manage all client transactions'
                   : 'View your transaction history'}
               </p>
             </div>
@@ -405,7 +396,7 @@ export default function Dashboard() {
                                 {pkg.name}
                               </Label>
                             </div>
-                            
+
                             {pkg.selected && (
                               <div className="ml-9 space-y-3 p-3 bg-background/50 rounded-lg border border-border/50">
                                 {/* Price Option Toggle */}
@@ -589,7 +580,7 @@ export default function Dashboard() {
                         />
                       </div>
                     </div>
-                    
+
                     <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary-glow">
                       Save Transaction
                     </Button>
@@ -635,15 +626,14 @@ export default function Dashboard() {
                             {transaction.packages_bought?.join(', ') || '-'}
                           </TableCell>
                           <TableCell>
-                            <span className={`px-2 py-1 rounded text-xs ${
-                              transaction.payment_status === 'completed' 
-                                ? 'bg-green-100 text-green-800' 
-                                : transaction.payment_status === 'failed'
+                            <span className={`px-2 py-1 rounded text-xs ${transaction.payment_status === 'completed'
+                              ? 'bg-green-100 text-green-800'
+                              : transaction.payment_status === 'failed'
                                 ? 'bg-red-100 text-red-800'
                                 : transaction.payment_status === 'uncomplete'
-                                ? 'bg-orange-100 text-orange-800'
-                                : 'bg-yellow-100 text-yellow-800'
-                            }`}>
+                                  ? 'bg-orange-100 text-orange-800'
+                                  : 'bg-yellow-100 text-yellow-800'
+                              }`}>
                               {transaction.payment_status}
                             </span>
                           </TableCell>
@@ -654,9 +644,9 @@ export default function Dashboard() {
                           {isAdmin && (
                             <TableCell>
                               {transaction.receipt_url ? (
-                                <a 
-                                  href={transaction.receipt_url} 
-                                  target="_blank" 
+                                <a
+                                  href={transaction.receipt_url}
+                                  target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-primary hover:underline"
                                 >
