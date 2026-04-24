@@ -24,7 +24,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="ZEXLABS" className="h-8 md:h-10 mix-blend-multiply" />
+              <img src="/logo.png" alt="ZEXLABS" className="h-8 md:h-10 mix-blend-darken brightness-110 contrast-125" />
               <span className="text-xl md:text-2xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors">
                 ZEX<span className="text-primary italic">LABS</span>
               </span>

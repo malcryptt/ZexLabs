@@ -8,8 +8,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity">
-              <img src="/logo.png" alt="ZEXLABS" className="h-8 w-auto" />
-              <div className="flex flex-col -space-y-1">
+              <img src="/logo.png" alt="ZEXLABS" className="h-8 w-auto mix-blend-darken brightness-110" />
+              bitumen              <div className="flex flex-col -space-y-1">
                 <span className="text-lg font-black tracking-tighter text-foreground leading-none">ZEX</span>
                 <span className="text-sm font-bold tracking-tighter text-primary italic leading-none">LABS</span>
               </div>
