@@ -17,7 +17,6 @@ const pricingData = {
         "Mobile Responsive Layout",
         "Essential API Integration",
         "Technical Documentation",
-        "1 Month Support",
       ],
       cta: "Build MVP"
     },
@@ -30,7 +29,7 @@ const pricingData = {
         "Advanced State Management",
         "Social Authentication",
         "Payment Gateway Integration",
-        "3 Months Priority Support",
+        "Support on its first month",
       ],
       featured: true,
       cta: "Scale Up"
@@ -44,7 +43,7 @@ const pricingData = {
         "Scalable Backend Architecture",
         "App Store & Play Store Deployment",
         "Continuous CI/CD Pipelines",
-        "Priority 24/7 Engineering Support",
+        "Priority support for the first three months",
       ],
       cta: "Launch Elite"
     }
@@ -59,7 +58,6 @@ const pricingData = {
         "Mobile Responsive Layout",
         "SEO Meta Optimization",
         "Contact Form Integration",
-        "Google Indexing Setup",
       ],
       cta: "Build Basic"
     },
@@ -72,7 +70,7 @@ const pricingData = {
         "Content Management System",
         "Performance Tuning",
         "Google Search Console",
-        "3 Months Support",
+        "Support on its first month",
       ],
       featured: true,
       cta: "Go Standard"
@@ -86,7 +84,7 @@ const pricingData = {
         "Custom Intranets / Client Portals",
         "Advanced Security Baseline",
         "Search Visibility Engine",
-        "Priority Deployment",
+        "Priority support for the first three months",
       ],
       cta: "Go Enterprise"
     }
@@ -94,7 +92,7 @@ const pricingData = {
   ai: [
     {
       name: "Basic (AI Tools)",
-      price: "₦350,000",
+      price: "₦450,000",
       description: "Leverage AI for bots and workflow automation.",
       features: [
         "Custom AI Chatbots",
@@ -106,7 +104,7 @@ const pricingData = {
     },
     {
       name: "Agent",
-      price: "₦600,000+",
+      price: "₦700,000+",
       description: "Fully autonomous agents with dedicated management.",
       features: [
         "Autonomous Reasoning Agent",
