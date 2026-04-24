@@ -29,7 +29,7 @@ const pricingData = {
         "Advanced State Management",
         "Social Authentication",
         "Payment Gateway Integration",
-        "Support on its first month",
+        "Support On Its First Month",
       ],
       featured: true,
       cta: "Scale Up"
@@ -43,7 +43,7 @@ const pricingData = {
         "Scalable Backend Architecture",
         "App Store & Play Store Deployment",
         "Continuous CI/CD Pipelines",
-        "Priority support for the first three months",
+        "Priority Support For The First Three Months",
       ],
       cta: "Launch Elite"
     }
@@ -70,7 +70,7 @@ const pricingData = {
         "Content Management System",
         "Performance Tuning",
         "Google Search Console",
-        "Support on its first month",
+        "Support On Its First Month",
       ],
       featured: true,
       cta: "Go Standard"
@@ -84,7 +84,7 @@ const pricingData = {
         "Custom Intranets / Client Portals",
         "Advanced Security Baseline",
         "Search Visibility Engine",
-        "Priority support for the first three months",
+        "Priority Support For The First Three Months",
       ],
       cta: "Go Enterprise"
     }
