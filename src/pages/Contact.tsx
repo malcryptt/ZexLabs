@@ -25,6 +25,7 @@ export default function Contact() {
     const whatsappMessage = `Hello ZEXLABS! My name is ${formData.name}. \n\nSubject: ${formData.subject}\n\n${formData.message}`;
     window.open(`https://wa.me/2349164703407?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
 
+    setFormData({ name: "", email: "", subject: "", message: "" });
     toast({
       title: "Opening WhatsApp...",
       description: "You're being redirected to chat with our engineering team.",
@@ -37,6 +38,7 @@ export default function Contact() {
     const mailtoUri = `mailto:hello@zexlabs.com.ng?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUri;
 
+    setFormData({ name: "", email: "", subject: "", message: "" });
     toast({
       title: "Opening Email Client...",
       description: "Dispatching your inquiry to hello@zexlabs.com.ng",
