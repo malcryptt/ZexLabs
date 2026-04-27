@@ -11,26 +11,26 @@ const pricingData = {
     {
       category: "Penetration Testing",
       tiers: [
-        { name: "Basic Assessment", price: "₦350,000", description: "Standard vulnerability mapping and OWASP audit." },
-        { name: "Standard Pentest", price: "₦850,000", description: "Deep manual exploitation and remediation roadmap." },
-        { name: "Advanced Audit", price: "₦1,800,000", description: "Comprehensive adversarial hardening & red teaming." },
-        { name: "Enterprise", price: "From ₦3,500,000", description: "Mission-critical corporate infrastructure audit." }
+        { name: "Basic Assessment", price: "₦200,000", description: "Standard vulnerability mapping and OWASP audit." },
+        { name: "Standard Pentest", price: "₦500,000", description: "Deep manual exploitation and remediation roadmap." },
+        { name: "Advanced Audit", price: "₦1,200,000", description: "Comprehensive adversarial hardening & red teaming." },
+        { name: "Enterprise", price: "From ₦2,500,000", description: "Mission-critical corporate infrastructure audit." }
       ]
     },
     {
       category: "Smart Contract Audit",
       tiers: [
-        { name: "Basic", price: "₦1,500,000", description: "Single contract security validation." },
-        { name: "Standard", price: "₦2,800,000", description: "Full protocol audit & economic modeling." },
-        { name: "Enterprise", price: "From ₦5,000,000", description: "Live mainnet deployment safeguarding." }
+        { name: "Basic", price: "₦1,000,000", description: "Single contract security validation." },
+        { name: "Standard", price: "₦2,000,000", description: "Full protocol audit & economic modeling." },
+        { name: "Enterprise", price: "From ₦4,000,000", description: "Live mainnet deployment safeguarding." }
       ]
     },
     {
       category: "Recon Reports",
       tiers: [
-        { name: "Pro Recon", price: "₦150,000", description: "Detailed digital footprint intelligence report." },
-        { name: "Standard Recon", price: "₦250,000", description: "In-depth OSINT and credential leak audit." },
-        { name: "Deep Recon", price: "₦450,000", description: "Shadow IT mapping and metadata leak analysis." }
+        { name: "Pro Recon", price: "₦100,000", description: "Detailed digital footprint intelligence report." },
+        { name: "Standard Recon", price: "₦180,000", description: "In-depth OSINT and credential leak audit." },
+        { name: "Deep Recon", price: "₦350,000", description: "Shadow IT mapping and metadata leak analysis." }
       ]
     }
   ],
@@ -38,35 +38,35 @@ const pricingData = {
     {
       category: "Web Development",
       tiers: [
-        { name: "Premium Starter", price: "₦250,000", description: "High-performance professional business sites." },
-        { name: "Business", price: "₦550,000", description: "Scalable platform with full SEO integration." },
-        { name: "Pro Platform", price: "₦1,200,000", description: "Custom enterprise portals and architectures." },
-        { name: "E-commerce", price: "From ₦2,500,000", description: "High-volume secure marketplaces." }
+        { name: "Premium Starter", price: "₦150,000", description: "High-performance professional business sites." },
+        { name: "Business", price: "₦350,000", description: "Scalable platform with full SEO integration." },
+        { name: "Pro Platform", price: "₦800,000", description: "Custom enterprise portals and architectures." },
+        { name: "E-commerce", price: "From ₦1,500,000", description: "High-volume secure marketplaces." }
       ]
     },
     {
       category: "Hardened App Development",
       tiers: [
-        { name: "Secure MVP", price: "₦1,800,000", description: "Vulnerability-tested MVP for high-risk startups." },
-        { name: "Standard App", price: "₦4,500,000", description: "Full-stack mobile/web with encryption baseline." },
-        { name: "Pro Architecture", price: "₦8,000,000+", description: "Distributed systems for large-scale users." },
-        { name: "Fintech Platform", price: "From ₦15,000,000", description: "Bank-grade security and financial compliance." }
+        { name: "Secure MVP", price: "₦1,200,000", description: "Vulnerability-tested MVP for high-risk startups." },
+        { name: "Standard App", price: "₦3,000,000", description: "Full-stack mobile/web with encryption baseline." },
+        { name: "Pro Architecture", price: "₦6,000,000+", description: "Distributed systems for large-scale users." },
+        { name: "Fintech Platform", price: "From ₦10,000,000", description: "Bank-grade security and financial compliance." }
       ]
     },
     {
       category: "Cloud Infrastructure",
       tiers: [
-        { name: "Cloud Setup", price: "₦450,000", description: "Secure AWS/Azure/GCP environment builds." },
-        { name: "Cost Optimization", price: "₦850,000", description: "Strategic infrastructure cost reduction." },
-        { name: "Advanced DevOps", price: "From ₦1,500,000", description: "Full CI/CD & infrastructure-as-code." }
+        { name: "Cloud Setup", price: "₦350,000", description: "Secure AWS/Azure/GCP environment builds." },
+        { name: "Cost Optimization", price: "₦650,000", description: "Strategic infrastructure cost reduction." },
+        { name: "Advanced DevOps", price: "From ₦1,200,000", description: "Full CI/CD & infrastructure-as-code." }
       ]
     },
     {
       category: "Custom Scripts",
       tiers: [
-        { name: "Pro Script", price: "₦150,000", description: "High-level automation and data processing." },
-        { name: "Standard System", price: "₦250,000", description: "Custom hooks and third-party integrations." },
-        { name: "Advanced Worker", price: "₦450,000", description: "Complex background task engines." }
+        { name: "Pro Script", price: "₦80,000", description: "High-level automation and data processing." },
+        { name: "Standard System", price: "₦150,000", description: "Custom hooks and third-party integrations." },
+        { name: "Advanced Worker", price: "₦300,000", description: "Complex background task engines." }
       ]
     }
   ],
@@ -74,19 +74,19 @@ const pricingData = {
     {
       category: "AI Agent & Automation",
       tiers: [
-        { name: "Implementation", price: "₦600,000", description: "Custom AI chatbot with local knowledge base." },
-        { name: "RAG System", price: "₦1,200,000", description: "Advanced autonomous reasoning architecture." },
-        { name: "Workforce", price: "₦2,800,000", description: "Total department AI automation suites." },
-        { name: "Custom Model", price: "From ₦5,000,000", description: "Fine-tuning and LLM deployment." }
+        { name: "Implementation", price: "₦450,000", description: "Custom AI chatbot with local knowledge base." },
+        { name: "RAG System", price: "₦900,000", description: "Advanced autonomous reasoning architecture." },
+        { name: "Workforce", price: "₦1,800,000", description: "Total department AI automation suites." },
+        { name: "Custom Model", price: "From ₦3,500,000", description: "Fine-tuning and LLM deployment." }
       ]
     },
     {
       category: "UI/UX Brand Direction",
       tiers: [
-        { name: "Basic Design", price: "₦250,000", description: "High-fidelity UI and interaction design." },
-        { name: "Design System", price: "₦550,000", description: "Comprehensive corporate brand language." },
-        { name: "Motion & UI", price: "₦850,000", description: "Advanced high-fidelity UX and animation." },
-        { name: "Full Branding", price: "₦1,500,000", description: "360° visual identity and production." }
+        { name: "Basic Design", price: "₦150,000", description: "High-fidelity UI and interaction design." },
+        { name: "Design System", price: "₦350,000", description: "Comprehensive corporate brand language." },
+        { name: "Motion & UI", price: "₦650,000", description: "Advanced high-fidelity UX and animation." },
+        { name: "Full Branding", price: "₦1,200,000", description: "360° visual identity and production." }
       ]
     }
   ],
@@ -94,26 +94,26 @@ const pricingData = {
     {
       category: "Maintenance",
       tiers: [
-        { name: "Website Baseline", price: "₦150,000/mo", description: "Uptime, security, and content management." },
-        { name: "App Management", price: "₦400,000/mo", description: "API stability and database health audit." },
-        { name: "System Guard", price: "₦250,000/mo", description: "Infrastructure monitoring and patches." },
-        { name: "AI Stewardship", price: "₦500,000/mo", description: "Model monitoring and refinement." }
+        { name: "Website Baseline", price: "₦75,000/mo", description: "Uptime, security, and content management." },
+        { name: "App Management", price: "₦250,000/mo", description: "API stability and database health audit." },
+        { name: "System Guard", price: "₦180,000/mo", description: "Infrastructure monitoring and patches." },
+        { name: "AI Stewardship", price: "₦350,000/mo", description: "Model monitoring and refinement." }
       ]
     },
     {
       category: "Compliance as a Service",
       tiers: [
-        { name: "Basic Audit", price: "₦500,000", description: "Initial gap analysis and reporting." },
-        { name: "Full Framework", price: "₦1,200,000", description: "SOC2/ISO27001 readiness production." },
-        { name: "Elite Governance", price: "From ₦2,500,000", description: "Continuous compliance and audit guard." }
+        { name: "Basic Audit", price: "₦400,000", description: "Initial gap analysis and reporting." },
+        { name: "Full Framework", price: "₦850,000", description: "SOC2/ISO27001 readiness production." },
+        { name: "Elite Governance", price: "From ₦1,800,000", description: "Continuous compliance and audit guard." }
       ]
     },
     {
       category: "Retainer Plans",
       tiers: [
-        { name: "Basic Partner", price: "₦300,000/mo", description: "On-call engineering support hours." },
-        { name: "Business Priority", price: "₦750,000/mo", description: "Dedicated architectural leadership." },
-        { name: "Elite Retainer", price: "₦1,500,000/mo", description: "Total engineering team outsourcing." }
+        { name: "Basic Partner", price: "₦150,000/mo", description: "On-call engineering support hours." },
+        { name: "Business Priority", price: "₦400,000/mo", description: "Dedicated architectural leadership." },
+        { name: "Elite Retainer", price: "₦1,000,000/mo", description: "Total engineering team outsourcing." }
       ]
     }
   ]
