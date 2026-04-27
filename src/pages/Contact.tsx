@@ -120,7 +120,7 @@ export default function Contact() {
             {/* Contact Form */}
             <Card className="rounded-none border-border/20 bg-card/10 backdrop-blur-sm shadow-none">
               <CardContent className="p-10">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
