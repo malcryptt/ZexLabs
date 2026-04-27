@@ -58,10 +58,7 @@ const Index = () => {
             </div>
 
             <div className="flex justify-center mb-8">
-              <div className="w-24 h-24 md:w-32 md:h-32 bg-primary flex items-center justify-center relative overflow-hidden animate-fade-in shadow-[0_10px_40px_rgba(227,36,43,0.3)]">
-                <span className="text-primary-foreground font-black text-4xl md:text-5xl italic tracking-tighter leading-none">ZL</span>
-                <div className="absolute inset-x-0 bottom-0 h-2 bg-white/10"></div>
-              </div>
+              <img src="/logo.png" alt="ZEXLABS" className="h-24 md:h-32 animate-fade-in mix-blend-multiply" />
             </div>
 
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-foreground">

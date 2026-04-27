@@ -23,11 +23,8 @@ const Navigation = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary flex items-center justify-center relative overflow-hidden group-hover:shadow-[0_0_20px_rgba(227,36,43,0.4)] transition-all duration-500">
-                <span className="text-primary-foreground font-black text-xl italic tracking-tighter leading-none">ZL</span>
-                <div className="absolute inset-x-0 bottom-0 h-1 bg-white/20"></div>
-              </div>
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="ZEXLABS" className="h-8 md:h-10 mix-blend-darken contrast-[1.5] brightness-[1.1]" />
               <span className="text-xl md:text-2xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors uppercase">
                 ZEX<span className="text-primary italic">LABS</span>
               </span>
