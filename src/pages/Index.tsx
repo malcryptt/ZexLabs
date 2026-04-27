@@ -68,7 +68,7 @@ const Index = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
-              ZEXLABS is a full-service technology agency. We design and build web and mobile products, develop custom scripts and automation, deploy AI assistants, and run offensive security assessments for companies that take their infrastructure seriously.
+              ZEXLABS Is An Elite Technology And Security Agency. We Architect High-Performance Web And Mobile Platforms, Engineer Custom Automation Systems, Deploy Advanced Artificial Intelligence, And Execute Offensive Security Operations For Enterprises That Demand Uncompromising Infrastructure.
             </p>
 
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
