@@ -58,7 +58,10 @@ const Index = () => {
             </div>
 
             <div className="flex justify-center mb-8">
-              <img src="/logo.png" alt="ZEXLABS" className="h-24 md:h-32 animate-fade-in mix-blend-multiply" />
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-primary flex items-center justify-center relative overflow-hidden animate-fade-in shadow-[0_10px_40px_rgba(227,36,43,0.3)]">
+                <span className="text-primary-foreground font-black text-4xl md:text-5xl italic tracking-tighter leading-none">ZL</span>
+                <div className="absolute inset-x-0 bottom-0 h-2 bg-white/10"></div>
+              </div>
             </div>
 
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-foreground">
@@ -68,7 +71,7 @@ const Index = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
-              ZexLabs is a full-service technology agency. We design and build web and mobile products, develop custom scripts and automation, deploy AI assistants, and run offensive security assessments for companies that take their infrastructure seriously.
+              ZEXLABS is a full-service technology agency. We design and build web and mobile products, develop custom scripts and automation, deploy AI assistants, and run offensive security assessments for companies that take their infrastructure seriously.
             </p>
 
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">

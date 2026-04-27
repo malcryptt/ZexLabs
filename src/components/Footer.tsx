@@ -7,11 +7,14 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity">
-              <img src="/logo.png" alt="ZEXLABS" className="h-8 w-auto mix-blend-darken contrast-[1.5] brightness-[1.1]" />
+            <Link to="/" className="flex items-center gap-3 mb-6 hover:opacity-80 transition-opacity">
+              <div className="w-8 h-8 bg-primary flex items-center justify-center relative overflow-hidden">
+                <span className="text-primary-foreground font-black text-base italic tracking-tighter leading-none">ZL</span>
+                <div className="absolute inset-x-0 bottom-0 h-1 bg-white/20"></div>
+              </div>
               <div className="flex flex-col -space-y-1">
-                <span className="text-lg font-black tracking-tighter text-foreground leading-none">ZEX</span>
-                <span className="text-sm font-bold tracking-tighter text-primary italic leading-none">LABS</span>
+                <span className="text-lg font-black tracking-tighter text-foreground leading-none uppercase">ZEX</span>
+                <span className="text-sm font-bold tracking-tighter text-primary italic leading-none uppercase">LABS</span>
               </div>
             </Link>
             <p className="text-sm text-muted-foreground mb-6 font-medium">
