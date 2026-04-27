@@ -20,7 +20,7 @@ export default function Contact() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const whatsappMessage = `Hello ZEXLABS! My name is ${formData.name}. \n\nSubject: ${formData.subject}\n\n${formData.message}`;
     window.open(`https://wa.me/2349164703407?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
@@ -28,6 +28,18 @@ export default function Contact() {
     toast({
       title: "Opening WhatsApp...",
       description: "You're being redirected to chat with our engineering team.",
+    });
+  };
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
+    const mailtoUri = `mailto:hello@zexlabs.com.ng?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUri;
+
+    toast({
+      title: "Opening Email Client...",
+      description: "Dispatching your inquiry to hello@zexlabs.com.ng",
     });
   };
 
@@ -155,10 +167,24 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full rounded-none h-14 bg-primary text-primary-foreground font-black uppercase tracking-[0.2em] group">
-                    Send Message
-                    <Send className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </Button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button
+                      type="button"
+                      onClick={handleWhatsAppSubmit}
+                      className="w-full rounded-none h-14 bg-primary text-primary-foreground font-black uppercase tracking-[0.2em] group"
+                    >
+                      Chat on WhatsApp
+                      <MessageSquare className="ml-3 w-4 h-4 transition-transform group-hover:scale-110" />
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={handleEmailSubmit}
+                      className="w-full rounded-none h-14 bg-transparent border-2 border-primary text-primary font-black uppercase tracking-[0.2em] group hover:bg-primary hover:text-primary-foreground transition-all"
+                    >
+                      Deliver via Email
+                      <Mail className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    </Button>
+                  </div>
                 </form>
               </CardContent>
             </Card>
