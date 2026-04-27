@@ -72,7 +72,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-2">Email Inquiry</h4>
-                    <p className="text-xl font-bold tracking-tight">xyron.ceo@gmail.com</p>
+                    <p className="text-xl font-bold tracking-tight">hello@zexlabs.com.ng</p>
                     <p className="text-sm text-muted-foreground font-medium mt-1">Inquiries are sent directly to our executive team.</p>
                   </div>
                 </div>
