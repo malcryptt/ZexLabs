@@ -29,32 +29,70 @@ interface PackagePresets {
 }
 
 const packagePresets: PackagePresets = {
+  'Penetration Testing': [
+    { label: 'Free Recon', price: 0 },
+    { label: 'Basic Assessment', price: 150000 },
+    { label: 'Standard Pentest', price: 350000 },
+    { label: 'Advanced Exploitation', price: 650000 },
+    { label: 'Enterprise Audit', price: 1200000 },
+  ],
+  'Recon Reports': [
+    { label: 'Free Recon', price: 0 },
+    { label: 'Standard Recon', price: 50000 },
+    { label: 'Deep Recon', price: 120000 },
+  ],
+  'Web Development': [
+    { label: 'Starter Website', price: 80000 },
+    { label: 'Business Website', price: 180000 },
+    { label: 'Pro Platform', price: 350000 },
+    { label: 'E-commerce Marketplace', price: 500000 },
+  ],
   'App Development': [
-    { label: 'Basic App Development', price: 300000 },
-    { label: 'Standard App Development', price: 550000 },
-    { label: 'Elite App Development', price: 900000 },
+    { label: 'MVP Development', price: 600000 },
+    { label: 'Standard App', price: 1200000 },
+    { label: 'Pro App', price: 2000000 },
+    { label: 'Fintech App', price: 3500000 },
   ],
-  'Website Development': [
-    { label: 'Basic Website', price: 150000 },
-    { label: 'Standard Website', price: 250000 },
-    { label: 'Elite Website', price: 400000 },
+  'Custom Systems': [
+    { label: 'Basic Internal Tool', price: 250000 },
+    { label: 'Standard System', price: 550000 },
+    { label: 'Advanced Engine', price: 1000000 },
+    { label: 'Enterprise Infrastructure', price: 2500000 },
   ],
-  'Cyber Security': [
-    { label: 'Security Consultation', price: 100000 },
-    { label: 'Penetration Testing', price: 250000 },
-    { label: 'Full Security Audit', price: 500000 },
+  'Custom Scripts': [
+    { label: 'Simple Automation', price: 30000 },
+    { label: 'Standard Scraper/Hook', price: 75000 },
+    { label: 'Advanced Worker System', price: 150000 },
   ],
-  'AI Systems': [
-    { label: 'Basic AI Tools', price: 450000 },
-    { label: 'AI Agent Deployment', price: 700000 },
+  'AI Agent & Automation': [
+    { label: 'Starter AI/Chatbot', price: 200000 },
+    { label: 'Growth RAG System', price: 450000 },
+    { label: 'Business AI Workforce', price: 800000 },
+    { label: 'Enterprise AI Model', price: 1500000 },
+  ],
+  'UI & Frontend Design': [
+    { label: 'Basic UI/UX', price: 60000 },
+    { label: 'Standard Design System', price: 150000 },
+    { label: 'Pro Motion Design', price: 300000 },
+    { label: 'Brand + UI Production', price: 450000 },
   ],
   'Maintenance': [
-    { label: 'Monthly Support', price: 50000 },
-    { label: 'Annual Support', price: 500000 },
+    { label: 'Website Basic', price: 30000 },
+    { label: 'Website Pro', price: 120000 },
+    { label: 'App Standard', price: 100000 },
+    { label: 'System Basic', price: 40000 },
+    { label: 'AI Pro', price: 150000 },
   ],
-  'Domain': [
-    { label: '.com Domain (1yr)', price: 25000 },
-    { label: '.com.ng Domain (1yr)', price: 15000 },
+  'Redesign': [
+    { label: 'Web Refresh', price: 80000 },
+    { label: 'Full Web Redesign', price: 400000 },
+    { label: 'App Refresh', price: 150000 },
+    { label: 'AI Upgrade', price: 200000 },
+  ],
+  'Retainer Plans': [
+    { label: 'Basic Retainer', price: 80000 },
+    { label: 'Standard Retainer', price: 200000 },
+    { label: 'Pro Retainer', price: 400000 },
   ],
 };
 
@@ -84,14 +122,18 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const [packages, setPackages] = useState<PackageItem[]>([
+    { name: 'Penetration Testing', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Recon Reports', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Web Development', price: 0, selected: false, priceOption: 'preset' },
     { name: 'App Development', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'Website Development', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'AI Systems', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'Cyber Security', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Custom Systems', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Custom Scripts', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'AI Agent & Automation', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'UI & Frontend Design', price: 0, selected: false, priceOption: 'preset' },
     { name: 'Maintenance', price: 0, selected: false, priceOption: 'preset' },
-    { name: 'Domain', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Redesign', price: 0, selected: false, priceOption: 'preset' },
+    { name: 'Retainer Plans', price: 0, selected: false, priceOption: 'preset' },
   ]);
-
   const [formData, setFormData] = useState({
     sender_name: '',
     sender_email: '',

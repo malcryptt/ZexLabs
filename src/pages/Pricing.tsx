@@ -7,132 +7,110 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, Shield, Cpu, Code2, Terminal, Zap, ArrowRight, MessageSquare } from "lucide-react";
 
 const pricingData = {
-  appDev: [
+  security: [
     {
-      name: "Basic",
-      price: "₦300,000",
-      description: "Custom UI/UX design and mobile-responsive MVP development.",
-      features: [
-        "Custom UI/UX Design",
-        "Mobile Responsive Layout",
-        "Essential API Integration",
-        "Technical Documentation",
-      ],
-      cta: "Build MVP"
+      category: "Penetration Testing",
+      tiers: [
+        { name: "Free Recon", price: "Free", description: "Basic vulnerability surface mapping." },
+        { name: "Basic", price: "₦150,000", description: "Standard vulnerability assessment." },
+        { name: "Standard", price: "₦350,000", description: "Deep manual penetration testing." },
+        { name: "Advanced", price: "₦650,000", description: "Advanced exploitation and reporting." },
+        { name: "Enterprise", price: "₦1,200,000", description: "Full-scale corporate infrastructure audit." }
+      ]
     },
     {
-      name: "Standard",
-      price: "₦550,000",
-      description: "Full-stack platform development with advanced integrations.",
-      features: [
-        "Everything in Basic",
-        "Advanced State Management",
-        "Social Authentication",
-        "Payment Gateway Integration",
-        "Support On Its First Month",
-      ],
-      featured: true,
-      cta: "Scale Up"
-    },
-    {
-      name: "Elite",
-      price: "₦900,000+",
-      description: "High-performance enterprise-grade mobile & web applications.",
-      features: [
-        "Everything in Standard",
-        "Scalable Backend Architecture",
-        "App Store & Play Store Deployment",
-        "Continuous CI/CD Pipelines",
-        "Priority Support For The First Three Months",
-      ],
-      cta: "Launch Elite"
+      category: "Recon Reports",
+      tiers: [
+        { name: "Free Recon", price: "Free", description: "Initial OSINT gathering." },
+        { name: "Standard Recon", price: "₦50,000", description: "Detailed intelligence report." },
+        { name: "Deep Recon", price: "₦120,000", description: "Deep web & metadata leak analysis." }
+      ]
     }
   ],
-  websiteDev: [
+  development: [
     {
-      name: "Basic",
-      price: "₦150,000",
-      description: "Clean, professional business websites with essential SEO.",
-      features: [
-        "Custom UI/UX Design",
-        "Mobile Responsive Layout",
-        "SEO Meta Optimization",
-        "Contact Form Integration",
-      ],
-      cta: "Build Basic"
+      category: "Web Development",
+      tiers: [
+        { name: "Starter", price: "₦80,000", description: "Simple business landing pages." },
+        { name: "Business", price: "₦180,000", description: "Professional corporate websites." },
+        { name: "Pro", price: "₦350,000", description: "High-performance business platforms." },
+        { name: "E-commerce", price: "₦500,000", description: "Full-scale multi-vendor marketplaces." }
+      ]
     },
     {
-      name: "Standard",
-      price: "₦250,000",
-      description: "High-visibility business platforms with CMS capability.",
-      features: [
-        "Everything in Basic",
-        "Content Management System",
-        "Performance Tuning",
-        "Google Search Console",
-        "Support On Its First Month",
-      ],
-      featured: true,
-      cta: "Go Standard"
+      category: "App Development",
+      tiers: [
+        { name: "MVP", price: "₦600,000", description: "Minimum Viable Product for startups." },
+        { name: "Standard", price: "₦1,200,000", description: "Full-stack mobile/web applications." },
+        { name: "Pro", price: "₦2,000,000", description: "Enterprise-grade scalable apps." },
+        { name: "Fintech App", price: "₦3,500,000", description: "Highly secure financial platforms." }
+      ]
     },
     {
-      name: "Elite",
-      price: "₦400,000+",
-      description: "Premium enterprise web solutions with total optimization.",
-      features: [
-        "Everything in Standard",
-        "Custom Intranets / Client Portals",
-        "Advanced Security Baseline",
-        "Search Visibility Engine",
-        "Priority Support For The First Three Months",
-      ],
-      cta: "Go Enterprise"
+      category: "Custom Systems",
+      tiers: [
+        { name: "Basic", price: "₦250,000", description: "Internal management tools." },
+        { name: "Standard", price: "₦550,000", description: "Custom business logic engines." },
+        { name: "Advanced", price: "₦1,000,000", description: "Complex industrial system builds." },
+        { name: "Enterprise", price: "₦2,500,000", description: "Nation-wide scaling infrastructure." }
+      ]
+    },
+    {
+      category: "Custom Scripts",
+      tiers: [
+        { name: "Simple", price: "₦30,000", description: "Task-specific automation scripts." },
+        { name: "Standard", price: "₦75,000", description: "Complex data scrapers & hooks." },
+        { name: "Advanced", price: "₦150,000", description: "Full-scale background worker systems." }
+      ]
     }
   ],
-  ai: [
+  designAI: [
     {
-      name: "Basic (AI Tools)",
-      price: "₦450,000",
-      description: "Leverage AI for bots and workflow automation.",
-      features: [
-        "Custom AI Chatbots",
-        "Automation Tooling",
-        "API Integration (OpenAI/Anthropic)",
-        "Database Persistence",
-      ],
-      cta: "Harness AI"
+      category: "AI Agent & Automation",
+      tiers: [
+        { name: "Starter", price: "₦200,000", description: "Simple chatbot & FAQ integration." },
+        { name: "Growth", price: "₦450,000", description: "Advanced autonomous RAG systems." },
+        { name: "Business", price: "₦800,000", description: "AI department workforce automation." },
+        { name: "Enterprise", price: "₦1,500,000", description: "Proprietary model training/tuning." }
+      ]
     },
     {
-      name: "Agent",
-      price: "₦700,000+",
-      description: "Fully autonomous agents with dedicated management.",
-      features: [
-        "Autonomous Reasoning Agent",
-        "Custom GUI Dashboard",
-        "Integrated Cybersecurity",
-        "Maintenance for 1 Month",
-        "Scaling Consultation",
-      ],
-      featured: true,
-      cta: "Deploy Agent"
+      category: "UI & Frontend Design",
+      tiers: [
+        { name: "Basic", price: "₦60,000", description: "Single page UI/UX wireframing." },
+        { name: "Standard", price: "₦150,000", description: "Complete brand design system." },
+        { name: "Pro", price: "₦300,000", description: "High-fidelity motion & layout design." },
+        { name: "Brand + UI", price: "₦450,000", description: "Full creative direction & production." }
+      ]
     }
   ],
-  specialized: [
+  support: [
     {
-      name: "Custom Script",
-      price: "₦100,000+",
-      description: "Dedicated scripting for specific technical requirements.",
-      icon: <Code2 className="w-8 h-8 text-primary" />,
-      note: "Price depends on script complexity",
-      cta: "Contact Engineer"
+      category: "Maintenance",
+      tiers: [
+        { name: "Website Basic", price: "₦30,000/mo", description: "Server uptime & core updates." },
+        { name: "Website Pro", price: "₦120,000/mo", description: "Active management & security." },
+        { name: "App Standard", price: "₦100,000/mo", description: "API calls & database upkeep." },
+        { name: "System Basic", price: "₦40,000/mo", description: "Infrastructure health monitoring." },
+        { name: "AI Pro", price: "₦150,000/mo", description: "Model refinement & drift detection." }
+      ]
     },
     {
-      name: "Cyber Security & Pentesting",
-      price: "₦150,000+",
-      description: "Professional offensive security, hardening, and app audits.",
-      icon: <Shield className="w-8 h-8 text-primary" />,
-      note: "Includes Vulnerability Scanning, OWASP Audits, and Remediation Plans.",
-      cta: "Contact Engineer"
+      category: "Redesign",
+      tiers: [
+        { name: "Web Refresh", price: "₦80,000", description: "Quick UI styling updates." },
+        { name: "Full Web Redesign", price: "₦400,000", description: "Complete platform overhaul." },
+        { name: "App Refresh", price: "₦150,000", description: "Mobile layout modernization." },
+        { name: "AI Upgrade", price: "₦200,000", description: "Next-gen model swap & logic." }
+      ]
+    },
+    {
+      category: "Retainer Plans",
+      tiers: [
+        { name: "Basic", price: "₦80,000/mo", description: "Shared engineering hours." },
+        { name: "Standard", price: "₦200,000/mo", description: "Dedicated priority support." },
+        { name: "Pro", price: "₦400,000/mo", description: "On-call engineering leadership." }
+      ]
     }
   ]
 };
@@ -167,61 +145,45 @@ export default function Pricing() {
             </p>
           </div>
 
-          <Tabs defaultValue="appDev" className="w-full">
-            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-2 md:grid-cols-4 mb-20 p-1 bg-secondary border border-border/50">
-              <TabsTrigger value="appDev" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">App Development</TabsTrigger>
-              <TabsTrigger value="websiteDev" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Website Dev</TabsTrigger>
-              <TabsTrigger value="ai" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Systems</TabsTrigger>
-              <TabsTrigger value="specialized" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Specialized</TabsTrigger>
+          <Tabs defaultValue="security" className="w-full">
+            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-4 mb-20 p-1 bg-secondary border border-border/50">
+              <TabsTrigger value="security" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Security</TabsTrigger>
+              <TabsTrigger value="development" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Development</TabsTrigger>
+              <TabsTrigger value="designAI" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Design & AI</TabsTrigger>
+              <TabsTrigger value="support" className="text-[10px] font-black uppercase tracking-widest py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Support</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="appDev" className="animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {pricingData.appDev.map((tier, i) => (
-                  <PricingCard key={i} tier={tier} onCta={() => openWhatsApp(`App Development - ${tier.name}`)} />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="websiteDev" className="animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {pricingData.websiteDev.map((tier, i) => (
-                  <PricingCard key={i} tier={tier} onCta={() => openWhatsApp(`Website Dev - ${tier.name}`)} />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="ai" className="animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {pricingData.ai.map((tier, i) => (
-                  <PricingCard key={i} tier={tier} onCta={() => openWhatsApp(`AI - ${tier.name}`)} />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="specialized" className="animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {pricingData.specialized.map((tier, i) => (
-                  <Card key={i} className="rounded-none border-border/20 bg-card/40 backdrop-blur-sm group hover:border-primary/30 transition-all duration-500">
-                    <CardContent className="p-12 text-center h-full flex flex-col items-center justify-center space-y-6">
-                      <div className="p-4 bg-primary/5 text-primary mb-2">
-                        {tier.icon}
+            {Object.entries(pricingData).map(([key, categories]) => (
+              <TabsContent key={key} value={key} className="animate-fade-in space-y-24">
+                {categories.map((cat, idx) => (
+                  <div key={idx} className="space-y-12">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-l-4 border-primary pl-8">
+                      <div>
+                        <h2 className="text-4xl font-black tracking-tighter uppercase">{cat.category}</h2>
+                        <p className="text-muted-foreground font-medium mt-2">Professional {cat.category.toLowerCase()} solutions for enterprise and startup needs.</p>
                       </div>
-                      <h3 className="text-3xl font-black tracking-tighter">{tier.name}</h3>
-                      <div className="text-3xl font-black text-primary">{tier.price}</div>
-                      <p className="text-muted-foreground font-medium">{tier.description}</p>
-                      {tier.note && <p className="text-[10px] font-bold uppercase tracking-widest text-primary/60 italic">{tier.note}</p>}
-                      <Button
-                        onClick={() => openWhatsApp(tier.name)}
-                        className="rounded-none h-12 px-10 text-[10px] font-black uppercase tracking-widest border border-foreground/20 bg-transparent hover:bg-primary hover:text-primary-foreground group-hover:border-primary transition-all duration-500"
-                      >
-                        {tier.cta} <ArrowRight className="ml-2 w-3 h-3" />
-                      </Button>
-                    </CardContent>
-                  </Card>
+                      <div className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase">
+                        {cat.tiers.length} Tiers Available
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {cat.tiers.map((tier, i) => (
+                        <PricingCard
+                          key={i}
+                          tier={{
+                            ...tier,
+                            cta: tier.price === "Free" ? "Start Free" : "Get Started",
+                            features: [] // Simplified for this view, or add defaults
+                          }}
+                          onCta={() => openWhatsApp(`${cat.category} - ${tier.name}`)}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 ))}
-              </div>
-            </TabsContent>
+              </TabsContent>
+            ))}
           </Tabs>
 
           {/* Luxury Note */}
