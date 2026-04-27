@@ -235,7 +235,7 @@ function PricingCard({ tier, onCta, key }: { tier: any, onCta: () => void, key?:
 
         <Button
           onClick={onCta}
-          className={`rounded-none h-14 text-[10px] font-black uppercase tracking-[0.2em] w-full transition-all duration-500 ${tier.featured ? 'bg-primary text-primary-foreground hover:shadow-[0_0_30px_rgba(227,36,43,0.3)]' : 'bg-transparent border border-foreground/20 hover:bg-foreground hover:text-background'}`}
+          className={`rounded-none h-14 text-[10px] font-black uppercase tracking-[0.2em] w-full transition-all duration-500 ${tier.featured ? 'bg-primary text-primary-foreground hover:shadow-[0_0_30px_rgba(227,36,43,0.3)]' : 'bg-transparent border-2 border-foreground/10 text-foreground/60 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:opacity-100'}`}
         >
           {tier.cta} <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Button>
