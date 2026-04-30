@@ -216,9 +216,10 @@ export default function AttackSurface() {
                                             <h2 className="text-3xl font-bold text-slate-900 uppercase tracking-wider">{companyName}</h2>
                                             <p className="text-red-500 font-mono mt-1">{result.domain}</p>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-4xl font-bold text-red-600 uppercase tracking-widest">ZEXLABS</p>
-                                            <p className="text-xs text-slate-500 uppercase">Automated Threat Intel</p>
+                                        <div className="text-right flex flex-col items-end">
+                                            <img src="/logo.png" alt="ZEXLABS" className="h-10 mb-2 mix-blend-multiply" />
+                                            <p className="text-2xl font-bold text-red-600 uppercase tracking-widest leading-none">ZEXLABS</p>
+                                            <p className="text-xs text-slate-500 uppercase mt-1">Automated Threat Intel</p>
                                         </div>
                                     </div>
 
