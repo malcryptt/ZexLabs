@@ -11,6 +11,7 @@ const Navigation = () => {
   const navLinks = [
     { path: "/", label: "Services" },
     { path: "/portfolio", label: "Work" },
+    { path: "/attack-surface", label: "Monitor" },
     { path: "/about", label: "About" },
     { path: "/pricing", label: "Pricing" },
     { path: "/contact", label: "Contact" },
