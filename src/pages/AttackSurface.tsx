@@ -122,42 +122,42 @@ export default function AttackSurface() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-slate-200 py-24 px-4 sm:px-6 lg:px-8 font-sans">
+        <div className="min-h-screen bg-slate-50 text-slate-900 py-24 px-4 sm:px-6 lg:px-8 font-sans">
             <div className="max-w-4xl mx-auto space-y-12">
                 <div className="text-center space-y-4">
-                    <h1 className="text-5xl font-bold tracking-tight text-white uppercase">
+                    <h1 className="text-5xl font-bold tracking-tight text-slate-900 uppercase">
                         Attack Surface <span className="text-red-600">Monitor</span>
                     </h1>
-                    <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-xl text-slate-600 max-w-2xl mx-auto">
                         Real-time infrastructure intelligence. Discover your vulnerabilities before attackers do. 100% private in-browser analysis via WebLLM.
                     </p>
                 </div>
 
-                <form onSubmit={handleScan} className="bg-zinc-950 border border-zinc-900 p-8 rounded-xl shadow-2xl">
+                <form onSubmit={handleScan} className="bg-white border border-slate-200 p-8 rounded-xl shadow-xl">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">Company Name</label>
+                            <label className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Company Name</label>
                             <Input
                                 value={companyName}
                                 onChange={(e) => setCompanyName(e.target.value)}
                                 placeholder="Ex: Acme Corp"
-                                className="bg-black border-red-900/30 focus-visible:ring-red-600 focus-visible:ring-offset-0 text-white placeholder:text-zinc-600 h-12"
+                                className="bg-white border-red-200 focus-visible:ring-red-600 focus-visible:ring-offset-0 text-slate-900 placeholder:text-slate-400 h-12"
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">Target Domain</label>
+                            <label className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Target Domain</label>
                             <Input
                                 value={domain}
                                 onChange={(e) => setDomain(e.target.value)}
                                 placeholder="Ex: example.com"
-                                className="bg-black border-red-900/30 focus-visible:ring-red-600 focus-visible:ring-offset-0 text-white placeholder:text-zinc-600 h-12"
+                                className="bg-white border-red-200 focus-visible:ring-red-600 focus-visible:ring-offset-0 text-slate-900 placeholder:text-slate-400 h-12"
                             />
                         </div>
                     </div>
                     <Button
                         type="submit"
                         disabled={isScanning}
-                        className="w-full mt-8 h-12 bg-red-600 hover:bg-red-700 text-white font-bold tracking-wide uppercase transition-all duration-300 shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_25px_rgba(220,38,38,0.5)]"
+                        className="w-full mt-8 h-12 bg-red-600 hover:bg-red-700 text-white font-bold tracking-wide uppercase transition-all duration-300 shadow-[0_4px_14px_rgba(220,38,38,0.39)] hover:shadow-[0_6px_20px_rgba(220,38,38,0.23)] hover:-translate-y-0.5"
                     >
                         {isScanning ? (
                             <span className="flex items-center gap-2">
@@ -174,12 +174,12 @@ export default function AttackSurface() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
-                            className="bg-zinc-950 border border-red-900/50 p-8 rounded-xl text-center space-y-6"
+                            className="bg-white border border-red-100 shadow-sm p-8 rounded-xl text-center space-y-6"
                         >
                             <Activity className="h-12 w-12 text-red-500 animate-pulse mx-auto" />
                             <div className="space-y-2">
-                                <h3 className="text-lg font-medium text-white terminal-font">{loadingText}</h3>
-                                {progress > 0 && <div className="w-full bg-zinc-900 h-2 rounded-full overflow-hidden">
+                                <h3 className="text-lg font-medium text-slate-800 terminal-font">{loadingText}</h3>
+                                {progress > 0 && <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                                     <div className="bg-red-600 h-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
                                 </div>}
                             </div>
@@ -193,75 +193,75 @@ export default function AttackSurface() {
                             className="space-y-6"
                         >
                             {/* This is the container that gets converted to PDF */}
-                            <div ref={reportRef} className="bg-black border border-red-900 p-8 md:p-12 rounded-xl relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                            <div ref={reportRef} className="bg-white border border-red-200 shadow-lg p-8 md:p-12 rounded-xl relative overflow-hidden">
+                                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                                     <ShieldAlert className="h-64 w-64 text-red-600 transform rotate-12" />
                                 </div>
 
                                 <div className="relative z-10 space-y-8">
-                                    <div className="border-b border-red-900/50 pb-6 flex justify-between items-end">
+                                    <div className="border-b border-red-200 pb-6 flex justify-between items-end">
                                         <div>
-                                            <h2 className="text-3xl font-bold text-white uppercase tracking-wider">{companyName}</h2>
-                                            <p className="text-red-400 font-mono mt-1">{result.domain}</p>
+                                            <h2 className="text-3xl font-bold text-slate-900 uppercase tracking-wider">{companyName}</h2>
+                                            <p className="text-red-500 font-mono mt-1">{result.domain}</p>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-4xl font-bold text-red-600 uppercase tracking-widest">ZEXLABS</p>
-                                            <p className="text-xs text-zinc-500 uppercase">Automated Threat Intel</p>
+                                            <p className="text-xs text-slate-500 uppercase">Automated Threat Intel</p>
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-4">
-                                            <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                                            <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
                                                 <Globe className="h-5 w-5 text-red-500" />
                                                 Network Infrastructure
                                             </h3>
-                                            <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-900 space-y-2">
-                                                <p className="text-sm text-zinc-400 uppercase">Exposed IP Addresses</p>
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+                                                <p className="text-sm text-slate-500 uppercase">Exposed IP Addresses</p>
                                                 {result.ips.map(ip => (
-                                                    <p key={ip} className="font-mono text-white text-sm">{ip}</p>
+                                                    <p key={ip} className="font-mono text-slate-800 text-sm">{ip}</p>
                                                 ))}
                                             </div>
                                         </div>
 
                                         <div className="space-y-4">
-                                            <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                                            <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
                                                 <Mail className="h-5 w-5 text-red-500" />
                                                 Email Security Posture
                                             </h3>
-                                            <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-900 space-y-4">
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-4">
                                                 <div>
-                                                    <p className="text-sm text-zinc-400 uppercase flex items-center gap-2">
+                                                    <p className="text-sm text-slate-500 uppercase flex items-center gap-2">
                                                         SPF Record
-                                                        {result.hasSpf ? <CheckCircle className="h-4 w-4 text-emerald-500" /> : <ShieldAlert className="h-4 w-4 text-red-500" />}
+                                                        {result.hasSpf ? <CheckCircle className="h-4 w-4 text-emerald-600" /> : <ShieldAlert className="h-4 w-4 text-red-500" />}
                                                     </p>
-                                                    <p className="font-mono text-zinc-300 text-xs mt-1 break-all bg-black p-2 rounded">{result.spf || "Not Found - VULNERABLE"}</p>
+                                                    <p className="font-mono text-slate-700 text-xs mt-1 break-all bg-white border border-slate-200 p-2 rounded shadow-sm">{result.spf || "Not Found - VULNERABLE"}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-sm text-zinc-400 uppercase flex items-center gap-2">
+                                                    <p className="text-sm text-slate-500 uppercase flex items-center gap-2">
                                                         DMARC Record
-                                                        {result.hasDmarc ? <CheckCircle className="h-4 w-4 text-emerald-500" /> : <ShieldAlert className="h-4 w-4 text-red-500" />}
+                                                        {result.hasDmarc ? <CheckCircle className="h-4 w-4 text-emerald-600" /> : <ShieldAlert className="h-4 w-4 text-red-500" />}
                                                     </p>
-                                                    <p className="font-mono text-zinc-300 text-xs mt-1 break-all bg-black p-2 rounded">{result.dmarc || "Not Found - VULNERABLE"}</p>
+                                                    <p className="font-mono text-slate-700 text-xs mt-1 break-all bg-white border border-slate-200 p-2 rounded shadow-sm">{result.dmarc || "Not Found - VULNERABLE"}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="space-y-4 pt-4 border-t border-red-900/30">
-                                        <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                                    <div className="space-y-4 pt-4 border-t border-red-200">
+                                        <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
                                             <Server className="h-5 w-5 text-red-500" />
                                             AI Threat Analysis
                                         </h3>
-                                        <div className="bg-zinc-950 border border-red-900/50 p-6 rounded-lg text-amber-50">
+                                        <div className="bg-red-50 border border-red-100 shadow-inner p-6 rounded-lg text-slate-800">
                                             {aiReport.split('\n').map((paragraph, idx) => (
                                                 <p key={idx} className="mb-4 last:mb-0 leading-relaxed font-body">{paragraph}</p>
                                             ))}
                                         </div>
                                     </div>
 
-                                    <div className="mt-12 text-center text-xs text-zinc-600 border-t border-zinc-900 pt-6">
-                                        WARNING: This report is generated automatically by ZexLabs Local AI. Results are derived from public DNS intelligence.
+                                    <div className="mt-12 text-center text-xs text-slate-500 border-t border-slate-200 pt-6">
+                                        WARNING: This report is generated automatically by ZexLabs Security AI. Results are derived from public DNS intelligence.
                                         <br />Schedule a manual penetration test for a comprehensive vulnerability analysis.
                                     </div>
                                 </div>
@@ -270,7 +270,7 @@ export default function AttackSurface() {
                             <div className="flex justify-center pt-6">
                                 <Button
                                     onClick={handleDownloadPdf}
-                                    className="bg-black border border-red-700 text-red-500 hover:bg-red-950 hover:text-white px-8 uppercase tracking-widest font-bold"
+                                    className="bg-white border-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300 px-8 uppercase tracking-widest font-bold shadow-sm transition-all"
                                 >
                                     <Download className="mr-2 h-4 w-4" /> Download PDF Report
                                 </Button>
