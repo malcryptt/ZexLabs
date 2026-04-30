@@ -1,11 +1,21 @@
-import { Link } from "react-router-dom";
+import { Layout, Terminal, Cpu, ShieldAlert, ArrowRight, CheckCircle2, Search } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Layout, Terminal, Cpu, ShieldAlert, ArrowRight, CheckCircle2 } from "lucide-react";
-import React, { useEffect } from 'react';
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [scanDomain, setScanDomain] = useState("");
+
+  const handleScanSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (scanDomain) {
+      navigate(`/attack-surface?domain=${encodeURIComponent(scanDomain)}`);
+    }
+  };
+
   useEffect(() => {
     document.title = "ZEXLABS — Engineering Excellence & Adversarial Hardening";
   }, []);
@@ -71,7 +81,28 @@ const Index = () => {
               ZEXLABS Is An Elite Technology And Security Agency. We Architect High-Performance Web And Mobile Platforms, Engineer Custom Automation Systems, Deploy Advanced Artificial Intelligence, And Execute Offensive Security Operations For Enterprises That Demand Uncompromising Infrastructure.
             </p>
 
-            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Quick Scanner Input */}
+            <div className="pt-6 pb-2 max-w-xl mx-auto">
+              <form onSubmit={handleScanSubmit} className="relative flex items-center group">
+                <Search className="absolute left-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors z-10" />
+                <input
+                  type="text"
+                  placeholder="Enter your domain for a free threat scan (e.g. example.com)"
+                  value={scanDomain}
+                  onChange={(e) => setScanDomain(e.target.value)}
+                  className="w-full h-14 pl-12 pr-32 bg-background border-2 border-border/50 text-foreground placeholder-muted-foreground/70 focus:outline-none focus:border-primary focus:ring-0 transition-all font-mono text-sm shadow-sm"
+                  required
+                />
+                <Button
+                  type="submit"
+                  className="absolute right-1.5 h-11 px-6 bg-primary text-primary-foreground font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors rounded-none"
+                >
+                  Analyze
+                </Button>
+              </form>
+            </div>
+
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/portfolio" className="w-full sm:w-auto">
                 <Button size="lg" className="h-14 px-10 rounded-none bg-primary text-primary-foreground font-black text-sm uppercase tracking-widest hover:bg-primary/90 w-full group">
                   See Our Work

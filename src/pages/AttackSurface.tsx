@@ -7,10 +7,15 @@ import html2canvas from "html2canvas";
 import { Loader2, ShieldAlert, CheckCircle, Download, Activity, Globe, Mail, Server } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function AttackSurface() {
-    const [domain, setDomain] = useState("");
-    const [companyName, setCompanyName] = useState("");
+    const [searchParams] = useSearchParams();
+    const urlDomain = searchParams.get("domain");
+
+    const [domain, setDomain] = useState(urlDomain || "");
+    const [companyName, setCompanyName] = useState(urlDomain ? urlDomain.split('.')[0].toUpperCase() : "");
     const [isScanning, setIsScanning] = useState(false);
     const [loadingText, setLoadingText] = useState("");
     const [result, setResult] = useState<ScanResult | null>(null);
@@ -19,8 +24,8 @@ export default function AttackSurface() {
 
     const reportRef = useRef<HTMLDivElement>(null);
 
-    const handleScan = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleScan = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
         if (!domain || !companyName) {
             toast.error("Please enter a domain and company name.");
             return;
@@ -90,6 +95,13 @@ export default function AttackSurface() {
             setProgress(0);
         }
     };
+
+    // Auto-run if domain is passed in URL
+    useEffect(() => {
+        if (urlDomain && !isScanning && !result) {
+            handleScan();
+        }
+    }, [urlDomain]);
 
     const handleDownloadPdf = async () => {
         if (!reportRef.current) return;
