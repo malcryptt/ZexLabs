@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function AttackSurface() {
     const [searchParams] = useSearchParams();
@@ -21,6 +23,10 @@ export default function AttackSurface() {
     const [result, setResult] = useState<ScanResult | null>(null);
     const [aiReport, setAiReport] = useState("");
     const [progress, setProgress] = useState(0);
+
+    const [showLeadModal, setShowLeadModal] = useState(false);
+    const [leadEmail, setLeadEmail] = useState("");
+    const [isExporting, setIsExporting] = useState(false);
 
     const reportRef = useRef<HTMLDivElement>(null);
 
@@ -43,46 +49,22 @@ export default function AttackSurface() {
             setResult(scanData);
 
             setLoadingText("Connecting to ZexLabs Security AI (Ollama)...");
-            setProgress(50);
-
-            const prompt = `Analyze this attack surface data for ${companyName} (${domain}). 
-      IPs exposed: ${scanData.ips.join(", ")}. 
-      MX Records: ${scanData.mxRecords.join(", ")}. 
-      SPF Record: ${scanData.spf || "MISSING"}. 
-      DMARC Record: ${scanData.dmarc || "MISSING"}. 
-      Write a short, highly professional, slightly aggressive threat intelligence brief (2 paragraphs max) as ZexLabs. If they are missing SPF or DMARC, emphasize they are highly vulnerable to email spoofing and phishing attacks.`;
-
-            // Use Groq API instead of Ollama
-            const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
-
-            if (!groqApiKey) {
-                throw new Error("Missing VITE_GROQ_API_KEY. Please add it to your .env file.");
-            }
-
-            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            const response = await fetch("/api/analyze", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${groqApiKey}`
-                },
-                body: JSON.stringify({
-                    model: "llama3-8b-8192", // Lightning fast 8B model on Groq
-                    messages: [{ role: "user", content: prompt }],
-                    temperature: 0.7,
-                    max_tokens: 500
-                })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ domain, companyName, scanData })
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error?.message || "Failed to connect to Groq AI");
+                throw new Error(errorData.error || "Failed to analyze infrastructure");
             }
 
             setLoadingText("AI analyzing infrastructure vulnerabilities...");
             setProgress(85);
 
             const aiData = await response.json();
-            setAiReport(aiData.choices[0].message.content || "");
+            setAiReport(aiData.report || "");
             setProgress(100);
 
             toast.success("Scan and analysis complete.");
@@ -103,8 +85,18 @@ export default function AttackSurface() {
         }
     }, [urlDomain]);
 
-    const handleDownloadPdf = async () => {
+    const handleCaptureAndDownload = async () => {
+        if (!leadEmail || !leadEmail.includes("@")) return;
+        setIsExporting(true);
         if (!reportRef.current) return;
+
+        try {
+            await (supabase as any).from("attack_surface_leads").insert([{ email: leadEmail, domain_scanned: domain }]);
+        } catch (e) {
+            console.error("Failed to capture lead", e);
+        }
+
+        setShowLeadModal(false);
         toast.info("Generating PDF...");
 
         // Temporarily remove max-height and overflow restrictions from the ref container to capture everything
@@ -130,6 +122,7 @@ export default function AttackSurface() {
                 reportRef.current.style.height = originalHeight;
                 reportRef.current.style.overflow = "";
             }
+            setIsExporting(false);
         }
     };
 
@@ -282,15 +275,43 @@ export default function AttackSurface() {
 
                             <div className="flex justify-center pt-6">
                                 <Button
-                                    onClick={handleDownloadPdf}
+                                    onClick={() => setShowLeadModal(true)}
                                     className="bg-white border-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300 px-8 uppercase tracking-widest font-bold shadow-sm transition-all"
                                 >
-                                    <Download className="mr-2 h-4 w-4" /> Download PDF Report
+                                    <Download className="mr-2 h-4 w-4" /> Export Report Details
                                 </Button>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                <Dialog open={showLeadModal} onOpenChange={setShowLeadModal}>
+                    <DialogContent className="sm:max-w-md bg-white border border-red-200 shadow-2xl">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-bold text-slate-900 uppercase tracking-widest">Execute Download</DialogTitle>
+                            <DialogDescription className="text-slate-600 font-medium">
+                                Deliver this intelligence brief to your inbox.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex flex-col space-y-4 py-4">
+                            <Input
+                                value={leadEmail}
+                                onChange={(e) => setLeadEmail(e.target.value)}
+                                placeholder="Work Email Address"
+                                type="email"
+                                className="bg-slate-50 border-slate-200 text-slate-900 focus-visible:ring-red-500 h-12"
+                            />
+                            <Button
+                                onClick={handleCaptureAndDownload}
+                                disabled={isExporting || !leadEmail.includes("@")}
+                                className="w-full h-12 bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-widest"
+                            >
+                                {isExporting ? <Loader2 className="animate-spin h-5 w-5 mr-2" /> : <Download className="h-4 w-4 mr-2" />}
+                                Unlock Full Analysis
+                            </Button>
+                        </div>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div >
     );
