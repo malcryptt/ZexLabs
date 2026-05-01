@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { scanDomain, ScanResult } from "@/utils/scanner";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { Loader2, ShieldAlert, CheckCircle, Download, Activity, Globe, Mail, Server } from "lucide-react";
+import { Loader2, ShieldAlert, CheckCircle, Download, Activity, Globe, Mail, Server, Lock, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
@@ -12,6 +12,16 @@ import { useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || "YOUR_ACCESS_KEY_HERE";
+
+const StatusBadge = ({ ok, label }: { ok: boolean; label: string }) => (
+    <div className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
+        <span className="text-sm text-slate-600">{label}</span>
+        {ok
+            ? <span className="flex items-center gap-1 text-emerald-600 text-xs font-semibold"><CheckCircle className="h-3.5 w-3.5" />PRESENT</span>
+            : <span className="flex items-center gap-1 text-red-500 text-xs font-semibold"><ShieldAlert className="h-3.5 w-3.5" />MISSING</span>
+        }
+    </div>
+);
 
 export default function AttackSurface() {
     const [searchParams] = useSearchParams();
@@ -45,11 +55,20 @@ export default function AttackSurface() {
 
         try {
             setLoadingText("Querying DNS records...");
-            setProgress(25);
+            setProgress(15);
+
             const scanData = await scanDomain(domain);
             setResult(scanData);
 
-            setLoadingText("Connecting to ZexLabs Security AI (Ollama)...");
+            setLoadingText("Checking SSL certificate via crt.sh...");
+            setProgress(45);
+
+            setLoadingText("Auditing HTTP security headers...");
+            setProgress(65);
+
+            setLoadingText("Running ZexLabs AI threat analysis...");
+            setProgress(80);
+
             const response = await fetch("/api/analyze", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -61,14 +80,11 @@ export default function AttackSurface() {
                 throw new Error(errorData.error || "Failed to analyze infrastructure");
             }
 
-            setLoadingText("AI analyzing infrastructure vulnerabilities...");
-            setProgress(85);
-
             const aiData = await response.json();
             setAiReport(aiData.report || "");
             setProgress(100);
 
-            toast.success("Scan and analysis complete.");
+            toast.success("Full intelligence scan complete.");
         } catch (error) {
             console.error(error);
             const errMessage = error instanceof Error ? error.message : "Scan failed. Please try again.";
@@ -93,7 +109,6 @@ export default function AttackSurface() {
         setIsExporting(true);
         if (!reportRef.current) return;
 
-        // Submit lead to Web3Forms for email notification
         try {
             await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
@@ -114,7 +129,6 @@ export default function AttackSurface() {
         setShowLeadModal(false);
         toast.info("Generating PDF...");
 
-        // Temporarily remove max-height and overflow restrictions from the ref container to capture everything
         const originalHeight = reportRef.current.style.height;
         reportRef.current.style.height = "auto";
         reportRef.current.style.overflow = "visible";
@@ -127,7 +141,7 @@ export default function AttackSurface() {
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`${companyName.replace(/\\s+/g, "_")}_Attack_Surface_Report.pdf`);
+            pdf.save(`${companyName.replace(/\s+/g, "_")}_Attack_Surface_Report.pdf`);
             toast.success("PDF Downloaded successfully!");
         } catch (e) {
             console.error(e);
@@ -141,6 +155,13 @@ export default function AttackSurface() {
         }
     };
 
+    const sslDays = result?.ssl?.daysRemaining;
+    const sslColor = !result?.ssl?.valid
+        ? "text-red-600"
+        : sslDays !== null && sslDays !== undefined && sslDays < 30
+            ? "text-amber-500"
+            : "text-emerald-600";
+
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 py-24 px-4 sm:px-6 lg:px-8 font-sans">
             <div className="max-w-4xl mx-auto space-y-12">
@@ -149,7 +170,7 @@ export default function AttackSurface() {
                         Attack Surface <span className="text-red-600">Monitor</span>
                     </h1>
                     <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                        Real-time infrastructure intelligence. Discover your vulnerabilities before attackers do. 100% private in-browser analysis via WebLLM.
+                        Real-time infrastructure intelligence. DNS records, SSL certificates, HTTP security headers — analyzed by ZexLabs AI.
                     </p>
                 </div>
 
@@ -200,7 +221,7 @@ export default function AttackSurface() {
                             <div className="space-y-2">
                                 <h3 className="text-lg font-medium text-slate-800 terminal-font">{loadingText}</h3>
                                 {progress > 0 && <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-red-600 h-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
+                                    <div className="bg-red-600 h-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
                                 </div>}
                             </div>
                         </motion.div>
@@ -212,13 +233,14 @@ export default function AttackSurface() {
                             animate={{ opacity: 1, scale: 1 }}
                             className="space-y-6"
                         >
-                            {/* This is the container that gets converted to PDF */}
+                            {/* PDF-exportable report */}
                             <div ref={reportRef} className="bg-white border border-red-200 shadow-lg p-8 md:p-12 rounded-xl relative overflow-hidden">
                                 <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                                     <ShieldAlert className="h-64 w-64 text-red-600 transform rotate-12" />
                                 </div>
 
                                 <div className="relative z-10 space-y-8">
+                                    {/* Header */}
                                     <div className="border-b border-red-200 pb-6 flex justify-between items-end">
                                         <div>
                                             <h2 className="text-3xl font-bold text-slate-900 uppercase tracking-wider">{companyName}</h2>
@@ -231,6 +253,7 @@ export default function AttackSurface() {
                                         </div>
                                     </div>
 
+                                    {/* Row 1: Network + Email Security */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-4">
                                             <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
@@ -239,9 +262,17 @@ export default function AttackSurface() {
                                             </h3>
                                             <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
                                                 <p className="text-sm text-slate-500 uppercase">Exposed IP Addresses</p>
-                                                {result.ips.map(ip => (
-                                                    <p key={ip} className="font-mono text-slate-800 text-sm">{ip}</p>
-                                                ))}
+                                                {result.ips.length > 0
+                                                    ? result.ips.map(ip => <p key={ip} className="font-mono text-slate-800 text-sm">{ip}</p>)
+                                                    : <p className="font-mono text-slate-500 text-sm">None found</p>
+                                                }
+                                            </div>
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+                                                <p className="text-sm text-slate-500 uppercase">MX (Mail) Servers</p>
+                                                {result.mxRecords.length > 0
+                                                    ? result.mxRecords.map(mx => <p key={mx} className="font-mono text-slate-700 text-xs break-all">{mx}</p>)
+                                                    : <p className="font-mono text-slate-500 text-sm">None found</p>
+                                                }
                                             </div>
                                         </div>
 
@@ -256,33 +287,85 @@ export default function AttackSurface() {
                                                         SPF Record
                                                         {result.hasSpf ? <CheckCircle className="h-4 w-4 text-emerald-600" /> : <ShieldAlert className="h-4 w-4 text-red-500" />}
                                                     </p>
-                                                    <p className="font-mono text-slate-700 text-xs mt-1 break-all bg-white border border-slate-200 p-2 rounded shadow-sm">{result.spf || "Not Found - VULNERABLE"}</p>
+                                                    <p className="font-mono text-slate-700 text-xs mt-1 break-all bg-white border border-slate-200 p-2 rounded shadow-sm">{result.spf || "Not Found — VULNERABLE"}</p>
                                                 </div>
                                                 <div>
                                                     <p className="text-sm text-slate-500 uppercase flex items-center gap-2">
                                                         DMARC Record
                                                         {result.hasDmarc ? <CheckCircle className="h-4 w-4 text-emerald-600" /> : <ShieldAlert className="h-4 w-4 text-red-500" />}
                                                     </p>
-                                                    <p className="font-mono text-slate-700 text-xs mt-1 break-all bg-white border border-slate-200 p-2 rounded shadow-sm">{result.dmarc || "Not Found - VULNERABLE"}</p>
+                                                    <p className="font-mono text-slate-700 text-xs mt-1 break-all bg-white border border-slate-200 p-2 rounded shadow-sm">{result.dmarc || "Not Found — VULNERABLE"}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                    {/* Row 2: SSL + HTTP Headers */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-4">
+                                            <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
+                                                <Lock className="h-5 w-5 text-red-500" />
+                                                SSL / TLS Certificate
+                                            </h3>
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-sm text-slate-500 uppercase">Status</span>
+                                                    <span className={`text-sm font-bold ${sslColor}`}>
+                                                        {result.ssl.error
+                                                            ? "UNKNOWN"
+                                                            : result.ssl.valid ? "VALID" : "INVALID / EXPIRED"}
+                                                    </span>
+                                                </div>
+                                                {result.ssl.expiresAt && (
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-sm text-slate-500 uppercase">Expires</span>
+                                                        <span className={`text-xs font-mono font-semibold ${sslColor}`}>
+                                                            {new Date(result.ssl.expiresAt).toLocaleDateString()} ({result.ssl.daysRemaining}d)
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                {result.ssl.issuer && (
+                                                    <div>
+                                                        <p className="text-sm text-slate-500 uppercase">Issuer</p>
+                                                        <p className="font-mono text-slate-700 text-xs mt-1 break-all">{result.ssl.issuer.slice(0, 80)}</p>
+                                                    </div>
+                                                )}
+                                                {result.ssl.error && (
+                                                    <p className="text-xs text-amber-600 mt-1">{result.ssl.error}</p>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
+                                                <Shield className="h-5 w-5 text-red-500" />
+                                                HTTP Security Headers
+                                            </h3>
+                                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                                <StatusBadge ok={result.httpHeaders.hsts} label="HSTS" />
+                                                <StatusBadge ok={result.httpHeaders.csp} label="Content-Security-Policy" />
+                                                <StatusBadge ok={result.httpHeaders.xFrameOptions} label="X-Frame-Options" />
+                                                <StatusBadge ok={result.httpHeaders.xContentTypeOptions} label="X-Content-Type-Options" />
+                                                <StatusBadge ok={result.httpHeaders.referrerPolicy} label="Referrer-Policy" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* AI Threat Analysis */}
                                     <div className="space-y-4 pt-4 border-t border-red-200">
                                         <h3 className="text-xl font-semibold text-slate-800 flex items-center gap-2">
                                             <Server className="h-5 w-5 text-red-500" />
                                             AI Threat Analysis
                                         </h3>
                                         <div className="bg-red-50 border border-red-100 shadow-inner p-6 rounded-lg text-slate-800">
-                                            {aiReport.split('\n').map((paragraph, idx) => (
+                                            {aiReport.split('\n').filter(p => p.trim()).map((paragraph, idx) => (
                                                 <p key={idx} className="mb-4 last:mb-0 leading-relaxed font-body">{paragraph}</p>
                                             ))}
                                         </div>
                                     </div>
 
                                     <div className="mt-12 text-center text-xs text-slate-500 border-t border-slate-200 pt-6">
-                                        WARNING: This report is generated automatically by ZexLabs Security AI. Results are derived from public DNS intelligence.
+                                        WARNING: This report is generated automatically by ZexLabs Security AI using public DNS and certificate intelligence.
                                         <br />Schedule a manual penetration test for a comprehensive vulnerability analysis.
                                     </div>
                                 </div>
@@ -293,7 +376,7 @@ export default function AttackSurface() {
                                     onClick={() => setShowLeadModal(true)}
                                     className="bg-white border-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300 px-8 uppercase tracking-widest font-bold shadow-sm transition-all"
                                 >
-                                    <Download className="mr-2 h-4 w-4" /> Export Report Details
+                                    <Download className="mr-2 h-4 w-4" /> Export Report as PDF
                                 </Button>
                             </div>
                         </motion.div>

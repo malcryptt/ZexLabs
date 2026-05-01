@@ -19,7 +19,6 @@ export default async function handler(req: any, res: any) {
     // Rate limiting logic
     const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
 
-    // Clean up old entries
     const now = Date.now();
     for (const [key, value] of rateLimitMap.entries()) {
         if (now - value.timestamp > WINDOW_MS) {
@@ -37,13 +36,60 @@ export default async function handler(req: any, res: any) {
         rateLimitMap.set(ip, { count: 1, timestamp: now });
     }
 
-    // Construct Groq prompt
-    const prompt = `Analyze this attack surface data for ${companyName} (${domain}). 
-      IPs exposed: ${scanData.ips.join(", ")}. 
-      MX Records: ${scanData.mxRecords.join(", ")}. 
-      SPF Record: ${scanData.spf || "MISSING"}. 
-      DMARC Record: ${scanData.dmarc || "MISSING"}. 
-      Write a short, highly professional, slightly aggressive threat intelligence brief (2 paragraphs max) as ZexLabs. If they are missing SPF or DMARC, emphasize they are highly vulnerable to email spoofing and phishing attacks.`;
+    // Build a structured threat profile for the AI
+    const ssl = scanData.ssl || {};
+    const headers = scanData.httpHeaders || {};
+
+    const missingControls: string[] = [];
+    if (!scanData.hasSpf) missingControls.push("SPF (email spoofing protection)");
+    if (!scanData.hasDmarc) missingControls.push("DMARC (email authentication enforcement)");
+    if (!headers.hsts) missingControls.push("HTTP Strict Transport Security (HSTS)");
+    if (!headers.csp) missingControls.push("Content Security Policy (CSP)");
+    if (!headers.xFrameOptions) missingControls.push("X-Frame-Options (clickjacking protection)");
+    if (!headers.xContentTypeOptions) missingControls.push("X-Content-Type-Options (MIME sniffing)");
+    if (!headers.referrerPolicy) missingControls.push("Referrer-Policy");
+
+    const sslStatus = ssl.error
+        ? `UNKNOWN (check failed: ${ssl.error})`
+        : ssl.valid
+            ? `VALID — expires ${ssl.expiresAt || "unknown"} (${ssl.daysRemaining} days remaining)`
+            : `EXPIRED or MISSING`;
+
+    const sslRisk = ssl.daysRemaining !== null && ssl.daysRemaining < 30
+        ? `CERTIFICATE EXPIRY IMMINENT (${ssl.daysRemaining} days) — HIGH RISK`
+        : "";
+
+    const prompt = `You are a senior offensive security analyst writing a threat intelligence brief for ZexLabs.
+
+TARGET: ${companyName} (${domain})
+
+DNS INTELLIGENCE:
+- Exposed IP Addresses: ${scanData.ips.length > 0 ? scanData.ips.join(", ") : "None found"}
+- MX (Mail) Servers: ${scanData.mxRecords.length > 0 ? scanData.mxRecords.join(", ") : "None found"}
+- SPF Record: ${scanData.spf || "MISSING — domain is open to email spoofing"}
+- DMARC Record: ${scanData.dmarc || "MISSING — no email authentication enforcement"}
+
+SSL / TLS CERTIFICATE:
+- Status: ${sslStatus}
+- Issuer: ${ssl.issuer || "Unknown"}
+${sslRisk ? `- WARNING: ${sslRisk}` : ""}
+
+HTTP SECURITY HEADERS (checked via live request):
+- HSTS: ${headers.hsts ? "PRESENT ✓" : "MISSING ✗"}
+- Content-Security-Policy: ${headers.csp ? "PRESENT ✓" : "MISSING ✗"}
+- X-Frame-Options: ${headers.xFrameOptions ? "PRESENT ✓" : "MISSING ✗"}
+- X-Content-Type-Options: ${headers.xContentTypeOptions ? "PRESENT ✓" : "MISSING ✗"}
+- Referrer-Policy: ${headers.referrerPolicy ? "PRESENT ✓" : "MISSING ✗"}
+
+MISSING SECURITY CONTROLS (${missingControls.length} identified):
+${missingControls.length > 0 ? missingControls.map(c => `- ${c}`).join("\n") : "None — strong security posture"}
+
+Write a 3-paragraph professional threat intelligence brief:
+1. Executive summary: overall risk posture based on the findings above. Be specific and data-driven, reference the actual IP, MX, SSL, and header findings.
+2. Critical vulnerabilities: spell out exactly which missing controls create which attack vectors (e.g., missing SPF = phishing/spoofing risk, missing HSTS = SSL stripping, missing CSP = XSS). Be direct and technical.
+3. Remediation priorities: rank the top 3 actions the organization must take immediately, in order of risk severity.
+
+Tone: authoritative, concise, professional. No marketing language. Write as ZexLabs Security Intelligence.`;
 
     try {
         const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -55,8 +101,8 @@ export default async function handler(req: any, res: any) {
             body: JSON.stringify({
                 model: "llama-3.1-8b-instant",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.7,
-                max_tokens: 500
+                temperature: 0.4,
+                max_tokens: 800
             })
         });
 
