@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function AttackSurface() {
@@ -68,9 +67,10 @@ export default function AttackSurface() {
             setProgress(100);
 
             toast.success("Scan and analysis complete.");
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
-            toast.error(error.message || "Scan failed. Please try again.");
+            const errMessage = error instanceof Error ? error.message : "Scan failed. Please try again.";
+            toast.error(errMessage);
         } finally {
             setIsScanning(false);
             setLoadingText("");
@@ -83,6 +83,7 @@ export default function AttackSurface() {
         if (urlDomain && !isScanning && !result) {
             handleScan();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [urlDomain]);
 
     const handleCaptureAndDownload = async () => {
@@ -90,11 +91,8 @@ export default function AttackSurface() {
         setIsExporting(true);
         if (!reportRef.current) return;
 
-        try {
-            await (supabase as any).from("attack_surface_leads").insert([{ email: leadEmail, domain_scanned: domain }]);
-        } catch (e) {
-            console.error("Failed to capture lead", e);
-        }
+        // Proceed directly to PDF generation without DB capturing.
+        console.log("PDF generation triggered for:", leadEmail);
 
         setShowLeadModal(false);
         toast.info("Generating PDF...");

@@ -1,4 +1,5 @@
-import { Github, Mail, Instagram, Linkedin } from "lucide-react";
+import { Mail } from "lucide-react";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -19,7 +20,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center gap-4">
               <a href="https://github.com/mal4crypt" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <Github size={20} />
+                <FaGithub size={20} />
               </a>
               <a href="https://x.com/ZEXLABS?s=20" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <svg
@@ -31,10 +32,10 @@ const Footer = () => {
                 </svg>
               </a>
               <a href="https://www.instagram.com/zexlabs/#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <Instagram size={20} />
+                <FaInstagram size={20} />
               </a>
               <a href="https://linkedin.com/company/zexlabs" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <Linkedin size={20} />
+                <FaLinkedin size={20} />
               </a>
               <a href="mailto:hello@zexlabs.com.ng" className="text-muted-foreground hover:text-primary transition-colors">
                 <Mail size={20} />

@@ -1,44 +1,41 @@
-import { createClient } from "@supabase/supabase-js";
+// Simple in-memory rate limit map: ip -> { count, timestamp }
+const rateLimitMap = new Map<string, { count: number, timestamp: number }>();
+const MAX_REQUESTS = 5;
+const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
     const { domain, companyName, scanData } = req.body;
-
-    // Connect to Supabase
-    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-    const supabaseKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
     const apiKey = process.env.VITE_GROQ_API_KEY || process.env.GROQ_API_KEY;
 
-    if (!supabaseUrl || !supabaseKey || !apiKey) {
+    if (!apiKey) {
         return res.status(500).json({ error: "Server configuration missing keys" });
     }
-
-    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Rate limiting logic
     const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
 
-    // Check amount of scans today for this IP
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const { data: scans, error: scanError } = await supabase
-        .from('rate_limits')
-        .select('*')
-        .eq('ip_address', ip)
-        .gte('created_at', today.toISOString());
-
-    if (scans && scans.length >= 5) {
-        return res.status(429).json({ error: "Rate limit exceeded. Maximum 5 free scans per day." });
+    // Clean up old entries
+    const now = Date.now();
+    for (const [key, value] of rateLimitMap.entries()) {
+        if (now - value.timestamp > WINDOW_MS) {
+            rateLimitMap.delete(key);
+        }
     }
 
-    // Insert new rate limit record
-    await supabase.from('rate_limits').insert([
-        { ip_address: ip, endpoint: 'analyze' }
-    ]);
+    const record = rateLimitMap.get(ip);
+    if (record) {
+        if (record.count >= MAX_REQUESTS) {
+            return res.status(429).json({ error: "Rate limit exceeded. Maximum 5 free scans per day." });
+        }
+        record.count += 1;
+    } else {
+        rateLimitMap.set(ip, { count: 1, timestamp: now });
+    }
 
     // Construct Groq prompt
     const prompt = `Analyze this attack surface data for ${companyName} (${domain}). 

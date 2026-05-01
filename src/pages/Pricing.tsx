@@ -214,6 +214,7 @@ export default function Pricing() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function PricingCard({ tier, onCta, key }: { tier: any, onCta: () => void, key?: any }) {
   return (
     <Card className={`rounded-none border-border/20 bg-card/40 backdrop-blur-sm group relative flex flex-col h-full transition-all duration-500 ${tier.featured ? 'ring-2 ring-primary ring-offset-4 ring-offset-background' : 'hover:border-primary/30'}`}>

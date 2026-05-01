@@ -4,7 +4,8 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github, Code2, Shield, Cpu, Layout, AppWindow } from 'lucide-react';
+import { ExternalLink, Code2, Shield, Cpu, Layout, AppWindow } from 'lucide-react';
+import { FaGithub } from "react-icons/fa";
 
 const categories = [
   "all",
@@ -257,7 +258,7 @@ export default function Portfolio() {
                       {project.url.includes('github') ? 'View Repository' : 'View Project'}
                       <ExternalLink className="ml-2 w-3 h-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
                     </a>
-                    {project.url.includes('github') && <Github className="w-4 h-4 text-muted-foreground/30" />}
+                    {project.url.includes('github') && <FaGithub className="w-4 h-4 text-muted-foreground/30" />}
                   </div>
                 </CardContent>
               </Card>
@@ -274,7 +275,7 @@ export default function Portfolio() {
               rel="noopener noreferrer"
               className="inline-flex items-center px-10 py-4 border border-foreground/20 hover:bg-foreground/5 text-[10px] font-black uppercase tracking-[0.2em] transition-all"
             >
-              <Github className="mr-3 w-4 h-4" />
+              <FaGithub className="mr-3 w-4 h-4" />
               github.com/mal4crypt
             </a>
           </div>

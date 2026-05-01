@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Mail, MapPin, Send, Github, Instagram, Twitter } from "lucide-react";
+import { MessageSquare, Mail, MapPin, Send } from "lucide-react";
+import { FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Contact() {
@@ -107,13 +108,13 @@ export default function Contact() {
                 <h4 className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-6">Social Nodes</h4>
                 <div className="flex gap-4">
                   <a href="https://github.com/mal4crypt" target="_blank" rel="noopener noreferrer" className="p-4 border border-border/20 hover:border-primary transition-all group">
-                    <Github className="w-5 h-5 group-hover:text-primary" />
+                    <FaGithub className="w-5 h-5 group-hover:text-primary" />
                   </a>
                   <a href="https://x.com/ZEXLABS?s=20" target="_blank" rel="noopener noreferrer" className="p-4 border border-border/20 hover:border-primary transition-all group">
-                    <Twitter className="w-5 h-5 group-hover:text-primary" />
+                    <FaTwitter className="w-5 h-5 group-hover:text-primary" />
                   </a>
                   <a href="https://www.instagram.com/zexlabs/#" target="_blank" rel="noopener noreferrer" className="p-4 border border-border/20 hover:border-primary transition-all group">
-                    <Instagram className="w-5 h-5 group-hover:text-primary" />
+                    <FaInstagram className="w-5 h-5 group-hover:text-primary" />
                   </a>
                 </div>
               </div>
