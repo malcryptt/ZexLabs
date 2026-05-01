@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Mail, MapPin, Send } from "lucide-react";
+import { MessageSquare, Mail, MapPin } from "lucide-react";
 import { FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import { useToast } from "@/hooks/use-toast";
+
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || "YOUR_ACCESS_KEY_HERE";
 
 export default function Contact() {
   useEffect(() => {
@@ -20,6 +22,7 @@ export default function Contact() {
     subject: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,17 +36,34 @@ export default function Contact() {
     });
   };
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
-    const mailtoUri = `mailto:hello@zexlabs.com.ng?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoUri;
-
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    toast({
-      title: "Opening Email Client...",
-      description: "Dispatching your inquiry to hello@zexlabs.com.ng",
-    });
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `[ZEXLABS Inquiry] ${formData.subject}`,
+          from_name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          redirect: false,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        toast({ title: "Message Sent!", description: "Our engineering team will reach out within 24 hours." });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error(result.message);
+      }
+    } catch {
+      toast({ title: "Delivery Failed", description: "Please try WhatsApp or email us directly.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -182,9 +202,10 @@ export default function Contact() {
                     <Button
                       type="button"
                       onClick={handleEmailSubmit}
-                      className="w-full rounded-none h-14 bg-transparent border-2 border-primary text-primary font-black uppercase tracking-[0.2em] group hover:bg-primary hover:text-primary-foreground transition-all"
+                      disabled={isSubmitting}
+                      className="w-full rounded-none h-14 bg-transparent border-2 border-primary text-primary font-black uppercase tracking-[0.2em] group hover:bg-primary hover:text-primary-foreground transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Deliver via Email
+                      {isSubmitting ? "Sending..." : "Deliver via Email"}
                       <Mail className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </Button>
                   </div>

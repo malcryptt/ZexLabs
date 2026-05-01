@@ -11,6 +11,8 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || "YOUR_ACCESS_KEY_HERE";
+
 export default function AttackSurface() {
     const [searchParams] = useSearchParams();
     const urlDomain = searchParams.get("domain");
@@ -91,8 +93,23 @@ export default function AttackSurface() {
         setIsExporting(true);
         if (!reportRef.current) return;
 
-        // Proceed directly to PDF generation without DB capturing.
-        console.log("PDF generation triggered for:", leadEmail);
+        // Submit lead to Web3Forms for email notification
+        try {
+            await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_ACCESS_KEY,
+                    subject: `[ZEXLABS Lead] Attack Surface PDF - ${domain}`,
+                    from_name: leadEmail,
+                    email: leadEmail,
+                    message: `New lead from Attack Surface Monitor. Domain scanned: ${domain}`,
+                    redirect: false,
+                }),
+            });
+        } catch (e) {
+            console.error("Failed to notify lead", e);
+        }
 
         setShowLeadModal(false);
         toast.info("Generating PDF...");
