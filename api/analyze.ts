@@ -69,7 +69,8 @@ export default async function handler(req: any, res: any) {
         return res.status(200).json({ report: aiData.choices[0].message.content });
 
     } catch (e) {
-        console.error(e);
-        return res.status(500).json({ error: "Failed to generate report" });
+        const errMsg = e instanceof Error ? e.message : String(e);
+        console.error("Groq error:", errMsg);
+        return res.status(500).json({ error: `Failed to generate report: ${errMsg}` });
     }
 }
