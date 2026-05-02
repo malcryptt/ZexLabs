@@ -134,13 +134,24 @@ export default function AttackSurface() {
         reportRef.current.style.overflow = "visible";
 
         try {
-            const canvas = await html2canvas(reportRef.current, { scale: 2, useCORS: true, backgroundColor: "#000000" });
+            const canvas = await html2canvas(reportRef.current, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfPageHeight = pdf.internal.pageSize.getHeight();
+
+            // How many mm does the full canvas image span?
+            const imgHeightMm = (canvas.height * pdfWidth) / canvas.width;
+            const totalPages = Math.ceil(imgHeightMm / pdfPageHeight);
+
+            for (let page = 0; page < totalPages; page++) {
+                if (page > 0) pdf.addPage();
+                // Shift the image up by (page * pdfPageHeight) so the correct slice
+                // falls within the current page's visible area.
+                pdf.addImage(imgData, "PNG", 0, -(page * pdfPageHeight), pdfWidth, imgHeightMm);
+            }
+
             pdf.save(`${companyName.replace(/\s+/g, "_")}_Attack_Surface_Report.pdf`);
             toast.success("PDF Downloaded successfully!");
         } catch (e) {
